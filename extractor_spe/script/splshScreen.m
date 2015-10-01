@@ -11,7 +11,7 @@ disp('       Dr. Waldir Leite Roque');
 disp(' ');
 disp('       @Federal University of Paraiba - Brazil');
 disp(' ');
-disp('Starting program...');
+disp('S T A R T I N G     P R O G R A M');
 
 end
 

@@ -15,19 +15,58 @@
         several data for analysis and visualization
     
 %}
-%% DEFAULTS
+%% INPUT SETUP
 
-clear all; close all; clc; format long;
-diary('extractorSPE.log');
-diary on
-
-setOptions;     % defaults
+activateLog;    % log
 splshScreen;    % screen
+setOptions;     % defaults
 
-%% LOAD FILES
-phiname = '../dat/spe_phi.dat';
-pername = '../dat/spe_perm.dat';
-[phi,per] = loadFiles(phiname,pername);
+% Reloading section
+inrrd = false;
+inrr = input('----> Rerun extractor? [0] no; [1] yes \n');
+
+if inrr == 1 % rerun       
+    
+    clear all; close all; format long; 
+        
+    % defined here after clear all
+    inrrd = true; 
+    phiname = setFile('../dat/spe_phi.dat');
+    pername = setFile('../dat/spe_perm.dat');
+    
+    disp('Starting new session...');
+            
+elseif inrr == 0 % reload    
+    format long;
+        
+    fidphi = fopen('../mat/PHI.mat');
+    fidkx  = fopen('../mat/KX.mat');
+    fidky  = fopen('../mat/KY.mat');
+    fidkz  = fopen('../mat/KZ.mat');
+    
+    if fidphi == -1 || fidkx == -1 || fidky == -1 || fidkz == -1       
+      warning('Some required file was not found. Rerunning...');
+      
+    else
+        disp('Reloading saved .mat files...');        
+        
+        a = load('../mat/PHI.mat');
+        PHI = a.PHI;
+        
+        a = load('../mat/KX.mat');
+        KX = a.KX;
+        
+        a = load('../mat/KY.mat');
+        KY = a.KY;
+        
+        a = load('../mat/KZ.mat');     
+        KZ = a.KZ;
+        
+    end
+        
+else
+    error('Option not recognized. Choose 0 or 1');
+end
 
 %% GRID BOUNDS (SPE Project 2)
 [I,J,K] = setGridBounds(60,220,85); % default
@@ -179,155 +218,10 @@ disp('Options saved. Running extractor...');
 
 %% MATRIX OPERATIONS
 
-%{
-    This strategy is ONLY applicable to the original .dat files 
-    provided by the SPE Project 2 and follows the data arrangement.
-    It will might be useful for other files as well, but further
-    investigation is required. 
-
-    What is done here: the original files are 'unrolled' 
-    and rearranged into 3D arrays (I,J,K), thus allowing a 
-    better accessibility of the information. In the end, the reservoir
-    is a 3D structure with { PHI, KX, KY, KZ }(I,J,K) evaluated 
-    in the fourth dimension. 
-
-    RESERVOIR
-    =========
-
-          K
-         /
-        /____________
-       /|            |
-      /_|__________  |
-     /|            | |
-    /_|__________  |_|      <------ (i,j,k = K): bottom layer
-    |            | |
-    |            |_|        <------ (i,j,k = 2): depth layer
-    |            | 
-    |____________|___ J     <------ (i,j,k = 1): reservoir surface
-    |    
-    |
-     I
-
-%}
-
-%----------------- POROSITY
-disp('Rearranging data arrays...');
-
-B = [];    
-for m = 1:J*K
-    A = phi( (m-1)*10+1:10*m , : );    % loading matrix 10x6 from file
-    A = A';                            % transpose to order
-    A2 = reshape( A, [ 1 numel(A) ] ); % vector 1x60
-    A2 = A2';                          % transpose to 60x1
-    B = [ B; A2 ];                     % big column vector                           
-
-end            
-        
-%{            
-       [  [ j=1 ] [ j=1 ] . . . [ j=1 ]  ] ___ line 1*I 
-       [  [ j=2 ] [ j=2 ]       [ j=2 ]  ] ___ line 2*I
-       [     .       .    .        .     ]
-       [     .       .      .      .     ]
- B11 = [     .       .        .    .     ]
-       [  [ j=J ] [ j=J ] . . . [ j=J ]  ] ___ line J*I        
-                                        
-             |       |    . . .    |     
-            k=1     k=2           k=K     
-%}
-B11 = reshape( B, [ I*J K ] );         
-
-B22 = [];
-for k = 1:K;
-    for j = 1:J;
-        B21 = B11( (j-1)*I+1:j*I, k );
-        B22 = [ B22, B21 ];            
-    end      
+if inrrd % if rerun is active, reassemble            
+    [phi,per] = loadFiles(phiname,pername);    
+    [ PHI, KX, KY, KZ ] = assemble3DArrays( phi, per, I, J, K );
 end
-
-% filling porosity slices
-PHI = zeros(I,J,K);
-for m = 1:K
-     B23 = B22( :, (m-1)*J+1:m*J );         
-     PHI(:,:,m) = B23;         
-end
-
-disp('Porosity 3D array ready.');
-%----------------- PERMEABILITY
-
-%{
-    In the case of porosity, the same scheme as B11 is 
-    applied, except that we have 3 huge blocks now. 
-    It looks like:
-    
-          [ B11x ]___ line 1*J*I
-    B11 = [ B11y ]___ line 2*J*I
-          [ B11z ]___ line 3*J*I
-%}
-
-
-% separating blocks
-n = size(per,1)/3;
-kx = per(     1:n   , : );
-ky = per(   n+1:2*n , : );
-kz = per( 2*n+1:end , : );
-
-Bx = [];    
-By = [];    
-Bz = [];    
-for m = 1:J*K
-    Ax = kx( (m-1)*10+1:10*m , : );    % loading matrix 10x6 from file
-    Ay = ky( (m-1)*10+1:10*m , : );    
-    Az = kz( (m-1)*10+1:10*m , : );    
-    Ax = Ax';                            % transpose to order
-    Ay = Ay';                          
-    Az = Az';                          
-    A2x = reshape( Ax, [ 1 numel(Ax) ] ); % vector 1x60
-    A2y = reshape( Ay, [ 1 numel(Ay) ] ); 
-    A2z = reshape( Az, [ 1 numel(Az) ] ); 
-    A2x = A2x';                          % transpose to 60x1
-    A2y = A2y';                          
-    A2z = A2z';                          
-    Bx = [ Bx; A2x ];                     % big column vector                           
-    By = [ By; A2y ];                    
-    Bz = [ Bz; A2z ];                    
-
-end            
-        
-B11x = reshape( Bx, [ I*J K ] );         
-B11y = reshape( By, [ I*J K ] );         
-B11z = reshape( Bz, [ I*J K ] );         
-
-B22x = [];
-B22y = [];
-B22z = [];
-for k = 1:K;
-    for j = 1:J;
-        B21x = B11x( (j-1)*I+1:j*I, k );
-        B21y = B11y( (j-1)*I+1:j*I, k );
-        B21z = B11z( (j-1)*I+1:j*I, k );
-        B22x = [ B22x, B21x ];            
-        B22y = [ B22y, B21y ];            
-        B22z = [ B22z, B21z ];            
-    end      
-end
-
-% filling permeability slices
-KX = zeros(I,J,K);
-KY = zeros(I,J,K);
-KZ = zeros(I,J,K);
-for m = 1:K
-     B23x = B22x( :, (m-1)*J+1:m*J );         
-     KX(:,:,m) = B23x;
-     
-     B23y = B22y( :, (m-1)*J+1:m*J );         
-     KY(:,:,m) = B23y;
-     
-     B23z = B22z( :, (m-1)*J+1:m*J );         
-     KZ(:,:,m) = B23z;
-end
-
-disp('Permeability 3D arrays ready.');
              
 %% WELL STRUCTURE
 
@@ -533,7 +427,7 @@ if pltr
         subplot(2,2,1)              
         scatter(wphi{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','r')
         h = gca;
-        set(h,'YGrid','on','YDir','reverse','YTick');
+        set(h,'YGrid','on','YDir','reverse');
         xlim( [ (1.0 - dpx)*min(wphi{i}) (1.0 + dpx)*max(wphi{i}) ] )
         ylim( [ -dpy K+dpy ] );        
         title( strcat('Well (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );        
@@ -544,7 +438,7 @@ if pltr
         subplot(2,2,2)                 
         scatter(wkx{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','g')
         h = gca;
-        set(h,'YGrid','on','YDir','reverse','YTick');
+        set(h,'YGrid','on','YDir','reverse');
         xlim( [ (1.0 - dpx)*min(wkx{i}) (1.0 + dpx)*max(wkx{i}) ] )
         ylim( [ -dpy K+dpy ] );
         title( strcat('Well (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );        
@@ -555,7 +449,7 @@ if pltr
         subplot(2,2,3)                 
         scatter(wky{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','b')
         h = gca;
-        set(h,'YGrid','on','YDir','reverse','YTick');
+        set(h,'YGrid','on','YDir','reverse');
         xlim( [ (1.0 - dpx)*min(wky{i}) (1.0 + dpx)*max(wky{i}) ] )
         ylim( [ -dpy K+dpy ] );
         title( strcat('Well (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );        
@@ -566,7 +460,7 @@ if pltr
         subplot(2,2,4)                        
         scatter(wkz{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','m')        
         h = gca;
-        set(h,'YGrid','on','YDir','reverse','YTick');
+        set(h,'YGrid','on','YDir','reverse');
         xlim( [ (1.0 - dpx)*min(wkz{i}) (1.0 + dpx)*max(wkz{i}) ] )
         ylim( [ -dpy K+dpy ] );        
         title( strcat('Well (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );        
@@ -694,7 +588,7 @@ if bland && ~isempty(wsati) % if wsat is empty, there's nothing to compare
     
 end
 
-%% Histogram, Regression Analysis
+%% Histogram, Regression Analysis and related CSV files
 
 if hist
 
@@ -756,13 +650,13 @@ if hist
                 setLRPlot(PLR); % graph appearance
                 
                 % csv file [ logphiz, logRQI, depth ] per DRT                
-                fprintf('Exporting CSV file of logs/depth data for DRT %d... \n', drt(j) );  
+                fprintf('Exporting CSV file of logs/depth data for well(%d,%d); DRT %d... \n', ia(i), ja(i), drt(j) );  
                 fname = fullfile( '../csv/', strcat(regname,num2str( ia(i) ),'_J', num2str( ja(i) ),'_DRT_',num2str( drt(j) ),'_LogsDepth','.csv' ) );
                 auxmat = [ dataDRT{j,1} dataDRT{j,2} dataDRT{j,3} ];
                 csvwrite(fname, auxmat );                                
 
                 % csv file: fit data
-                fprintf('Exporting CSV file of regression fit data for DRT %d... \n', drt(j) );  
+                fprintf('Exporting CSV file of regression fit data for well(%d,%d); DRT %d... \n', ia(i), ja(i), drt(j) );  
                 fname = fullfile( '../csv/', strcat(regname,num2str( ia(i) ),'_J', num2str( ja(i) ),'_DRT_',num2str( drt(j) ),'_FitData','.csv' ) );
                 aux = [ dataDRT{j,4} dataDRT{j,5} dataDRT{j,6} ];
                 csvwrite(fname, aux );
