@@ -1,0 +1,8 @@
+*.m~
+*.mat
+*.csv
+.DS_Store
+*.pdf
+*.vtk
+*.RData
+
