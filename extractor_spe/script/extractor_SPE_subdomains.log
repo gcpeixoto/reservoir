@@ -1,0 +1,479 @@
+Loading files...
+{Operands to the || and && operators must be convertible to logical scalar values.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 22)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',22,0)">line 22</a>)
+if fopen(fid1) == -1 || fopen(fid2) == -1 || fopen(fid3) == -1 || fopen(fid4) == -1
+} 
+extractorSPESubdomain
+Loading files...
+{Operands to the || and && operators must be convertible to logical scalar values.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 22)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',22,0)">line 22</a>)
+if fopen(fid1)+1 == 0 || fopen(fid2)+1 == 0 || fopen(fid3)+1 == 0 || fopen(fid4)+1 ==
+0
+} 
+extractorSPESubdomain
+Loading files...
+{Operands to the || and && operators must be convertible to logical scalar values.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 22)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',22,0)">line 22</a>)
+if fopen(fid1)+1 == 0 || fopen(fid2)+1 == 0 || fopen(fid3)+1 == 0 || fopen(fid4)+1 ==
+0
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate:{Operation terminated by user during <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 42)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',42,0)">line 42</a>)
+
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+1
+-----> Choose central voxel j coordinate: 
+256
+-----> Choose central voxel k coordinate: 
+{Operation terminated by user during <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 44)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',44,0)">line 44</a>)
+
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+1
+-----> Choose central voxel j coordinate: 
+216
+-----> Choose central voxel k coordinate: 
+2
+{Error using <a href="matlab:helpUtils.errorDocCallback('getVoxelNeigh', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeigh.m', 11)" style="font-weight:bold">getVoxelNeigh</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeigh.m',11,0)">line 11</a>)
+Voxel neighborhood not applicable near the boundaries.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 46)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',46,0)">line 46</a>)
+[PHIV, VC, VN] = getVoxelNeigh(ic,jc,kc,PHI);
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+{Undefined function or variable 'PHIVZ'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 59)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',59,0)">line 59</a>)
+FZIV = RQIV./PHIVZ;
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+{Error using <a href="matlab:helpUtils.errorDocCallback('eq')" style="font-weight:bold"> == </a>
+Matrix dimensions must agree.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 53)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',53,0)">line 53</a>)
+if ~( all(PHIV) == ones(3) )
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+{Array dimensions must match for binary array op.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 53)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',53,0)">line 53</a>)
+if ~( all(PHIV) == ones(3,3,3) )
+} 
+size(all(PHIV)
+ size(all(PHIV)
+               |
+{Error: Expression or statement is incorrect--possibly unbalanced (, {, or [.
+} 
+size(all(PHIV))
+
+ans =
+
+     1     3     3
+
+all(PHIV)
+
+ans(:,:,1) =
+
+     1     1     1
+
+
+ans(:,:,2) =
+
+     1     1     1
+
+
+ans(:,:,3) =
+
+     0     0     0
+
+all( PHIV(:,:,1) ) == ones(1,3)  
+
+ans =
+
+     1     1     1
+
+all( PHIV(:,:,2) ) == ones(1,3)
+
+ans =
+
+     1     1     1
+
+all( PHIV(:,:,3) ) == ones(1,3)
+
+ans =
+
+     0     0     0
+
+PHIV(:)
+
+ans =
+
+   0.046577000000000
+   0.082566000000000
+   0.113569000000000
+   0.084204000000000
+   0.140893000000000
+   0.094563000000000
+   0.131230000000000
+   0.177657000000000
+   0.189459000000000
+   0.209012000000000
+   0.199328000000000
+   0.204845000000000
+   0.224705000000000
+   0.216532000000000
+   0.237144000000000
+   0.226361000000000
+   0.212144000000000
+   0.237095000000000
+                   0
+                   0
+                   0
+                   0
+                   0
+                   0
+                   0
+                   0
+                   0
+
+all(PHIV(:))
+
+ans =
+
+     0
+
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+{Error using <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 54)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',54,0)">line 54</a>)
+Zero porosity found at the voxel cluster. FZI will produce NaN
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+32
+-----> Choose central voxel j coordinate: 
+24
+-----> Choose central voxel k coordinate: 
+5
+{Error using <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 54)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',54,0)">line 54</a>)
+Zero porosity found at the voxel neighborhood chosen. FZI will produce NaN
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+32
+-----> Choose central voxel j coordinate: 
+21
+-----> Choose central voxel k coordinate: 
+4
+{Error using <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 54)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',54,0)">line 54</a>)
+Zero porosity found at the voxel neighborhood chosen. FZI will produce NaN
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+100
+-----> Choose central voxel j coordinate: 
+100
+-----> Choose central voxel k coordinate: 
+54
+{Error using <a href="matlab:helpUtils.errorDocCallback('getVoxelNeigh', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeigh.m', 11)" style="font-weight:bold">getVoxelNeigh</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeigh.m',11,0)">line 11</a>)
+Voxel neighborhood not applicable near the boundaries.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 46)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',46,0)">line 46</a>)
+[PHIV, VC, VN] = getVoxelNeigh(ic,jc,kc,PHI);
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+40
+-----> Choose central voxel j coordinate: 
+120
+-----> Choose central voxel k coordinate: 
+10
+{Error using <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 54)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',54,0)">line 54</a>)
+Zero porosity found at the voxel neighborhood chosen. FZI will produce NaN
+} 
+PHIV
+
+PHIV(:,:,1) =
+
+   0.331335000000000   0.282013000000000   0.327259000000000
+   0.318589000000000   0.329483000000000   0.341460000000000
+   0.299454000000000   0.274864000000000   0.252302000000000
+
+
+PHIV(:,:,2) =
+
+   0.359403000000000   0.391085000000000   0.322085000000000
+   0.285978000000000   0.301385000000000   0.266103000000000
+   0.252572000000000   0.293436000000000   0.281284000000000
+
+
+PHIV(:,:,3) =
+
+     0     0     0
+     0     0     0
+     0     0     0
+
+VC
+
+VC =
+
+    40   120    10
+
+PHI(40,120,10)
+
+ans =
+
+   0.301385000000000
+
+PHI(41,120,10)
+
+ans =
+
+   0.293436000000000
+
+PHI(41,121,10)
+
+ans =
+
+   0.281284000000000
+
+VC
+
+VC =
+
+    40   120    10
+
+PHI(41,119,11)
+
+ans =
+
+   0.299454000000000
+
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+{Error using <a href="matlab:helpUtils.errorDocCallback('set')" style="font-weight:bold">set</a>
+Invalid property found.
+Object Name: text
+Property Name: '107'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('xlabel', '/Applications/MATLAB_R2013a.app/toolbox/matlab/graph2d/xlabel.m', 58)" style="font-weight:bold">xlabel</a> (<a href="matlab: opentoline('/Applications/MATLAB_R2013a.app/toolbox/matlab/graph2d/xlabel.m',58,0)">line 58</a>)
+   set(h, 'String', string, pvpairs{:});
+
+Error in <a href="matlab:helpUtils.errorDocCallback('xlabel', '/Applications/MATLAB_R2013a.app/toolbox/matlab/graph2d/xlabel.m', 22)" style="font-weight:bold">xlabel</a> (<a href="matlab: opentoline('/Applications/MATLAB_R2013a.app/toolbox/matlab/graph2d/xlabel.m',22,0)">line 22</a>)
+  h = xlabel(gca,varargin{:});
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 111)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',111,0)">line 111</a>)
+xlabel( 'j=[',num2str(jc-1),',',num2str(jc),',',num2str(jc+1),']' );
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+107
+-----> Choose central voxel k coordinate: 
+8
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+107
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+107
+-----> Choose central voxel k coordinate: 
+8
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+{Undefined function or variable 'cMap'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('plotVoxelNeigh2DLayer', '/Users/gustavo/reservoir/extractor_spe/script/plotVoxelNeigh2DLayer.m', 35)" style="font-weight:bold">plotVoxelNeigh2DLayer</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/plotVoxelNeigh2DLayer.m',35,0)">line 35</a>)
+colormap(cMap); caxis( [ min(DRTV(:)), max(DRTV(:)) ] );
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 72)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',72,0)">line 72</a>)
+plotVoxelNeigh2DLayer(ic,jc,kc,DRTV,1);
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+{Operation terminated by user during <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 42)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',42,0)">line 42</a>)
+
+} 
+{Undefined function or variable 'ic'.
+} 
+extractorSPESubdomain
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7
+Loading files...
+Files loaded.
+-----> Choose central voxel i coordinate: 
+14
+-----> Choose central voxel j coordinate: 
+108
+-----> Choose central voxel k coordinate: 
+7

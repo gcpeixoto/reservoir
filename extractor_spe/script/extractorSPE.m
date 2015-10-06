@@ -594,7 +594,7 @@ if hist
 
     hname = 'HistogramDRTs';
     regname = 'Regression_I';
-    nfreq = 5; % number of DRT frequencies to analyze in regression 
+    nfreq = 3; % number of DRT frequencies to analyze in regression 
     seps = 0.05; % slope tolerance for regression fit line (1.0-seps,1.0+seps)
 
     for i = 1:N                        
