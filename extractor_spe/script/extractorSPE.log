@@ -137,3 +137,33 @@ Exporting CSV file of logs/depth data for well(8,56); DRT 180...
 Exporting CSV file of regression fit data for well(8,56); DRT 180... 
 Closing figures...
 ----> E X E C U T I O N    H A S    F I N I S H E D.
+---------------------------------------------
+           SPE WELL DATA EXTRACTOR           
+---------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+----> Rerun extractor? [0] no; [1] yes 
+0
+Reloading saved .mat files...
+----> Choose method for well extraction: [0] N random wells; [1] specific well: 
+1
+-------> Enter with I coordinate of the well: 
+42
+-------> Enter with J coordinate of the well: 
+66
+---- Well Table ----
+Well	 I	 J	
+1	 42	 66	
+--------------------
+----> Plot 3D reservoir? [0] no; [1] yes. 
+{Operation terminated by user during <a href="matlab:helpUtils.errorDocCallback('extractorSPE', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPE.m', 109)" style="font-weight:bold">extractorSPE</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPE.m',109,0)">line 109</a>)
+
+} 
+extractorSPESubdomain

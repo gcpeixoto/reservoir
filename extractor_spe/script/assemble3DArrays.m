@@ -48,6 +48,8 @@ function [ PHI,KX,KY,KZ ] = assemble3DArrays( phi,per,I,J,K )
 %----------------- POROSITY
 disp('Rearranging data arrays...');
 
+% TODO Change the counter 10 so as to generalize the method
+
 B = [];    
 for m = 1:J*K
     A = phi( (m-1)*10+1:10*m , : );    % loading matrix 10x6 from file

@@ -1,77 +1,60 @@
-%% extractor_SPE_subdomains
+%% extractor_SPE_subdomain
 
 %% DEFAULTS
 clear all; close all; clc; format long;
-diary('extractor_SPE_subdomains.log');
+diary('extractor_SPE_subdomain.log');
 diary on
+
+setOptions;
+splshScreenSub;
 
 %% LOAD FILES
 
-disp('Loading files...');
-
-% files
+% file paths
 phiname = '../mat/PHI.mat';
 kxname  = '../mat/KX.mat';
 kyname  = '../mat/KY.mat';
 kzname  = '../mat/KZ.mat';
 
-fid1 = fopen(phiname);
-fid2 = fopen(kxname);
-fid3 = fopen(kyname);
-fid4 = fopen(kzname);
-if fid1 == -1 || fid2 == -1 || fid3 == -1 || fid4 == -1
-    error(['Some required file was not found.'...
-            'Please, run extractor again' ...
-            'with option save .mat enabled']);
-else
-    a = load(phiname);
-    PHI = a.PHI;
-    
-    a = load(kxname);
-    KX = a.KX;
-    
-    a = load(kyname);
-    KY = a.KY;
-    
-    a = load(kzname);
-    KZ = a.KZ;
-    
-    disp('Files loaded.');  
-end
+[PHI,KX,KY,KZ] = loadMatFiles(phiname,kxname,kyname,kzname);
+
+%% INPUT DATA 
 
 ic = input('-----> Choose central voxel i coordinate: \n');
 jc = input('-----> Choose central voxel j coordinate: \n');
 kc = input('-----> Choose central voxel k coordinate: \n');
+P  = input('-----> Choose P ring radius: \n');
 
-[PHIV, VC, VN] = getVoxelNeigh(ic,jc,kc,PHI);
-[KXV, ~, ~] = getVoxelNeigh(ic,jc,kc,KX);
-[KYV, ~, ~] = getVoxelNeigh(ic,jc,kc,KY);
-[KZV, ~, ~] = getVoxelNeigh(ic,jc,kc,KZ);
+%% COMPUTATION
+
+
+[PHIV,VN,~,zerosPHI] = getVoxelNeighRing(ic,jc,kc,P,PHI);
+[KXV,~,~,zerosKX] = getVoxelNeighRing(ic,jc,kc,P,KX);
+[KYV,~,~,zerosKY] = getVoxelNeighRing(ic,jc,kc,P,KY);
+[KZV,~,~,zerosKZ] = getVoxelNeighRing(ic,jc,kc,P,KZ);
 
 KXVN = sqrt( KXV.^2 + KYV.^2 + KZV.^2 );
 
-if ~all( PHIV(:) ) 
-    error('Zero porosity found at the voxel neighborhood chosen. FZI will produce NaN.');    
-else
-    PHIVZ = PHIV./(1.0 - PHIV);
-    RQIV = 0.0314*sqrt( KXVN./PHIV );
-    FZIV = RQIV./PHIVZ;
-    DRTV = round( 2*log( FZIV ) + 10.6 );
+PHIVZ = PHIV./(1.0 - PHIV);
+RQIV = 0.0314*sqrt( KXVN./PHIV );
+FZIV = RQIV./PHIVZ;
+DRTV = round( 2*log( FZIV ) + 10.6 );
+
+for i = 1: length(zerosPHI);
+    DRTV( zerosPHI(i,1),zerosPHI(i,2),zerosPHI(i,3) ) = 0.0;
 end
 
 %% PLOTTING 
 
 % 3D voxel neighbourhood 
-plotVoxelNeigh3D(ic,jc,kc,DRTV,0.7);
+plotVoxelNeigh3D(ic,jc,kc,P,DRTV,1.0,zerosPHI);
 
-% neighbourhood layer k = kc-1 
-plotVoxelNeigh2DLayer(ic,jc,kc,DRTV,1);
-
-% neighbourhood layer k = kc
-plotVoxelNeigh2DLayer(ic,jc,kc,DRTV,2);
-
-% neighbourhood layer k = kc+1 
-plotVoxelNeigh2DLayer(ic,jc,kc,DRTV,3);
+% plot all DRTs
+% drt = unique(DRTV(:));
+% for i = 1:length(drt)
+%     plotVoxelNeighByValue(ic,jc,kc,P,DRTV,drt(i),1.0,'DRT');   
+% end    
+  
 
 %close all
 diary off

@@ -1,35 +1,59 @@
-function plotVoxelNeigh3D(ic,jc,kc,DRTV,alpha)
+function plotVoxelNeigh3D(ic,jc,kc,P,PV,alpha,ZL,flag,tname,varargin)
 %{
     input: 
         ic,jc,kc: central voxel coordinate
-            DRTV: 3D array with DRT values for each voxel making up the
-            neighborhood
-           alpha: face color transparency
-
-    See documentation in function 'getVoxelNeigh' to know the 
-    data arrangement.
+               P: ring radius  
+              PV: 3D array with property values 
+                for each voxel making up the neighborhood
+              ZL: indices of PV whose entries are zero
+           alpha: face color transparency   
+            flag: plot only voxels with zero entry?
+                  'nonzero': yes; (default: no) 
+           tname: character title name
+                    
 
     required: 
-        Function 'indPatch' from Gibbon code.
+        Function 'ind2Patch' from Gibbon code.
+
+ Gustavo Peixoto
 
 %}
 
+if nargin < 6
+    error('Missing arguments.');
+elseif nargin > 6 && nargin < 9
+    ZL = [];
+    flag = '';
+    tname = '';
+end
+    
 fig_color='w'; fig_colordef='white';
 cMap=jet(250);
 
 figure 
-indPatch = 1:numel(DRTV); % getting linear indices
-[F,V,C]=ind2patch(indPatch,DRTV,'v');
+if strcmp(flag,'nonzero') % plot only nonzero    
+    indPatch = 1:numel(PV); % getting linear indices
+    indPatch = setdiff(indPatch,ZL); % only nonzero    
+else % plot all
+    indPatch = 1:numel(PV); 
+end
+    
+[F,V,C]=ind2patch(indPatch,PV,'v');
 figuremax(fig_color,fig_colordef);
-title( strcat('Voxel neighbourhood V(',num2str(ic),',',num2str(jc),',',num2str(kc),') - DRT values') );
-xlabel( strcat('J=[',num2str(jc-1),',',num2str(jc),',',num2str(jc+1),']') );
-ylabel( strcat('I=[',num2str(ic-1),',',num2str(ic),',',num2str(ic+1),']') );
-zlabel( strcat('K=[',num2str(kc-1),',',num2str(kc),',',num2str(kc+1),']') );
+title( strcat('Voxel neighbourhood V(',num2str(ic),',',num2str(jc),',',num2str(kc),')',tname,' - values') );
+
+iv = num2str(ic-P:ic+P);
+jv = num2str(jc-P:jc+P);
+kv = num2str(kc-P:kc+P);
+xlabel( strcat('J=[',jv,']') );
+ylabel( strcat('I=[',iv,']') );
+zlabel( strcat('K=[',kv,']') );
+
 hold on;
 patch('Faces',F,'Vertices',V,'FaceColor','flat','CData',C,'EdgeColor','k','FaceAlpha',alpha);
 axis equal; view(3); axis tight; axis vis3d; grid off;
 set(gca,'XTick',[],'YTick',[],'ZTick',[])
-colormap(cMap); caxis( [ min(DRTV(:)), max(DRTV(:)) ] );
+colormap(cMap); caxis( [ min(PV(:)), max(PV(:)) ] );
 colorbar
 
 % print to file    
