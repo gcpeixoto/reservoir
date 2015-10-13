@@ -1655,3 +1655,1394 @@ Files loaded.
 30
 -----> Choose P ring radius: 
 10
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Undefined function or variable 'ic'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 42)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',42,0)">line 42</a>)
+[PHIV,~,~,~] = getVoxelNeighRing(ic,jc,kc,P,PHI);
+} 
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Error using <a href="matlab:helpUtils.errorDocCallback('getVoxelNeighRing', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m', 64)" style="font-weight:bold">getVoxelNeighRing</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m',64,0)">line 64</a>)
+Voxel neighborhood ring exceeds the boundaries. Change central
+coordinate.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 46)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',46,0)">line 46</a>)
+[PHIV,~,~,~] = getVoxelNeighRing(ic,jc,kc,P,PHI);
+} 
+31 - 29
+
+ans =
+
+     2
+
+31 + 29
+
+ans =
+
+    60
+
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Error using <a href="matlab:helpUtils.errorDocCallback('getVoxelNeighRing', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m', 64)" style="font-weight:bold">getVoxelNeighRing</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m',64,0)">line 64</a>)
+Voxel neighborhood ring exceeds the boundaries. Change central
+coordinate.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 46)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',46,0)">line 46</a>)
+[PHIV,~,~,~] = getVoxelNeighRing(ic,jc,kc,P,PHI);
+} 
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Undefined function or variable 'plt'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 47)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',47,0)">line 47</a>)
+[ T, ttot ] = timingNeighRings(PHI,KX,KY,KZ,plt,fig);
+} 
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Undefined function 'stract' for input arguments of type 'char'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('timingNeighRings', '/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m', 62)" style="font-weight:bold">timingNeighRings</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m',62,0)">line 62</a>)
+disp( stract('Time file saved to: ', fname) );
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 47)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',47,0)">line 47</a>)
+[ T, ttot ] = timingNeighRings(PHI,KX,KY,KZ,true,true);
+} 
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+Computing time...
+Time file saved to:../dat/timesPerRing.dat
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+Computing time...
+Time file saved to:../dat/subdomain/timesPerRing.dat
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+Computing time...
+{Error using <a href="matlab:helpUtils.errorDocCallback('getVoxelNeighRing', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m', 64)" style="font-weight:bold">getVoxelNeighRing</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m',64,0)">line 64</a>)
+Voxel neighborhood ring exceeds the boundaries. Change central
+coordinate.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('timingNeighRings', '/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m', 43)" style="font-weight:bold">timingNeighRings</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m',43,0)">line 43</a>)
+    [PHIV,~,~,~] = getVoxelNeighRing(IC,JC,KC,P,PHI);
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 47)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',47,0)">line 47</a>)
+[ T, ttot ] = timingNeighRings(PHI,KX,KY,KZ,true,true);
+} 
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+Computing time...
+{Error using <a href="matlab:helpUtils.errorDocCallback('getVoxelNeighRing', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m', 64)" style="font-weight:bold">getVoxelNeighRing</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m',64,0)">line 64</a>)
+Voxel neighborhood ring exceeds the boundaries. Change central
+coordinate.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('timingNeighRings', '/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m', 43)" style="font-weight:bold">timingNeighRings</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m',43,0)">line 43</a>)
+    [PHIV,~,~,~] = getVoxelNeighRing(IC,JC,KC,P,PHI);
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 47)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',47,0)">line 47</a>)
+[ T, ttot ] = timingNeighRings(PHI,KX,KY,KZ,true,true);
+} 
+median(1:5)
+
+ans =
+
+     3
+
+median(1:7)
+
+ans =
+
+     4
+
+median(1:6)
+
+ans =
+
+   3.500000000000000
+
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+Computing time...
+{Error using <a href="matlab:helpUtils.errorDocCallback('getVoxelNeighRing', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m', 64)" style="font-weight:bold">getVoxelNeighRing</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m',64,0)">line 64</a>)
+Voxel neighborhood ring exceeds the boundaries. Change central
+coordinate.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('timingNeighRings', '/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m', 51)" style="font-weight:bold">timingNeighRings</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m',51,0)">line 51</a>)
+    [PHIV,~,~,~] = getVoxelNeighRing(IC,JC,KC,P,PHI);
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 47)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',47,0)">line 47</a>)
+[ T, ttot ] = timingNeighRings(PHI,KX,KY,KZ,true,true);
+} 
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+Computing time...
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+timingNeighRings
+{Error using <a href="matlab:helpUtils.errorDocCallback('timingNeighRings', '/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m', 19)" style="font-weight:bold">timingNeighRings</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m',19,0)">line 19</a>)
+Missing arguments
+} 
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+Computing time...
+     1
+
+     2
+
+     3
+
+     4
+
+     5
+
+     6
+
+     7
+
+     8
+
+     9
+
+    10
+
+    11
+
+    12
+
+    13
+
+    14
+
+    15
+
+{Error using <a href="matlab:helpUtils.errorDocCallback('getVoxelNeighRing', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m', 64)" style="font-weight:bold">getVoxelNeighRing</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m',64,0)">line 64</a>)
+Voxel neighborhood ring exceeds the boundaries. Change central
+coordinate.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('timingNeighRings', '/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m', 52)" style="font-weight:bold">timingNeighRings</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m',52,0)">line 52</a>)
+    [PHIV,~,~,~] = getVoxelNeighRing(IC,JC,KC,P,PHI);
+
+Error in <a href="matlab:helpUtils.errorDocCallback('extractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m', 47)" style="font-weight:bold">extractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/extractorSPESubdomain.m',47,0)">line 47</a>)
+[ T, ttot ] = timingNeighRings(PHI,KX,KY,KZ,true,true);
+} 
+helpUtils.errorDocCallback('getVoxelNeighRing', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m', 64)
+extractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+Computing time...
+     1
+
+     2
+
+     3
+
+     4
+
+     5
+
+     6
+
+     7
+
+     8
+
+     9
+
+    10
+
+    11
+
+    12
+
+    13
+
+    14
+
+    15
+
+    16
+
+    17
+
+    18
+
+    19
+
+    20
+
+    21
+
+    22
+
+    23
+
+    24
+
+    25
+
+    26
+
+    27
+
+    28
+
+    29
+
+Time file saved to:../dat/subdomain/timesPerRing.dat
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Subscript indices must either be real positive integers or
+logicals.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('logic2subind', '/Users/gustavo/Programs/gibbon/lib/logic2subind.m', 4)" style="font-weight:bold">logic2subind</a> (<a href="matlab: opentoline('/Users/gustavo/Programs/gibbon/lib/logic2subind.m',4,0)">line 4</a>)
+I=I(L); J=J(L); K=K(L);
+
+Error in <a href="matlab:helpUtils.errorDocCallback('binarizeVoxels', '/Users/gustavo/reservoir/extractor_spe/script/binarizeVoxels.m', 5)" style="font-weight:bold">binarizeVoxels</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/binarizeVoxels.m',5,0)">line 5</a>)
+[I,J,K,inds]=logic2subind(VB); % Gibbon's code function
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 44)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',44,0)">line 44</a>)
+[ VB, coords, inds ] = binarizeVoxels( DRTV,drt(3) );
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+{Subscript indices must either be real positive integers or
+logicals.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('logic2subind', '/Users/gustavo/Programs/gibbon/lib/logic2subind.m', 4)" style="font-weight:bold">logic2subind</a> (<a href="matlab: opentoline('/Users/gustavo/Programs/gibbon/lib/logic2subind.m',4,0)">line 4</a>)
+I=I(L); J=J(L); K=K(L);
+
+Error in <a href="matlab:helpUtils.errorDocCallback('binarizeVoxels', '/Users/gustavo/reservoir/extractor_spe/script/binarizeVoxels.m', 5)" style="font-weight:bold">binarizeVoxels</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/binarizeVoxels.m',5,0)">line 5</a>)
+[I,J,K,inds]=logic2subind(VB); % Gibbon's code function
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 44)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',44,0)">line 44</a>)
+[ VB, coords, inds ] = binarizeVoxels( DRTV,drt(3) );
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+VB
+
+VB(:,:,1) =
+
+     0     0     0     0     1
+     0     0     0     0     0
+     0     0     0     1     0
+     0     0     0     1     0
+     0     0     1     1     0
+
+
+VB(:,:,2) =
+
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     1
+
+
+VB(:,:,3) =
+
+     0     1     1     1     1
+     0     0     1     1     0
+     0     0     1     1     1
+     1     1     1     1     1
+     0     0     1     1     0
+
+
+VB(:,:,4) =
+
+     1     0     1     1     0
+     0     1     0     0     1
+     0     1     1     1     1
+     0     1     1     1     0
+     0     1     0     0     0
+
+
+VB(:,:,5) =
+
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+{Subscript indices must either be real positive integers or
+logicals.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('logic2subind', '/Users/gustavo/Programs/gibbon/lib/logic2subind.m', 4)" style="font-weight:bold">logic2subind</a> (<a href="matlab: opentoline('/Users/gustavo/Programs/gibbon/lib/logic2subind.m',4,0)">line 4</a>)
+I=I(L); J=J(L); K=K(L);
+
+Error in <a href="matlab:helpUtils.errorDocCallback('binarizeVoxels', '/Users/gustavo/reservoir/extractor_spe/script/binarizeVoxels.m', 5)" style="font-weight:bold">binarizeVoxels</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/binarizeVoxels.m',5,0)">line 5</a>)
+[I,J,K,inds]=logic2subind(VB); % Gibbon's code function
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 44)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',44,0)">line 44</a>)
+[ VB, coords, inds ] = binarizeVoxels( DRTV,drt(3) );
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+L
+
+L(:,:,1) =
+
+     0     0     0     0     1
+     0     0     0     0     0
+     0     0     0     1     0
+     0     0     0     1     0
+     0     0     1     1     0
+
+
+L(:,:,2) =
+
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     1
+
+
+L(:,:,3) =
+
+     0     1     1     1     1
+     0     0     1     1     0
+     0     0     1     1     1
+     1     1     1     1     1
+     0     0     1     1     0
+
+
+L(:,:,4) =
+
+     1     0     1     1     0
+     0     1     0     0     1
+     0     1     1     1     1
+     0     1     1     1     0
+     0     1     0     0     0
+
+
+L(:,:,5) =
+
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+     0     0     0     0     0
+
+I(L)
+{Subscript indices must either be real positive integers or
+logicals.
+} 
+A=randi(10,[3 3 3]);
+A
+
+A(:,:,1) =
+
+     4     8     1
+     7     1     1
+     2     3     9
+
+
+A(:,:,2) =
+
+     7     1     8
+     4     5     8
+    10     4     2
+
+
+A(:,:,3) =
+
+     5     8     7
+     5     8     7
+     7     3     2
+
+AA = A == 8
+
+AA(:,:,1) =
+
+     0     1     0
+     0     0     0
+     0     0     0
+
+
+AA(:,:,2) =
+
+     0     0     1
+     0     0     1
+     0     0     0
+
+
+AA(:,:,3) =
+
+     0     1     0
+     0     1     0
+     0     0     0
+
+[i,j,k,IND] = logic2subind(AA)
+
+i =
+
+     1
+     1
+     2
+     1
+     2
+
+
+j =
+
+     2
+     3
+     3
+     2
+     2
+
+
+k =
+
+     1
+     2
+     2
+     3
+     3
+
+
+IND =
+
+     4
+    16
+    17
+    22
+    23
+
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+Computing time...
+     1
+
+{Undefined function or variable 'IC'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('timingNeighRings', '/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m', 38)" style="font-weight:bold">timingNeighRings</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m',38,0)">line 38</a>)
+    [PHIV,~,~,~] = getVoxelNeighRing(IC,JC,KC,P,PHI);
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 51)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',51,0)">line 51</a>)
+[ T, ttot ] = timingNeighRings(PHI,KX,KY,KZ,true,true);
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+Computing time...
+     1
+
+{Undefined function or variable 'IC'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('timingNeighRings', '/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m', 38)" style="font-weight:bold">timingNeighRings</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m',38,0)">line 38</a>)
+    [PHIV,~,~,~] = getVoxelNeighRing(IC,JC,KC,P,PHI);
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 51)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',51,0)">line 51</a>)
+[ T, ttot ] = timingNeighRings(PHI,KX,KY,KZ,true,true);
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+Computing time...
+     1
+
+     2
+
+     3
+
+     4
+
+     5
+
+     6
+
+     7
+
+     8
+
+     9
+
+    10
+
+    11
+
+    12
+
+    13
+
+{Operation terminated by user during <a href="matlab:helpUtils.errorDocCallback('getVoxelNeighRing', '/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m', 78)" style="font-weight:bold">getVoxelNeighRing</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/getVoxelNeighRing.m',78,0)">line 78</a>)
+
+
+In <a href="matlab:helpUtils.errorDocCallback('timingNeighRings', '/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m', 38)" style="font-weight:bold">timingNeighRings</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/timingNeighRings.m',38,0)">line 38</a>)
+    [PHIV,~,~,~] = getVoxelNeighRing(IC,JC,KC,P,PHI);
+
+In <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 51)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',51,0)">line 51</a>)
+[ T, ttot ] = timingNeighRings(PHI,KX,KY,KZ,true,true);
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Undefined variable xy.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 60)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',60,0)">line 60</a>)
+X = permute(cat(3, xy(i, :),xy(j, :)), [3 1 2]);
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Index exceeds matrix dimensions.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 62)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',62,0)">line 62</a>)
+plot3(X(:, :, 1), X(:, :, 2), X(:, :, 3))
+} 
+[A, xy] = bucky;
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Index exceeds matrix dimensions.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 60)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',60,0)">line 60</a>)
+X = permute(cat(3, coords(i, :),coords(j, :)), [3 1 2]);
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Index exceeds matrix dimensions.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 61)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',61,0)">line 61</a>)
+X = permute(cat(3, xy(i, :),xy(j, :)), [3 1 2]);
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+{Error using <a href="matlab:helpUtils.errorDocCallback('sparse_adj_matrix')" style="font-weight:bold">sparse_adj_matrix</a>
+Too many output arguments.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 49)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',49,0)">line 49</a>)
+[is, js, ks] = sparse_adj_matrix(sz, 1, inf);
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+N
+
+N = 
+
+    [3x3x3 double]
+    [3x3x3 double]
+    [3x3x3 double]
+
+N{1}
+
+ans(:,:,1) =
+
+    -1    -1    -1
+     0     0     0
+     1     1     1
+
+
+ans(:,:,2) =
+
+    -1    -1    -1
+     0     0     0
+     1     1     1
+
+
+ans(:,:,3) =
+
+    -1    -1    -1
+     0     0     0
+     1     1     1
+
+N{2}
+
+ans(:,:,1) =
+
+    -1     0     1
+    -1     0     1
+    -1     0     1
+
+
+ans(:,:,2) =
+
+    -1     0     1
+    -1     0     1
+    -1     0     1
+
+
+ans(:,:,3) =
+
+    -1     0     1
+    -1     0     1
+    -1     0     1
+
+N{3}
+
+ans(:,:,1) =
+
+    -1    -1    -1
+    -1    -1    -1
+    -1    -1    -1
+
+
+ans(:,:,2) =
+
+     0     0     0
+     0     0     0
+     0     0     0
+
+
+ans(:,:,3) =
+
+     1     1     1
+     1     1     1
+     1     1     1
+
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep; end
+{Error using <a href="matlab:helpUtils.errorDocCallback('triu')" style="font-weight:bold">triu</a>
+First input must be 2D.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('mainExtractorSPESubdomain', '/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m', 53)" style="font-weight:bold">mainExtractorSPESubdomain</a> (<a href="matlab: opentoline('/Users/gustavo/reservoir/extractor_spe/script/mainExtractorSPESubdomain.m',53,0)">line 53</a>)
+[id, jd] = find(triu(DRTV));
+} 
+mainExtractorSPESubdomain
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.
+---------------------------------------------------------
+           SPE WELL DATA EXTRACTOR - SUBDOMAIN           
+---------------------------------------------------------
+ 
+By:    Dr. Gustavo Peixoto de Oliveira
+     M.Sc. Tatiana Araujo Simoes
+       Dr. Moises Dantas dos Santos
+       Dr. Waldir Leite Roque
+ 
+       @Federal University of Paraiba - Brazil
+ 
+S T A R T I N G     P R O G R A M
+Loading files...
+Files loaded.

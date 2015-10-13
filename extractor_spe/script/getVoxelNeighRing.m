@@ -49,9 +49,9 @@ function [FN,VN,FZ,VZ] = getVoxelNeighRing(ic,jc,kc,P,F)
 
 if P <= 0, error('P-ring must be > 0'); end
 
-[I,J,K] = size(F);
+% [I,J,K] = size(F);
 
-vx = (2*P + 1); % voxel radius
+vx = (2*P + 1); % voxel diameter
 
 %{ 
     Check for bounds:
@@ -59,10 +59,10 @@ vx = (2*P + 1); % voxel radius
     that the P-ring doesn't leak out the 
     boundaries    
 %}
-if ( ic < vx     || jc < vx     || kc < vx     || ... 
-     ic > (I-vx) || jc > (J-vx) || kc > (K-vx)  )
-    error('Voxel neighborhood ring exceeds the boundaries. Change central coordinate.')
-end
+% if ( ic < vx     || jc < vx     || kc < vx     || ... 
+%      ic > (I-vx) || jc > (J-vx) || kc > (K-vx)  )
+%     error('Voxel neighborhood ring exceeds the boundaries. Change central coordinate.')
+% end
 
 nvx = vx^3;  % total number of voxels
 vx3 = nthroot(nvx,3);
