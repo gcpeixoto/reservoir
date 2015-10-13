@@ -20,12 +20,10 @@ kzname  = '../mat/KZ.mat';
 
 %% INPUT DATA 
 
-%ic = input('-----> Choose central voxel i coordinate: \n');
-%jc = input('-----> Choose central voxel j coordinate: \n');
-%kc = input('-----> Choose central voxel k coordinate: \n');
-%P  = input('-----> Choose P ring radius: \n');
-
-ic = 10; jc = 10; kc = 10; P = 2;
+ic = input('-----> Choose central voxel i coordinate: \n');
+jc = input('-----> Choose central voxel j coordinate: \n');
+kc = input('-----> Choose central voxel k coordinate: \n');
+P  = input('-----> Choose P ring radius: \n');
 
 %% COMPUTATION
 
@@ -40,29 +38,16 @@ RQIV = 0.0314*sqrt( KXVN./PHIV );
 FZIV = RQIV./PHIVZ;
 DRTV = round( 2*log( FZIV ) + 10.6 );
 
-drt = unique(sort(DRTV(:)));
-
-hold on
-[ VB, coords, inds ] = binarizeVoxels( DRTV,drt(1) );
-X = coords(:,1);
-Y = coords(:,2);
-Z = coords(:,3);
-scatter3(X(:),Y(:),Z(:),'r','fill');
-
-figure
-plot3(X(:),Y(:),Z(:),'b');
-
 %% PLOTTING 
 
 % 3D voxel neighbourhood 
-% plotVoxelNeigh3D(ic,jc,kc,P,DRTV,1.0,zerosPHI);
+plotVoxelNeigh3D(ic,jc,kc,P,DRTV,1.0,zerosPHI);
 
 % plot all DRTs
-% drt = unique(DRTV(:));
-% for i = 1:length(drt)
+drt = unique(DRTV(:));
+for i = 1:length(drt)
      plotVoxelNeighByValue(ic,jc,kc,P,DRTV,drt(1),1.0,'DRT');   
-% end    
+end    
   
-
-%close all
+close all
 diary off
