@@ -1,0 +1,56 @@
+Loading files...
+Files loaded.
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+mainExtractorDRTGraphPath
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+mainExtractorDRTGraphPath
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+a=[0	104	139];
+a/256
+
+ans =
+
+                   0   0.406250000000000   0.542968750000000
+
+mainExtractorDRTGraphPath
+Loading files...
+Files loaded.
+if system_dependent('IsDebugMode')==1, dbcont; end
+Loading files...
+Files loaded.
+Loading files...
+Files loaded.
+Loading files...
+Files loaded.
+Loading files...
+Files loaded.
+Loading files...
+Files loaded.
+Loading files...
+Files loaded.
+Loading files...
+Files loaded.
+Loading files...
+Files loaded.
+Loading files...
+Files loaded.
