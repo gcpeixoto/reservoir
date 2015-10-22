@@ -2,7 +2,7 @@
 
 %% DEFAULTS
 clear all; close all; clc; format long;
-diary('extractor_SPE_subdomain.log');
+diary('../log/extractor_SPE_subdomain.log');
 diary on
 
 setOptions;
