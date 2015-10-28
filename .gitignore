@@ -6,4 +6,6 @@
 *.vtk
 *.RData
 *.eps
+*.fig
+*.log
 

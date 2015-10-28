@@ -16,9 +16,10 @@
 
 %% DEFAULTS
 clear all; close all; clc; format long;
+delete('../log/extractorDRTGraphPath.log');
 diary('../log/extractorDRTGraphPath.log');
 diary on
-profile on 
+%profile on 
 
 setOptions;
 
@@ -47,6 +48,7 @@ if ~isempty( coords )
 end
 
 DRT = round( 2*log( FZI ) + 10.6 );
+save('../mat/DRT_Field.mat','DRT'); % saving
 
 %% REAPING DRTs  
 
@@ -101,8 +103,9 @@ for m = 1:length(drt)
         
     indIJ = [];
     for i = 1:size(coordsDRT,1)
+        fprintf('----> i = %d... \n',size(coordsDRT,1)-i); 
         for j = i:size(coordsDRT,1)
-                             
+                                                            
               if i ~= j % skipping null distance 
                   dist = sqrt( ( coordsDRT(i,1) - coordsDRT(j,1) )^2 + ...
                                ( coordsDRT(i,2) - coordsDRT(j,2) )^2 + ...
@@ -111,14 +114,17 @@ for m = 1:length(drt)
                   % detecting neighbour voxels
                   if dist <= sqrt(3)
                       indIJ = [ indIJ; [ i j ] ];
-                      edgeList = indIJ;
-                      indIJ = [ indIJ; [ j i ] ];
+                      edgeList = indIJ;                       
                   end                  
               end
          end
     end   
+    aux = [ indIJ(:,2) indIJ(:,1) ]; % reverse edges [ j i ]
+    indIJ = [ indIJ; aux ]; % filling
+    
     disp('----> Computing adjacency matrix...');            
-    MDadj = sparse(indIJ(:,1),indIJ(:,2),1); % adjacency matrix
+    % creates adjacency matrix n x n by marking 1 for connected nodes
+    MDadj = sparse( indIJ(:,1),indIJ(:,2),1,size(coordsDRT,1),size(coordsDRT,1) ); 
             
     %{ 
         Finding network components 
@@ -319,6 +325,6 @@ end
 %     end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-profsave(profile('info'),'../log/profile_report')
+%profsave(profile('info'),'../log/profile_report')
 close all
 diary off

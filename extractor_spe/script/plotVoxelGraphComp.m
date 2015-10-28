@@ -23,11 +23,11 @@ xlabel('J');
 ylabel('I');
 zlabel('K');
 
-print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
-        strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
+%print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
+%        strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
     
-saveas(gcf, strcat( '../figs/graphPath/', ...
-        'Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ),'.fig' ) );  
+%saveas(gcf, strcat( '../figs/graphPath/', ...
+%        'Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ),'.fig' ) );  
 
 end
 
