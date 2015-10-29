@@ -259,9 +259,7 @@ for m = 1:length(drt)
                 
     end              
 
-    plotVoxelGraphComp( DRT,...
-                 drtSt.compVoxelInds{1},...
-                 drtSt.value,1 );        
+    %plotVoxelGraphComp( DRT,drtSt.compVoxelInds{1},drtSt.value,1,0.8);        
 
     % saving structure to .mat     
     save( strcat('../mat/DRT_',num2str( drt(m) ),'.mat'),'drtSt'); % saving
