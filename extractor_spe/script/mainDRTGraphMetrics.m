@@ -18,14 +18,13 @@ clear all; close all; clc; format long;
 delete('../log/DRTgraphMetrics.log');
 diary('../log/DRTgraphMetrics.log');
 diary on
-%profile on 
 
 disp('---- E X E C U T I N G   G R A P H   M E T R I C S ----');
 
 aux = load('../mat/DRT_Field.mat');
 DRT = aux.DRT;
 
-matFiles = dir('../mat/DRT_*.mat'); % 4,16,17,18,19,20,21,22,23,24,25,26,27
+matFiles = dir('../mat/DRT_*.mat'); 
 numfiles = length(matFiles);
 
 % azim, elev angles for 3D plot (by test)
@@ -153,8 +152,6 @@ for k = 1:numfiles
     
 end % DRT loop
 
-
-%profsave(profile('info'),'../log/profile_report')
 %close all
 diary off
 disp('---- N O R M A L   T E R M I N A T I O N ----');
