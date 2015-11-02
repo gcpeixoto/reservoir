@@ -43,7 +43,10 @@ numfiles = length(matFiles);
 for k = 1:numfiles 
     
     st = load( strcat('../mat/',matFiles(k).name) ); 
-    val = st.drtSt.value;    
+    val = st.drtSt.value; 
+    if val < 8 && val > 14
+        continue
+    end
     fprintf('----> Sweeping DRT: %d... \n',val);
     
     avc = st.drtSt.allVoxelCoords;
@@ -87,7 +90,8 @@ for k = 1:numfiles
                 MadjComp = subgraph( Madj, v );           % component's adjacency matrix
 
                 %------------------ centrality metrics 
-
+                fprintf('----> Computing metrics for %d nodes... \n', size(v,1) );
+                
                 % @MIT Strat. Eng. 
                 [deg,~,~] = degrees(MadjComp);            % degree centrality
                 clns = closeness(MadjComp);               % closeness centrality  
@@ -98,11 +102,13 @@ for k = 1:numfiles
                 iC = find( clns == maxC );                % network closer nodes
                 ivC = avc( v(iC),: );                     % global voxel coordinates
                                 
+                disp('----> Storing structures...');
                 % store good components         
                 metrics.idComp{count} = idComp;                
                 metrics.degreeCentrality{count} = deg;
                 metrics.closenessCentrality{count} = clns;
-                metrics.betweenessCentrality{count} = betw;
+                metrics.betweenessCentrality{count} = betw;                
+                metrics.centerVoxelCoords{count} = ivC;
                                 
                 linregr.idComp{count} = idComp;
                 linregr.Pearson{count} = R*R;

@@ -19,7 +19,6 @@ clear all; close all; clc; format long;
 delete('../log/extractorDRTGraphPath.log');
 diary('../log/extractorDRTGraphPath.log');
 diary on
-%profile on 
 
 setOptions;
 
@@ -267,62 +266,10 @@ for m = 1:length(drt)
     
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PLOTTING
-%     pltfield = false; % plot DRT = drt for all the field?
-%     % only graph and paths with more than 'nvpath' voxels
-%     nvpath = 2;
-%     if size(path,1) > nvpath
-%         
-%         %------------- GRAPH PATH
-%         figure     
-%         path1 = path(:,1);
-%         path2 = path(:,2);
-%         path3 = path(:,3);        
-%         plot3(path2,path1,path3,'LineWidth',1.5, 'Color',[0 .4 0.54], ...
-%             'Marker','o', 'MarkerSize',2.5, ...
-%             'MarkerFaceColor','k', 'MarkerEdgeColor','k')
-% 
-%         axis equal, axis vis3d, grid on, view(3)
-%         title( strcat( 'Path - DRT ', num2str( drt(m) ) ) );
-%         xlabel('J');
-%         ylabel('I');
-%         zlabel('K');
-%         pt1 = sort( unique( path1 ) );
-%         pt2 = sort( unique( path2 ) );
-%         pt3 = sort( unique( path3 ) );
-%         pt1 = num2str(pt1); pt2 = num2str(pt2); pt3 = num2str(pt3);
-%         pt1 = cellstr(pt1); pt2 = cellstr(pt2); pt3 = cellstr(pt3);
-%         
-%         set( gca,'XTick',min(path2):1:max(path2),'XTickLabel',pt2, ...
-%                  'YTick',min(path1):1:max(path1),'YTickLabel',pt1, ... 
-%                  'ZTick',min(path3):1:max(path3),'ZTickLabel',pt3 );
-%         
-%         print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
-%                 strcat('Path_DRT_',num2str( drt(m) ) ) ) );   
-%         
-%             
-%         %------------- VOXEL PATH
-%         figure 
-%         [ ~, ~, indz ] = maskVoxels( DRT,drt(m) );
-%         [F,V,C]=ind2patch(idpath,DRT,'v');
-%         
-%         hold on;
-%         patch('Faces',F,'Vertices',V,'FaceColor','flat','CData',C,'EdgeColor','k','FaceAlpha',0.8);
-%         axis equal; view(3); axis tight; axis vis3d; grid off;        
-%         title( strcat( 'Path - DRT ', num2str( drt(m) ) ) );
-%         xlabel('J');
-%         ylabel('I');
-%         zlabel('K');        
-%         
-%         print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
-%                 strcat('Voxel_Path_DRT_',num2str( drt(m) ) ) ) ); 
-%             
-%         if pltfield == true
-%             plotDRTField(DRT,val);
-%         end
-%     end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% export to VTK
+id = find(DRT(:) == -Inf); % eliminating -Inf
+DRT(id) = 0.0;
+saveVtkCellCentered(DRT,'DRT_3D','DRT_Voxel','DRT_Point');
 
-%profsave(profile('info'),'../log/profile_report')
 close all
 diary off
