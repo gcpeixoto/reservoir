@@ -1,11 +1,10 @@
 function plotDRTField( DRT, val )
-%{
-    PLOTDRTFIELD - plot the voxels with
-                   DRT=val for all the reservoir
-    input: 
-        DRT: 3D array of DRT values
-        val: DRT value chosen
-%}
+%   PLOTDRTFIELD plots the voxels with
+%                DRT=val for all the reservoir
+%     input: 
+%         DRT: 3D array of DRT values
+%         val: DRT value chosen
+        
 
 
 figure 

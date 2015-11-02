@@ -1,18 +1,17 @@
 function [ T, ttot ] = timingNeighRings( PHI,KX,KY,KZ,plt,fig,varargin )
-%{
-    timingNeighRings - Computes the time spent to perform the 
-                       operations required to get the DRT values 
-                       by considering all the allowed ring radii 
-                       for the porosity, permeability 3D arrays
-
-    input: 
-       PHI,KX,KY,KZ: 3D array matrices for porosity, permeability
-                plt: boolean to enable plot
-                fig: boolean to enable figure print
-    output: 
-                  T: vector of times per ring
-               ttot: total time spent
-%}
+% TIMINGNEIGHRINGS  computes the time spent to perform the 
+%                   operations required to get the DRT values 
+%                   by considering all the allowed ring radii 
+%                   for the porosity, permeability 3D arrays
+% 
+%     input: 
+%        PHI,KX,KY,KZ: 3D array matrices for porosity, permeability
+%                 plt: boolean to enable plot
+%                 fig: boolean to enable figure print
+%     output: 
+%                   T: vector of times per ring
+%                ttot: total time spent
+%
 
 
 if nargin < 4 

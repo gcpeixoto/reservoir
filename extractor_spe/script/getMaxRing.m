@@ -1,16 +1,15 @@
 function [PMax,IC,JC,KC] = getMaxRing( I,J,K )
-%{ 
-    getMaxRing - gets the maximum ring value 
-                 allowed for the grid
-    
-    input: 
-        I,J,K: grid bounds        
-
-    output:      
-         PMax: maximum ring value allowed for the grid
-     IC,JC,KC: central seed coords
-        
-%}
+%     GETMAXRING  gets the maximum ring value 
+%                  allowed for the grid
+%     
+%     input: 
+%         I,J,K: grid bounds        
+% 
+%     output:      
+%          PMax: maximum ring value allowed for the grid
+%      IC,JC,KC: central seed coords
+%
+%
 
 %{
     seed location

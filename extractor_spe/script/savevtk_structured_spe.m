@@ -1,15 +1,14 @@
 function savevtk_structured_spe( i, j, k, phi, kx, ky, kz, name )
-%{ 
-    SAVEVTK_STRUCTURED_SPE Plot structured mesh of the full reservoir.
-    input:     
-        i,j,k: reservoir sizes (length, width, depth)
-      phi: 3D array for porosity 
-     k(.): 3D array for permeabilities 
-     name: file name
-    
-    output: 
-        .vtk file
-%}   
+%  SAVEVTK_STRUCTURED_SPE Plot structured mesh of the full reservoir.
+%     input:     
+%         i,j,k: reservoir sizes (length, width, depth)
+%       phi: 3D array for porosity 
+%      k(.): 3D array for permeabilities 
+%      name: file name
+%     
+%     output: 
+%         .vtk file
+   
 
 if ( size(phi,1) > 1 && size(phi,2) > 1 && size(phi,3) > 1 && ...
      size(kx,1)  > 1 && size(kx,2)  > 1 && size(kx,3)  > 1 && ... 

@@ -1,14 +1,14 @@
 function plotVoxelNeigh2DLayer( ic,jc,layer,DRTV)
-%{
-    input: 
-        ic,jc,kc: central voxel coordinate
-            DRTV: 3D array with DRT values for each voxel making up the
-            neighborhood
-           layer: neighborhood's layer             
-    
+%  PLOTVOXELNEIGH2DLAYER plots the 8-neighbourhood
+%     input: 
+%         ic,jc,kc: central voxel coordinate
+%             DRTV: 3D array with DRT values for each voxel making up the
+%             neighborhood
+%            layer: neighborhood's layer             
+%     
+% 
+%     Gustavo Peixoto, Oct 8 2015, @UFPB
 
-    Gustavo Peixoto, Oct 8 2015, @UFPB
-%}
 
 if layer < 1 || layer > size(DRTV,3)
     error('Layer value out of range.'); 

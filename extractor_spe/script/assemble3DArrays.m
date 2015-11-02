@@ -1,49 +1,51 @@
 function [ PHI,KX,KY,KZ ] = assemble3DArrays( phi,per,I,J,K )
-%{
-    ASSEMBLE3DARRAYS Mounts 3D arrays for porosity and permeability
+%     ASSEMBLE3DARRAYS Mounts 3D arrays for porosity and permeability
+% 
+%     input:
+%         phi: reservoir's porosity matrix in CMG output
+%         per: reservoir's permeability matrix in CMG output
+%       I,J,K: reservoir's length, width, depth (voxel-based)
+% 
+%     output:
+%         PHI, KX, KY, KZ: 3D arrays storing the reservoir's 
+%         scalar field data.
+% 
+%     - REMARK
+%     
+%     This strategy is, at first glance, ONLY applicable to 
+%     .dat files that follow the output format of CMG software. 
+%     The current version is tested for the SPE Project 2 
+%     data arrangement. It will might be useful for other 
+%     files as well, but further investigation is required. 
+% 
+%     What is done here: the original files are 'unrolled' 
+%     and rearranged into 3D arrays (I,J,K), thus allowing a 
+%     better accessibility of the information. In the end, the reservoir
+%     is a 3D structure with { PHI, KX, KY, KZ }(I,J,K) evaluated 
+%     in the fourth dimension. 
+% 
+%     RESERVOIR SCHEME
+%     ================
+% 
+%           K
+%          /
+%         /____________
+%        /|            |
+%       /_|__________  |
+%      /|            | |
+%     /_|__________  |_|      <------ (i,j,k = K): bottom layer
+%     |            | |
+%     |            |_|        <------ (i,j,k = 2): depth layer
+%     |            | 
+%     |____________|___ J     <------ (i,j,k = 1): reservoir's surface
+%     |    
+%     |
+%      I
+%
+% -----------------------
+% Dr. Gustavo Peixoto
 
-    input:
-        phi: reservoir's porosity matrix in CMG output
-        per: reservoir's permeability matrix in CMG output
-      I,J,K: reservoir's length, width, depth (voxel-based)
 
-    output:
-        PHI, KX, KY, KZ: 3D arrays storing the reservoir's 
-        scalar field data.
-
-    - REMARK
-    
-    This strategy is, at first glance, ONLY applicable to 
-    .dat files that follow the output format of CMG software. 
-    The current version is tested for the SPE Project 2 
-    data arrangement. It will might be useful for other 
-    files as well, but further investigation is required. 
-
-    What is done here: the original files are 'unrolled' 
-    and rearranged into 3D arrays (I,J,K), thus allowing a 
-    better accessibility of the information. In the end, the reservoir
-    is a 3D structure with { PHI, KX, KY, KZ }(I,J,K) evaluated 
-    in the fourth dimension. 
-
-    RESERVOIR SCHEME
-    ================
-
-          K
-         /
-        /____________
-       /|            |
-      /_|__________  |
-     /|            | |
-    /_|__________  |_|      <------ (i,j,k = K): bottom layer
-    |            | |
-    |            |_|        <------ (i,j,k = 2): depth layer
-    |            | 
-    |____________|___ J     <------ (i,j,k = 1): reservoir's surface
-    |    
-    |
-     I
-
-%}
 
 %----------------- POROSITY
 disp('Rearranging data arrays...');

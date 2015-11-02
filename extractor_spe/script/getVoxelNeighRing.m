@@ -1,51 +1,50 @@
 function [FN,VN,FZ,VZ] = getVoxelNeighRing(ic,jc,kc,P,F)
-%{ 
-    getVoxelNeighRing - gets the voxel neighborhood 
-    VN(ic,jc,kc;P) by a ring of P of the 3D array
-    F. The neighborhood is a cube growing with 
-   (2*P+1)^3 voxels
-    
-    input: 
-      ic,jc,kc: central voxel coordinate
-             P: voxel ring radius
-             F: scalar field values (3D array)
-    output: 
-        VN: voxel global indices
-        FN: scalar field evaluated in the neighborhood
-        FZ: voxel global indices whose entries are zero (array)
-        VZ: voxel local indices whose entries are zero (neighborhood)
+%   GETVOXELSNEIGHRING  gets the voxel neighborhood 
+%         VN(ic,jc,kc;P) by a ring of P of the 3D array
+%         F. The neighborhood is a cube growing with 
+%         (2*P+1)^3 voxels
+%     
+%     input: 
+%       ic,jc,kc: central voxel coordinate
+%              P: voxel ring radius
+%              F: scalar field values (3D array)
+%     output: 
+%         VN: voxel global indices
+%         FN: scalar field evaluated in the neighborhood
+%         FZ: voxel global indices whose entries are zero (array)
+%         VZ: voxel local indices whose entries are zero (neighborhood)
+% 
+%     SCHEME
+%     ======
+% 
+%     - Layer k = kc
+%         
+%                  jc+P
+%                  .
+%                  .
+%                  .
+%                           ____
+%                          |    |
+%                          |    |
+%                 ____ ____|____|
+%                |    |    |    |
+%    ic-P <---   | c  |c+1 |c+2 | ---> ic+P
+%                |____|____|____|
+%                |    |    |    |
+%                | c-1|    |    |
+%            ____|____|____|____| 
+%           |    |    |    |    |
+%           |    | c-2|    |    |  
+%           |____|____|____|____|
+%                 
+%                  .               for k = kc-P:kc+P
+%                  .
+%                  .
+%                  jc - P                                       
+%      
+%   Dr. Gustavo Peixoto, 8 Oct 2015, @UFPB
 
-    SCHEME
-    ======
 
-    - Layer k = kc
-        
-                 jc+P
-                 .
-                 .
-                 .
-                          ____
-                         |    |
-                         |    |
-                ____ ____|____|
-               |    |    |    |
-   ic-P <---   | c  |c+1 |c+2 | ---> ic+P
-               |____|____|____|
-               |    |    |    |
-               | c-1|    |    |
-           ____|____|____|____| 
-          |    |    |    |    |
-          |    | c-2|    |    |  
-          |____|____|____|____|
-                
-                 .               for k = kc-P:kc+P
-                 .
-                 .
-                 jc - P                                       
-     
-  Gustavo Peixoto, 8 Oct 2015, @UFPB
-
-%}
 
 if P <= 0, error('P-ring must be > 0'); end
 

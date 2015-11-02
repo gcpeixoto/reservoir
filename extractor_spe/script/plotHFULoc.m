@@ -1,5 +1,5 @@
 function plotHFULoc( DRT, Kd, I, J )
-%plotHFULoc Plot HFU locations per well based on the best DRTs
+% PLOTHFULOC Plot HFU locations per well based on the best DRTs
 
 figure
 xlabel(' $ DRT $','interpreter','latex');  

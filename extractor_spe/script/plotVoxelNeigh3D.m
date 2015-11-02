@@ -1,23 +1,23 @@
 function plotVoxelNeigh3D(ic,jc,kc,P,PV,alpha,ZL,flag,tname,varargin)
-%{
-    input: 
-        ic,jc,kc: central voxel coordinate
-               P: ring radius  
-              PV: 3D array with property values 
-                for each voxel making up the neighborhood
-              ZL: indices of PV whose entries are zero
-           alpha: face color transparency   
-            flag: plot only voxels with zero entry?
-                  'nonzero': yes; (default: no) 
-           tname: character title name
-                    
+%  PLOTVOXELNEIGH3D plots the 26-neighborhood
+%     input: 
+%         ic,jc,kc: central voxel coordinate
+%                P: ring radius  
+%               PV: 3D array with property values 
+%                 for each voxel making up the neighborhood
+%               ZL: indices of PV whose entries are zero
+%            alpha: face color transparency   
+%             flag: plot only voxels with zero entry?
+%                   'nonzero': yes; (default: no) 
+%            tname: character title name
+%                     
+% 
+%     required: 
+%         Function 'ind2Patch' from Gibbon code.
+% 
+%  Gustavo Peixoto
 
-    required: 
-        Function 'ind2Patch' from Gibbon code.
 
- Gustavo Peixoto
-
-%}
 
 if nargin < 6
     error('Missing arguments.');

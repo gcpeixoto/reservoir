@@ -1,19 +1,18 @@
 function plotVoxelGraphComp( DRTMat, inds, val, idComp, alpha, cmap, p, vw, varargin)
-%{
-    PLOTVOXELGRAPHCOMP - plot the voxels with
-                   DRT=val for all the reservoir
-    input: 
-        DRTMat: 3D array of DRT values
-          inds: indices of the voxels that form 
-                a graph component (isolated or connected)
-           val: DRT value 
-        idComp: indice of the graph component (integer that refer to 
-                a unique isolated node or a family of connected nodes)
-         alpha: opacity
-          cmap: colormap      
-             p: print/save flag
-            vw: vector [ az el ] for view            
-%}
+%  PLOTVOXELGRAPHCOMP plots the voxels with
+%                     DRT=val for all the reservoir
+%     input: 
+%         DRTMat: 3D array of DRT values
+%           inds: indices of the voxels that form 
+%                 a graph component (isolated or connected)
+%            val: DRT value 
+%         idComp: indice of the graph component (integer that refer to 
+%                 a unique isolated node or a family of connected nodes)
+%          alpha: opacity
+%           cmap: colormap      
+%              p: print/save flag
+%             vw: vector [ az el ] for view            
+
 
 if nargin == 5 % 
     cmap = 'default';

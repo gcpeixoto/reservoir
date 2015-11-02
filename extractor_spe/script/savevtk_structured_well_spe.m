@@ -1,17 +1,16 @@
 function savevtk_structured_well_spe( count, I, J, phi, kx, ky, kz, name )
-%{ 
-    SAVEVTK_STRUCTURED_WELL_SPE Plot each well as a column of voxels.
-    input: 
-    count: well counter
-        I: well surface coordinate
-        J: well surface coordinate
-      phi: 3D array for porosity 
-     k(.): 3D array for permeabilities 
-     name: file name
-    
-    output: 
-        .vtk file
-%}   
+%  SAVEVTK_STRUCTURED_WELL_SPE Plot each well as a column of voxels.
+%     input: 
+%     count: well counter
+%         I: well surface coordinate
+%         J: well surface coordinate
+%       phi: 3D array for porosity 
+%      k(.): 3D array for permeabilities 
+%      name: file name
+%     
+%     output: 
+%         .vtk file
+   
 
 i = 2; % fixed voxel sizes
 j = 2;

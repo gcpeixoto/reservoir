@@ -1,20 +1,20 @@
 %% extractorSPE.m - Data extractor for oil wells
-%{     
-    authors: Dr. Gustavo Peixoto de Oliveira
-             Msc. Tatiana Araujo Simoes 
-             Dr. Moises Dantas dos Santos
-             Dr. Waldir Leite Roque
-             @Federal University of Paraiba
-    mail: gustavo.oliveira@ci.ufpb.br    
-    date: Sep 21st, 2015        
-            
-    input: 
-        .dat files for porosity and permeability according to SPE data 
-    
-    output:
-        several data for analysis and visualization
-    
-%}
+%      
+%     authors: Dr. Gustavo Peixoto de Oliveira
+%              Msc. Tatiana Araujo Simoes 
+%              Dr. Moises Dantas dos Santos
+%              Dr. Waldir Leite Roque
+%              @Federal University of Paraiba
+%     mail: gustavo.oliveira@ci.ufpb.br    
+%     date: Sep 21st, 2015        
+%             
+%     input: 
+%         .dat files for porosity and permeability according to SPE data 
+%     
+%     output:
+%         several data for analysis and visualization
+%     
+
 %% INPUT SETUP
 
 activateLog;    % log

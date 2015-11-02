@@ -1,8 +1,6 @@
 function printWellTable( ia, ja, N )
-%{
-    PRINTWELLTABLE print table with well's surface coordinates.
+% PRINTWELLTABLE print table with well's surface coordinates.
 
-%}
 disp('');
 disp('---- Well Table ----');
 fprintf('Well\t I\t J\t\n'); % header

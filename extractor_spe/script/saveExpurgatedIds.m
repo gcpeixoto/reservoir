@@ -1,10 +1,9 @@
 function saveExpurgatedIds( idvec, i, j )
-%{
-    SAVEEXPURGATEDIDS Write to file the reservoir's 
-     depth z-coordinates where a value of 0 was
-     found for porosity. These values are removed in the analysis
-     and this file is only intended to identify such points.
-%}
+% SAVEEXPURGATEDIDS write to file the reservoir's 
+%      depth z-coordinates where a value of 0 was
+%      found for porosity. These values are removed in the analysis
+%      and this file is only intended to identify such points.
+
 
 for k=1:length(idvec)    
     aux = [ i j idvec(k) ];

@@ -1,7 +1,6 @@
 function [ PHI,KX,KY,KZ ] = loadMatFiles( phiname,kxname,kyname,kzname )
-%{
-    Load .mat files
-%}
+%   LOADMATFILES loads .mat files
+%
 
 disp('Loading files...');
 
