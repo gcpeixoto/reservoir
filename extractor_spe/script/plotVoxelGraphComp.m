@@ -47,9 +47,7 @@ switch p
             strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
         saveas(gcf, strcat( '../figs/graphPath/', ...
         'Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ),'.fig' ) );
-    
-    otherwise
-        warning('plotVoxelGraphComp: No plot created.');
+        
 end
 
 end

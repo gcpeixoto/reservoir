@@ -44,9 +44,7 @@ for k = 1:numfiles
     
     st = load( strcat('../mat/',matFiles(k).name) ); 
     val = st.drtSt.value; 
-    if val < 8 && val > 14
-        continue
-    end
+    
     fprintf('----> Sweeping DRT: %d... \n',val);
     
     avc = st.drtSt.allVoxelCoords;
@@ -109,6 +107,7 @@ for k = 1:numfiles
                 metrics.closenessCentrality{count} = clns;
                 metrics.betweenessCentrality{count} = betw;                
                 metrics.centerVoxelCoords{count} = ivC;
+                metrics.adjMatrix{count} = MadjComp;
                                 
                 linregr.idComp{count} = idComp;
                 linregr.Pearson{count} = R*R;
