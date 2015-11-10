@@ -1,4 +1,0 @@
-Loading files...
-Files loaded.
-if system_dependent('IsDebugMode')==1, dbquit; end
-mainDRTGraphMetrics

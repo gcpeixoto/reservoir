@@ -1,4 +1,4 @@
-function [FN,VN] = getVoxelRegion(ic,jc,kc,P,F)
+function [FN,VN,IND] = getVoxelRegion(ic,jc,kc,P,F)
 %   GETVOXELREGION gets the voxel neighbourhood - 
 %         region of interest - VN(ic,jc,kc;P) by a ring 
 %         of P = [Pi, Pj, Pk] of the 3D array F. The neighborhood is a 
@@ -12,7 +12,8 @@ function [FN,VN] = getVoxelRegion(ic,jc,kc,P,F)
 %     output: 
 %
 %         FN: scalar field evaluated in the voxel
-%         VN: voxel global indices
+%         VN: voxel global coordinates
+%        IND: voxel global linear indices
 %
 % 
 %     SCHEME
@@ -112,6 +113,12 @@ FN = zeros( size(VN,1), 1 );
 % scalar field
 for i = 1:size(VN,1);
     FN(i) = F( VN(i,1), VN(i,2), VN(i,3) );                
+end
+
+% voxel global linear indices
+IND = zeros( size(VN,1),1 );
+for i = 1:size(VN,1)        
+    IND(i) = sub2ind( size(F),VN(i,1),VN(i,2),VN(i,3) );
 end
 
 end

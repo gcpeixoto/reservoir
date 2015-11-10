@@ -30,6 +30,7 @@ title( strcat( 'Voxel Component: ',num2str(idComp),'- DRT ', num2str( val ) ) );
 xlabel('J');
 ylabel('I');
 zlabel('K');
+set(gca,'ZDir','reverse'); % depth pointing downward
 colormap(cmap);
 
 switch p
