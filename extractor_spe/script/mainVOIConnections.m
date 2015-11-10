@@ -1,4 +1,4 @@
-%% mainVOIWellConnections
+%% mainVOIConnections
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -35,6 +35,7 @@ drtWell = unique ( reshape(drtWell, [size(DRT,3) 1]) );
 % patch('Faces',F,'Vertices',V,'FaceColor','flat','CData',C,'EdgeColor','k','FaceAlpha',0.5);
 % axis equal; view(3); axis tight; axis vis3d; grid off;
 % set(gca,'ZDir','reverse');
+% print('-dpdf','-r0','../figs/graphpath/VOI');
 %%%%
 
 % defining structure fields
@@ -119,7 +120,7 @@ for m = 1:length( drtVOI.value )
     end    
     
     save( strcat('../mat/DRT_VOI_',num2str( drtVOI.value{m} ),...
-                          'Well_I',num2str( ic ),... 
+                          '_Well_I',num2str( ic ),... 
                               '_J',num2str( jc ),'.mat'),'VOISt'); % saving
     disp('----> .mat file saved.')
 end

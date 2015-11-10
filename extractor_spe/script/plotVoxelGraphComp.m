@@ -1,4 +1,4 @@
-function plotVoxelGraphComp( DRTMat, inds, val, idComp, alpha, cmap, p, vw, varargin)
+function plotVoxelGraphComp( DRTMat, inds, val, idComp, alpha, cmap, p, vw, fmt, varargin)
 %  PLOTVOXELGRAPHCOMP plots the voxels with
 %                     DRT=val for all the reservoir
 %     input: 
@@ -18,6 +18,7 @@ if nargin == 5 %
     cmap = 'default';
     p = 'n';
     vw = [ - 37.5 30 ]; % default    
+    fmt = 'pdf'; 
 end
 
 figure 
@@ -36,16 +37,27 @@ colormap(cmap);
 switch p
     
     case 'p'
+        if strcmp(fmt,'eps') 
         print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
             strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
-    
+        elseif strcmp(fmt,'pdf') 
+        print('-dpdf','-r0',fullfile( '../figs/graphPath', ...
+            strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
+        end
+        
     case 's'
         saveas(gcf, strcat( '../figs/graphPath/', ...
         'Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ),'.fig' ) );  
     
     case 'ps'
+        if strcmp(fmt,'eps') 
         print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
             strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
+        elseif strcmp(fmt,'pdf') 
+            print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
+            strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
+        end
+        
         saveas(gcf, strcat( '../figs/graphPath/', ...
         'Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ),'.fig' ) );
         
