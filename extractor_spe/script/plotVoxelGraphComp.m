@@ -38,11 +38,11 @@ switch p
     
     case 'p'
         if strcmp(fmt,'eps') 
-        print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
-            strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
+        print('-depsc2','-r0',strcat( '../figs/graphPath/', ...
+            'Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ),'.eps' ) );  
         elseif strcmp(fmt,'pdf') 
-        print('-dpdf','-r0',fullfile( '../figs/graphPath', ...
-            strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
+        print('-dpdf','-r0',strcat( '../figs/graphPath/', ...
+            'Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ),'.pdf' ) );  
         end
         
     case 's'
@@ -51,11 +51,11 @@ switch p
     
     case 'ps'
         if strcmp(fmt,'eps') 
-        print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
-            strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
+        print('-depsc2','-r0',strcat( '../figs/graphPath/', ...
+            'Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ),'.eps' ) );  
         elseif strcmp(fmt,'pdf') 
-            print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
-            strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
+            print('-depsc2','-r0',fullfile( '../figs/graphPath/', ...
+            strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ),'.pdf' ) ) );  
         end
         
         saveas(gcf, strcat( '../figs/graphPath/', ...

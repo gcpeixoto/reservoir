@@ -3,7 +3,7 @@
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
 %   mail: gustavo.oliveira@ci.ufpb.br    
-%   date: Oct 27st, 2015      
+%   date: Oct 27th, 2015      
 %
 %   Description: gets the network and connected components
 %                of the whole field for a given DRT and plots 

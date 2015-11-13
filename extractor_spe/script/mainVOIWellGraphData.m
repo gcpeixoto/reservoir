@@ -36,7 +36,7 @@ for k = 1:numfiles
     
     % biggest component 
     cvi = st.VOISt.compVoxelInds{1};         
-    plotVoxelGraphComp( DRT,cvi,val,1,0.8,jet,'p', [-37.5,30]);                    
+    plotVoxelGraphComp( DRT,cvi,val,1,0.1,gray,'p', [-37.5,30],'pdf');                    
     
     
 end
