@@ -3,10 +3,10 @@
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
 %   mail: gustavo.oliveira@ci.ufpb.br    
-%   date: Oct 27st, 2015        
+%   date: Oct 27th, 2015        
 %             
-%   description: compute metrics and regression analysis for the reservoir 
-%                networks based on the DRT field value.
+%   description: compute metrics and regression analysis for the whole 
+%                field's networks based on the DRT field value.
 %
 %   requirements:
 %        - pre-computed .mat files
@@ -26,20 +26,8 @@ DRT = aux.DRT;
 
 matFiles = dir('../mat/DRT_*.mat'); 
 numfiles = length(matFiles);
-
-% azim, elev angles for 3D plot (by test)
-% az = -37.5*ones(1,numfiles);
-% el = 30*ones(1,numfiles);
-% DRT 4;
-% az(4) = - 142;
-% el(4) = 22;
-
-% Marker{Face,Edge}Color (scatter)
-%mfcolor = [0.5 0.1 0.3];
-%mecolor = [0.1 0.1 1.0];
     
 % sweeping DRTs
-
 for k = 1:numfiles 
     
     st = load( strcat('../mat/',matFiles(k).name) ); 
@@ -73,32 +61,43 @@ for k = 1:numfiles
             % linear regression criteria            
             if ( m >= 0.95 && m <= 1.05 ) && ( R*R >= 0.9 && R*R <= 1.0 )
                           
-                fprintf('----> Good component found: %d. Computing data... \n',idComp);
+                fprintf('----> Good component found: %d. Computing subgraph... \n',idComp);
                 count = count + 1; % component counter
                                                 
                 %------------------ subgraph (connected component network)
                 % finding vertices in the big adjacency matrix to set up the 
                 % adjacency matrix for the connected component and, then, 
-                % set the subgraph of the network
+                % set the subgraph of the network                
                 v = [];
                 for e = 1:size(cvc,1)
                     id = strmatch( cvc(e,:), avc );       %#ok<*MATCH2>
                     v = [ v; id ];                        % global indices
-                end    
-                MadjComp = subgraph( Madj, v );           % component's adjacency matrix
-
+                end                    
+                MadjComp = subgraph( Madj, v );           % component's adjacency matrix                
+                                                
                 %------------------ centrality metrics 
                 fprintf('----> Computing metrics for %d nodes... \n', size(v,1) );
                 
-                % @MIT Strat. Eng. 
-                [deg,~,~] = degrees(MadjComp);            % degree centrality
-                clns = closeness(MadjComp);               % closeness centrality  
-                betw = node_betweenness_slow(MadjComp);   % betweeness centrality
-                betw = betw';
+                % SNAP interface
+                edfile = saveAdjEdges(MadjComp);  
+                ! ./../cpp/graphMetrics
+                [nodeID,deg,clns,betw] = getMetricsData(edfile);                
+                
+                % -------- @MIT Strat. Eng. VERY SLOW!
+                % disp('----> Computing degree centrality...');
+                % [deg,~,~] = degrees(MadjComp);            % degree centrality                
+                 
+                % disp('----> Computing closeness centrality...');
+                % clns = closeness(MadjComp);               % closeness centrality   
+                 
+                % disp('----> Computing betweeness centrality...');
+                % betw = node_betweenness_slow(MadjComp);   % betweeness centrality                
+                % betw = betw';
                 
                 maxC = max(clns);                         % max closeness = min farness
                 iC = find( clns == maxC );                % network closer nodes
-                ivC = avc( v(iC),: );                     % global voxel coordinates
+                iCnode = nodeID(iC);                      % getting node id (not always == iC)
+                ivC = avc( v(iCnode),: );                 % global voxel coordinates
                                 
                 disp('----> Storing structures...');
                 % store good components         
@@ -115,30 +114,7 @@ for k = 1:numfiles
                 linregr.offset{count} = b;
                 linregr.logPHIZ{count} = logPHIZ;
                 linregr.logRQI{count} = logRQI;
-                
-                %%%%%%%%%%%%%%%%%%%%%%%% plotting to highlight closeness points         
-                %     figure      
-                %     [F,V,C]=ind2patch(cvi,DRT,'v');    
-                %     hold on;
-                %     patch('Faces',F,'Vertices',V,'FaceColor','flat','CData',C,'EdgeColor','k','FaceAlpha',0.1);
-                %     axis equal; view( [ az(val), el(val) ] ); %view(3);     
-                %     axis tight; axis vis3d; grid off;            
-                %     
-                %     title( strcat( 'Voxel Component: ',num2str(idComp),'- DRT ', num2str( val ) ) );
-                %     xlabel('J');
-                %     ylabel('I');
-                %     zlabel('K');
-                %     colormap('gray');
-                % 
-                %     % scatter plot     
-                %     hold on        
-                %     scatter3( ivC(:,2), ivC(:,1), ivC(:,3), 300, 'fill', 'MarkerFaceColor', mfcolor,...
-                %                                                         'MarkerEdgeColor', mecolor ) ;             
-
-                %     print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
-                %           strcat('Voxel_Graph_Component',num2str(idComp),'_DRT_',num2str( val ) ) ) );  
-                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                
+                                                
             end % regression loop
             
         end % components with > 10 loop
@@ -154,6 +130,8 @@ for k = 1:numfiles
     else
         disp('----> No components found.');
     end
+    
+    clear metrics linregr
     
 end % DRT loop
 

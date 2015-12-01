@@ -3,10 +3,11 @@
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
 %   mail: gustavo.oliveira@ci.ufpb.br    
-%   date: Oct 27st, 2015      
+%   date: Oct 27th, 2015      
 %
 %   Description: gets the network and connected components
-%                for a VOI around a given seed voxel 
+%                for a VOI around a given seed voxel and 
+%                stores data structure
 %
 
 clear all; close all; clc;
@@ -64,8 +65,7 @@ end
 
 
 % loop to get VOI graph data 
-for m = 1:length( drtVOI.value )
-    
+for m = 1:length( drtVOI.value )       
     fprintf('----> m = %d... \n',m); 
     
     coordsDRT = drtVOI.voxels{m};
@@ -123,6 +123,8 @@ for m = 1:length( drtVOI.value )
                           '_Well_I',num2str( ic ),... 
                               '_J',num2str( jc ),'.mat'),'VOISt'); % saving
     disp('----> .mat file saved.')
+    
+    clear VOISt
 end
 
 

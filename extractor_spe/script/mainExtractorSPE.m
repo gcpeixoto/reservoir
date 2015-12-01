@@ -1,4 +1,4 @@
-%% extractorSPE.m - Data extractor for oil wells
+%% mainExtractorSPE.m - Data extractor for oil wells
 %      
 %     authors: Dr. Gustavo Peixoto de Oliveira
 %              Msc. Tatiana Araujo Simoes 
