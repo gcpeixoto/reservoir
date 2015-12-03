@@ -11,4 +11,7 @@
 *.html
 *.jpg
 *.tif
+*.o
+graphFlow
+graphMetrics
 

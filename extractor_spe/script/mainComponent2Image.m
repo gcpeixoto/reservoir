@@ -12,9 +12,9 @@ DRT = 0*DRT;
 
 ic = 45; jc = 68; % well
 P = [14,14]; % VOI rings
-drt = 13;
+drt = 14;
 
-aux = load('../mat/DRT_VOI_13_Well_I45_J68.mat');
+aux = load('../mat/DRT_VOI_14_Well_I45_J68.mat');
 VOI = aux.VOISt;
 
 % saving dir
@@ -23,7 +23,7 @@ svdir = '../img/';
 % image format 
 fmt = '.jpg';
 
-j = 2;
+j = 3; % component number
 ind = VOI.compVoxelInds{j};
 DRT(ind) = 1;
 vol = DRT( ic-P(1):ic+P(1), jc-P(2):jc+P(2), : );

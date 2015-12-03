@@ -1,43 +1,39 @@
-# ======================================
-# Template C++11 Makefile
-# author: Gustavo Peixoto de Oliveira
-# e-mail: gustavo.oliveira@uerj.br
-# ======================================
 
 # compiler
-CXX = clang++
+#CXX = clang++
+CXX = clang-omp++
 #CXX = g++
 
 # flags
-CXXFLAGS = -g -std=c++11 -Wall 
-LFLAGS = -lm
+CXXFLAGS = -g -std=c++98 -Wall
+LFLAGS = 
 
 # directories
 BASE_DIR = .
 
 # inclusions
 INCLUDES += -I${BASE_DIR} 
-INCLUDES += -I${MATLAB_DIR}/extern/include
+#INCLUDES += -I${MATLAB_DIR}/extern/include
 INCLUDES += -I${SNAP_DIR}/snap-core
 INCLUDES += -I${SNAP_DIR}/snap-exp
 INCLUDES += -I${SNAP_DIR}/snap-adv
 INCLUDES += -I${SNAP_DIR}/glib-core
 INCLUDES += -I${SNAP_DIR}/glib-adv
 
-UNAME = $(shell uname -s)
-
+# Matlab .mex files
+#UNAME = $(shell uname -s)
 # Linux
-ifeq ($(findstring Linux,${UNAME})),Linux)
- CINCLUDE = -I$(MATLAB_DIR)/extern/include -I. -shared
- EXT = mexa64
-endif
+#ifeq ($(findstring Linux,${UNAME})),Linux)
+# CINCLUDE = -I$(MATLAB_DIR)/extern/include -I. -shared
+# EXT = mexa64
+#endif
 
 # Mac OS
-ifeq ($(findstring Darwin,${UNAME})),Darwin)
- CINCLUDE = -L$(MATLAB_DIR)/bin/maci64 -I. -shared -lmx -lmex -lmat
- EXT = mexmaci64
- CXXFLAGS += -std=c++11
-endif
+#ifeq ($(findstring Darwin,${UNAME})),Darwin)
+# CINCLUDE = -L$(MATLAB_DIR)/bin/maci64 -I. -shared -lmx -lmex -lmat
+# EXT = mexmaci64
+# CXXFLAGS += -std=c++11
+#endif
 
 # get list of all .cpp files in the current dir
 SRC = $(wildcard ${BASE_DIR}/*.cpp) 
@@ -49,9 +45,9 @@ OBJ2 = $(SNAP_DIR)/snap-core/Snap.o
 
 #=== rules 
 
-all: graphMetrics
+all: graphMetrics graphFlow
 	@echo \
-	 Executable compiled.
+	 Executables compiled.
 
 # === right
 %.o: %.cpp ${SRCH}
@@ -59,6 +55,8 @@ all: graphMetrics
 
 # executables
 graphMetrics: ./main/mainGraphMetrics.o ${OBJ} ${OBJ2}
+	${CXX} ${OBJ} ${OBJ2} ${CXXFLAGS} ${LFLAGS} $< -o $@
+graphFlow: ./main/mainGraphFlow.o ${OBJ} ${OBJ2}
 	${CXX} ${OBJ} ${OBJ2} ${CXXFLAGS} ${LFLAGS} $< -o $@
 
 #=== phony variables
@@ -70,7 +68,7 @@ graphMetrics: ./main/mainGraphMetrics.o ${OBJ} ${OBJ2}
 .PHONY: deepclean
 deepclean:
 	@echo
-	@rm -f exec
+	@rm -f all
 	@rm -f ${OBJ} 
 	@find ${BASE_DIR} -name "?*.o" -exec rm {} \; 
 

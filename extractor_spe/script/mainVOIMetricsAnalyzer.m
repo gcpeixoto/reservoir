@@ -22,7 +22,7 @@ val = VOISt.value;
 
 ncomp = numel(metrics.idComp);      % number of components
 
-for n = 1:2%ncomp    
+for n = 1:3%ncomp    
     
     compVoxelInds{n} = VOISt.compVoxelInds{ metrics.idComp{n} };        
     compVoxelCoords{n} = VOISt.compVoxelCoords{ metrics.idComp{n} };    
