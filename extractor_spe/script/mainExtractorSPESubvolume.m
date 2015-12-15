@@ -41,7 +41,7 @@ DRTV = round( 2*log( FZIV ) + 10.6 );
 %% PLOTTING 
 
 % 3D voxel neighbourhood 
-plotVoxelNeigh3D(ic,jc,kc,P,DRTV,1.0,zerosPHI);
+plotVoxelNeigh3D(ic,jc,kc,P,0*PHIVZ,1.0);
 
 % plot all DRTs
 drt = unique(DRTV(:));

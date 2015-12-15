@@ -87,7 +87,7 @@ for k = 1:numfiles
                 % plotVoxelGraphComp( DRT,cvi,val,idcomp,0.8);                
                
                 itc(idcomp) = idcomp;
-                ntc(idcomp) = length(st.VOISt.compVoxelCoords{idcomp});
+                ntc(idcomp) = size(st.VOISt.compVoxelCoords{idcomp},1);
             end
             
         associatedComps{i,1} =  Z(i); % z-depth
@@ -126,7 +126,7 @@ for k = 1:numfiles
         % --- plots the component 
         for q = 1:lim;            
             cvi = st.VOISt.compVoxelInds{ cplot(q) };         
-            plotVoxelGraphComp( DRT,cvi,val,cplot(q),0.6,jet,'p', [-37.5,30],'pdf');                        
+            plotVoxelGraphComp( DRT,cvi,val,cplot(q),0.6,jet,'p', [-37.5,30],'eps');                        
         end
         
     end   

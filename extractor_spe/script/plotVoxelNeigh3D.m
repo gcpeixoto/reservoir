@@ -21,7 +21,7 @@ function plotVoxelNeigh3D(ic,jc,kc,P,PV,alpha,ZL,flag,tname,varargin)
 
 if nargin < 6
     error('Missing arguments.');
-elseif nargin > 6 && nargin < 9
+elseif nargin >= 6 && nargin < 9
     ZL = [];
     flag = '';
     tname = '';

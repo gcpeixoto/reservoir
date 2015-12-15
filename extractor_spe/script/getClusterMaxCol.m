@@ -46,7 +46,7 @@ end
 row = find( LEND(:,3) == max(LEND(:,3) ) );     % wells of maximum filling
 Ws = [LEND(row,1),LEND(row,2)];                 % well surface coordinates
 
-lws = length(Ws);                % number of wells              
+lws = size(Ws,1);                % number of wells              
 nvcol = cell(lws,1);            % number of voxels per highly filled wells 
 cvcol = cell(lws,1);             % voxel coords per highly filled wells 
 kk = km:kM;
