@@ -32,7 +32,7 @@ qntGreaterComps = zeros(numfiles,1);
 bigNetworkCoords = cell(numfiles,1);
 
 % DRT to choose 
-drtValue = 14;
+drtValue = 15;
 
 % well location
 wI = 45; wJ = 68;
@@ -138,4 +138,4 @@ end
 M = [ drtval, qntComps, qntGreaterComps ];
 
 % Max col
-[ilims,jlims,klims,leni,lenj,lenk,Ws,nvcol,cvcol] = getClusterMaxCol(C3,DRT,drtValue);
+[ilims,jlims,klims,leni,lenj,lenk,Ws,nvcol,cvcol] = getClusterMaxCol(C2,DRT,drtValue);
