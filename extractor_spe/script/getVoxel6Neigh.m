@@ -1,6 +1,22 @@
-function [ vc6n, vi6n, phi6n, kn6n ] = getVoxel6Neigh( vc, vList, viList, PHI, KN )
-%UNTITLED8 Summary of this function goes here
-%   Detailed explanation goes here
+function [ vc6n, vi6n, f6n ] = getVoxel6Neigh( vc, vList, viList, F)
+% GETVOXEL6NEIGH gets the voxel coordinates and indices in a list
+%                of voxels (cluster) according to a 6-neighbourhood 
+%                criterion 
+%
+%   input:
+%          vc: seed-voxel coordinates
+%       vList: cluster voxel's coordinates
+%      viList: cluster voxel's indices
+%           F: 3D array of the scalar field
+%
+%   output:
+%        vc6n: 6-neighbour voxel coordinates
+%        vi6n: 6-neighbour voxel indices
+%         f6n: 6-neighbour field value
+%
+%
+% 6-neighbour array: [+x,-x,+y,-y,+z,-z]'
+%
 
 if numel(vc) ~= 3 || size(vList,2) ~= 3 || size(viList,2) ~= 1
     error('Check arguments.')
@@ -8,19 +24,18 @@ end
 
 vc6n = zeros(6,3);
 vi6n = zeros(6,1);
-phi6n = zeros(6,1);
-kn6n = zeros(6,1);
+f6n = zeros(6,1);
 
+% sweep cluster
 for  i = 1:length(vList)
     
-    % +x
+    % +x 
     aux = [ vc(1)+1, vc(2), vc(3) ];
     ind = strmatch( aux, vList );
     if ~isempty(ind)
         vc6n(1,:) = aux;        
         vi6n(1) = ind;
-        phi6n(1) = PHI(ind);
-        kn6n(1) = KN(ind);
+        f6n(1) = F(ind);        
     end
     
     % -x
@@ -29,8 +44,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(2,:) = aux;        
         vi6n(2) = ind;
-        phi6n(2) = PHI(ind);
-        kn6n(2) = KN(ind);
+        f6n(2) = F(ind);        
     end
     
     % +y
@@ -39,8 +53,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(3,:) = aux;        
         vi6n(3) = ind;
-        phi6n(3) = PHI(ind);
-        kn6n(3) = KN(ind);
+        f6n(3) = F(ind);        
     end
     
     % -y
@@ -49,8 +62,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(4,:) = aux;        
         vi6n(4) = ind;
-        phi6n(4) = PHI(ind);
-        kn6n(4) = KN(ind);
+        f6n(4) = F(ind);        
     end
     
     % +z
@@ -59,8 +71,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(5,:) = aux;        
         vi6n(5) = ind;
-        phi6n(5) = PHI(ind);
-        kn6n(5) = KN(ind);
+        f6n(5) = F(ind);        
     end
     
     % -z
@@ -69,8 +80,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(6,:) = aux;        
         vi6n(6) = ind;
-        phi6n(6) = PHI(ind);
-        kn6n(6) = KN(ind);
+        f6n(6) = F(ind);        
     end
     
 end

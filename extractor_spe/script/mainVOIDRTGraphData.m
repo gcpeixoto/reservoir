@@ -32,7 +32,7 @@ qntGreaterComps = zeros(numfiles,1);
 bigNetworkCoords = cell(numfiles,1);
 
 % DRT to choose 
-drtValue = 15;
+drtValue = 9;
 
 % well location
 wI = 45; wJ = 68;
@@ -126,7 +126,7 @@ for k = 1:numfiles
         % --- plots the component 
         for q = 1:lim;            
             cvi = st.VOISt.compVoxelInds{ cplot(q) };         
-            plotVoxelGraphComp( DRT,cvi,val,cplot(q),0.6,jet,'p', [-37.5,30],'eps');                        
+            plotVoxelGraphComp( DRT,cvi,val,cplot(q),0.6,bone,'p', [-37.5,30],'eps');                        
         end
         
     end   

@@ -1,35 +1,38 @@
 %% mainVOIMetricsAnalyzer
-
+%   authors: Dr. Gustavo Peixoto de Oliveira
+%            Dr. Waldir Leite Roque
+%            @Federal University of Paraiba
+%   mail: gustavo.oliveira@ci.ufpb.br    
+%   date: Jan 13th, 2016        
+%             
+%   description: finds points of minimum and maximum centralities, plots 
+%                the fields and export data to files
 
 clear all; close all; clc; format long;
 set(0,'DefaultAxesFontSize',18);  
 %% 
 
-% DRT
-aux = load('../mat/DRT_Field.mat');
-DRT = aux.DRT;
+wellfile = 'Well_I45_J68';
 
-aux = load('../mat/PHI.mat');
-PHI = aux.PHI;
-
-wellfile = '_Well_I45_J68';
-
-drtVal = '7'; % DRT to get
+drtVal = '13'; % DRT to get
 
 % metrics data structure
 aux = load( strcat('../mat/VOI_DRT_',drtVal,'_MetricsData_.mat') );
 metrics = aux.metrics;
 
+aux = load( strcat('../mat/VOI_DRT_',drtVal,'_LinRegrData_.mat') );
+linregr = aux.linregr;
+
 % DRT data structure
-aux = load( strcat('../mat/DRT_VOI_',drtVal,wellfile,'.mat') );
+aux = load( strcat('../mat/DRT_VOI_',drtVal,'_',wellfile,'.mat') );
 VOISt = aux.VOISt;
 val = VOISt.value;
 
 ncomp = numel(metrics.idComp);      % number of components
 
-nc = 3;
-%nc = ncomp;
-sumcomp = 0; % total number of voxels for the current DRT (nc components)
+nc = 1;
+%nc = ncomp; % check error above comp 17!
+%sumcomp = 0; % total number of voxels for the current DRT (nc components)
 for n = 1:nc
     
     compVoxelInds{n} = VOISt.compVoxelInds{ metrics.idComp{n} };        
@@ -73,7 +76,7 @@ for n = 1:nc
     cvcminclo{n} = compVoxelCoords{n}(iminclo{n},:);
     degminclo{n} = degree{n}(iminclo{n});
                 
-    sumcomp = sumcomp + VOISt.compNNodes{n};
+    %sumcomp = sumcomp + VOISt.compNNodes{n};
     
     % farthest voxels
     [D2CFar,CVCFar,ilims,jlims,klims] = getDists2Point(compVoxelCoords{n},cvcmaxclo,1);    
@@ -83,15 +86,53 @@ for n = 1:nc
     compJLims{n} = jlims;
     compKLims{n} = klims;
        
-    plotMetricField(compVoxelCoords{n},closeness{n},'clo',n,val);
-    hold on
-    % highlight farthest 
-    scatter3(CVCFar(:,2),CVCFar(:,1),CVCFar(:,3),300,'k');
-    
+    plotMetricField(compVoxelCoords{n},closeness{n},'clo',n,val,CVCFar);        
     %plotMetricField(compVoxelCoords{n},betweeness{n},'bet',n,val);
-    %plotMetricField(compVoxelCoords{n},degree{n},'deg',n,val);    
+    %plotMetricField(compVoxelCoords{n},degree{n},'deg',n,val);  
     
     
-    
+    % writing to file
+    fname = strcat('DRT_',num2str(val),'_Info_Cluster_',num2str(n));            
             
+    % centralities
+    hdr = {'x','y','z','b','c','d'};    
+    A = [ compVoxelCoords{n}(:,1),...
+          compVoxelCoords{n}(:,2),...
+          compVoxelCoords{n}(:,3),...
+          betweeness{n},...
+          closeness{n},...
+          degree{n} ];                        
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),hdr,'delimiter',',');
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),A,'-append','delimiter',',','precision','%g');                        
+    
+    % max closeness point
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'P','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),cvcmaxclo{n}(1,:),'-append','delimiter',',');                    
+    
+    % min closeness point
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'Q','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),cvcminclo{n}(1,:),'-append','delimiter',',');
+    
+    % farthest points
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'X','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),CVCFar,'-append','delimiter',',','precision','%d');                    
+          
+    % distances
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'D','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),D2CFar,'-append','delimiter',',','precision','%d');                    
+    
+    % limits
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'I','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),ilims,'-append','delimiter',',','precision','%d');                    
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'J','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),jlims,'-append','delimiter',',','precision','%d');                    
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'K','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),klims,'-append','delimiter',',','precision','%d');                    
+    
+    % Pearson, slope
+    hdr = {'s','R'};
+    a = [ linregr.slope{n},linregr.Pearson{n} ];
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),hdr,'-append','roffset',1,'delimiter',',');
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),a,'-append','delimiter',',','precision','%g');                        
+               
 end

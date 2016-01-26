@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
   double NetEKTimeSum = 0;
   int NumWins = 0;
   Try
-  const TStr InFNm = Env.GetIfArgPrefixStr("-i:", "", "Input file");
+  const TStr InFNm = Env.GetIfArgPrefixStr("-i:", "../tmp/capacity.txt", "Input file");
   const int Iters = Env.GetIfArgPrefixInt("-n:", 10, "Number of runs per thread");
   const int Threads = Env.GetIfArgPrefixInt("-t:", 4, "Number of threads");
   printf("Integer Flow Test\n");
@@ -64,9 +64,9 @@ int main(int argc, char* argv[]) {
   // If the input file is a text file, use the following to load the network and save as binary
   PNEANet Net;
   int MaxEdgeCap = BuildCapacityNetwork(InFNm, Net);
-  // const TStr OutFNm = Env.GetIfArgPrefixStr("-o:", "", "Output file");
-  // TFOut OutFile(OutFNm);
-  // Net->Save(OutFile);
+  const TStr OutFNm = Env.GetIfArgPrefixStr("-o:", "../tmp/flow.txt", "Output file");
+  TFOut OutFile(OutFNm);
+  Net->Save(OutFile);
   // --- calculate flows
   printf("PNEANet Nodes: %d, Edges: %d\n\n", Net->GetNodes(), Net->GetEdges());
   #pragma omp parallel for reduction(+:NetEKTimeSum,NetPRTimeSum,NumWins) schedule(static, 1)
