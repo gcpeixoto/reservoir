@@ -12,26 +12,30 @@ clear all; close all; clc; format long;
 set(0,'DefaultAxesFontSize',18);  
 %% 
 
-wellfile = 'Well_I45_J68';
+% well
+ic = 26; jc = 120;
 
-drtVal = '13'; % DRT to get
+wellfile = strcat( 'Well_I',num2str(ic),'_J',num2str(jc) );
+dbase = strcat( '../mat/',wellfile,'/' );
+
+drtVal = '16'; % DRT to get
 
 % metrics data structure
-aux = load( strcat('../mat/VOI_DRT_',drtVal,'_MetricsData_.mat') );
+aux = load( strcat(dbase,'VOI_DRT_',drtVal,'_MetricsData.mat') );
 metrics = aux.metrics;
 
-aux = load( strcat('../mat/VOI_DRT_',drtVal,'_LinRegrData_.mat') );
+aux = load( strcat(dbase,'VOI_DRT_',drtVal,'_LinRegrData.mat') );
 linregr = aux.linregr;
 
 % DRT data structure
-aux = load( strcat('../mat/DRT_VOI_',drtVal,'_',wellfile,'.mat') );
+aux = load( strcat(dbase,'VOI_DRT_',drtVal,'_',wellfile,'.mat') );
 VOISt = aux.VOISt;
 val = VOISt.value;
 
 ncomp = numel(metrics.idComp);      % number of components
 
-nc = 1;
-%nc = ncomp; % check error above comp 17!
+nc = 5;
+% nc = ncomp; % check error above comp 17 for (45,68), (26,120)!
 %sumcomp = 0; % total number of voxels for the current DRT (nc components)
 for n = 1:nc
     

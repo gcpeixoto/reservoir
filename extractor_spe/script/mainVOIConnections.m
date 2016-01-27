@@ -11,20 +11,23 @@
 %
 
 clear all; close all; clc;
+splshScreenVOIConn;
 
 %%
 
 % load DRT matrix
-aux = load('../mat/DRT_Field.mat');
-DRT = aux.DRT;
-id = find(DRT(:) == -Inf); % eliminating -Inf
-DRT(id) = 0.0;
+DRT = replaceInfDRT('../mat/DRT_Field.mat');
 
-ic = 45; jc = 68; kc = 1; % seed voxel
+ic = 26; jc = 120; kc = 1; % seed voxel
 P = [14,14,84]; % VOI rings
+
+% create dir
+wname = strcat('Well_I',num2str(ic),'_J',num2str(jc)); 
+mkdir('../mat/', wname ); 
+dirp = strcat('../mat/', wname,'/'); 
  
 % DRT values over the well
-drtWell = DRT( ic, jc,:); 
+drtWell = DRT(ic,jc,:); 
 drtWell = unique ( reshape(drtWell, [size(DRT,3) 1]) );
 
 % get VOI
@@ -74,7 +77,7 @@ for m = 1:length( drtVOI.value )
     disp('----> Computing distances...');        
     indIJ = [];
     for i = 1:size(coordsDRT,1)
-        fprintf('----> i = %d... \n',size(coordsDRT,1)-i); 
+        %fprintf('----> i = %d... \n',size(coordsDRT,1)-i); 
         for j = i:size(coordsDRT,1)
                                                             
               if i ~= j % skipping null distance 
@@ -117,11 +120,11 @@ for m = 1:length( drtVOI.value )
         VOISt.compVoxelInds{idcomp} = indz( members{idcomp} );        
         VOISt.compNNodes{idcomp} = compSizes(idcomp);          
         
-    end    
+    end
     
-    save( strcat('../mat/DRT_VOI_',num2str( drtVOI.value{m} ),...
-                          '_Well_I',num2str( ic ),... 
-                              '_J',num2str( jc ),'.mat'),'VOISt'); % saving
+    % save .mat file
+    save( strcat(dirp,'VOI_DRT_',num2str( drtVOI.value{m} ),'_',...
+                          wname,'.mat'),'VOISt');
     disp('----> .mat file saved.')
     
     clear VOISt

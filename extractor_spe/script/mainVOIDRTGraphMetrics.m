@@ -19,7 +19,7 @@ delete('../log/VOIDRTgraphMetrics.log');
 diary('../log/VOIDRTgraphMetrics.log');
 diary on
 
-disp('---- E X E C U T I N G   V O I  G R A P H   M E T R I C S ----');
+splshScreenVOIGraphMetrics;
 
 %% LOAD FILES
 
@@ -30,14 +30,18 @@ PHIZ = aux.PHIZ;
 aux = load('../mat/RQI_Field.mat');
 RQI = aux.RQI;
 
-matFiles = dir('../mat/DRT_VOI_*.mat'); 
+% well 
+ic = 26; jc = 120;
+
+dbase = strcat( '../mat/Well_I',num2str(ic),'_J',num2str(jc),'/' );
+matFiles = dir( strcat(dbase,'VOI_DRT*.mat') ); 
 numfiles = length(matFiles);
     
 % sweeping DRTs
 
 for k = 1:numfiles 
     
-    st = load( strcat('../mat/',matFiles(k).name) ); 
+    st = load( strcat(dbase,matFiles(k).name) ); 
     val = st.VOISt.value; 
     
     fprintf('----> Sweeping DRT: %d... \n',val);
@@ -129,10 +133,10 @@ for k = 1:numfiles
     end % components loop
     
     if count ~= 0 % saving structure to .mat, if any 
-        save( strcat('../mat/VOI_DRT_',num2str( val ),'_MetricsData_','.mat'),'metrics');
+        save( strcat(dbase,'VOI_DRT_',num2str( val ),'_MetricsData','.mat'),'metrics');
         disp('----> metrics .mat file saved.')
 
-        save( strcat('../mat/VOI_DRT_',num2str( val ),'_LinRegrData_','.mat'),'linregr'); 
+        save( strcat(dbase,'VOI_DRT_',num2str( val ),'_LinRegrData','.mat'),'linregr'); 
         disp('----> regression .mat file saved.')
     else
         disp('----> No components found.');

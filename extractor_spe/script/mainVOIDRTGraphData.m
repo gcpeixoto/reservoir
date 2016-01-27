@@ -1,4 +1,4 @@
-%% mainDRTVOIGraphData
+%% mainVOIDRTGraphData
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -9,18 +9,19 @@
 %                network based on the DRT field value and stores
 %                data structures.
 
-clear all; close all; clc; 
-set(0,'DefaultAxesFontSize',18);          
+clear all; close all; clc;      
+splshScreenVOIGraphData;
 
 %% 
 % load DRT matrix
-aux = load('../mat/DRT_Field.mat');
-DRT = aux.DRT;
-id = find(DRT(:) == -Inf); % eliminating -Inf
-DRT(id) = 0.0;
+DRT = replaceInfDRT('../mat/DRT_Field.mat');
 
+% well
+ic = 26; jc = 120;
+ 
 % directory
-matFiles = dir('../mat/DRT_VOI*.mat'); 
+dbase = strcat( '../mat/Well_I',num2str(ic),'_J',num2str(jc),'/' );
+matFiles = dir( strcat(dbase,'VOI_DRT_*_Well*','.mat') ); 
 numfiles = length(matFiles);
 
 % statistics
@@ -32,13 +33,10 @@ qntGreaterComps = zeros(numfiles,1);
 bigNetworkCoords = cell(numfiles,1);
 
 % DRT to choose 
-drtValue = 9;
-
-% well location
-wI = 45; wJ = 68;
+drtValue = 7;
 
 % DRT values over the well
-drtWell = DRT( wI, wJ,:); 
+drtWell = DRT( ic, jc,:); 
 drtWell = reshape(drtWell, [size(DRT,3) 1]);
 Z = find(drtWell == drtValue);
 
@@ -47,7 +45,7 @@ associatedComps = cell( length(Z),2);
 lateralCompVoxels = cell(length(Z),2);
 
 for k = 1:numfiles
-    st = load( strcat('../mat/',matFiles(k).name) ); 
+    st = load( strcat(dbase,matFiles(k).name) ); 
     val = st.VOISt.value;     
     drtval(k) = val;
             
@@ -60,7 +58,7 @@ for k = 1:numfiles
         
         for i = 1:length(Z)
             
-            vxBase = [ wI, wJ, Z(i) ]; % voxel at the well
+            vxBase = [ ic, jc, Z(i) ]; % voxel at the well
 
             idCompsToPush = []; % components to associate
             

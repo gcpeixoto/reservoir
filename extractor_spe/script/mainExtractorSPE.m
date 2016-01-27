@@ -514,6 +514,16 @@ Format of CSV file
     
 %}
 if csv        
+    
+    % file header used in the loop
+    head = {'i,'; 'j,'; 'k,'; 'phi_e,';            ...
+           'kx,'; 'ky,'; 'kz,'; 'kn,'; 'phiz,';    ...
+           'RQI,'; 'FZI,'; 'DRT,';'MFZI,';'MDRT,';'FZI*,'; ...
+           'LogPhiz,'; 'LogRQI'}; 
+    head = head';
+    txt=sprintf('%s\t',head{:});
+    txt(end)='';
+    
     csvname = 'well_I';        
     i = 1;
     while i <= N    
@@ -521,14 +531,12 @@ if csv
                 wMat{i,5} wMat{i,6} wMat{i,7} wMat{i,8} ... 
                 wMat{i,9} wMat{i,10} wMat{i,11} wMat{i,12} ...
                 wMat{i,13} wMat{i,14} wMat{i,15} wMat{i,16} wMat{i,17} ];
-        fprintf('Exporting CSV file for well %d... \n',i);  
-        fname = fullfile( '../csv/', strcat(csvname,num2str( ia(i) ),'_J', num2str( ja(i) ),'.csv' ) );
-        csvwrite(fname, aux);
         
-        % TODO
-        %head = cellstr( ['i     '; 'j     '; 'k     '; 'phi_e '; 'kx    '; 'ky    '; 'kz    '; 'kn    '; 'phiz  '; 'RQI   '; 'FZI   '; 'DRT   '; 'MFZI  '; 'MDRT  '; 'FZI*  '; 'logPhiz'; 'logRQI'] ); 
-        %head = head';
-        %csvwrite_with_headers(fname,head,aux); % complaining about cellstr.
+        fprintf('Exporting CSV file for well %d... \n',i);  
+        fname = fullfile( '../csv/', strcat(csvname,num2str( ia(i) ),'_J', num2str( ja(i) ),'.csv' ) );        
+        dlmwrite(fname,txt,'');
+        dlmwrite(fname,aux,'-append');
+                
         i = i + 1;
     end
 end
@@ -591,7 +599,7 @@ end
 %% Histogram, Regression Analysis and related CSV files
 
 if hist
-
+        
     hname = 'HistogramDRTs';
     regname = 'Regression_I';
     nfreq = 3; % number of DRT frequencies to analyze in regression 
@@ -653,13 +661,33 @@ if hist
                 fprintf('Exporting CSV file of logs/depth data for well(%d,%d); DRT %d... \n', ia(i), ja(i), drt(j) );  
                 fname = fullfile( '../csv/', strcat(regname,num2str( ia(i) ),'_J', num2str( ja(i) ),'_DRT_',num2str( drt(j) ),'_LogsDepth','.csv' ) );
                 auxmat = [ dataDRT{j,1} dataDRT{j,2} dataDRT{j,3} ];
-                csvwrite(fname, auxmat );                                
+                                
+                % header
+                head = {'LogPhiz,';'LogRQI,';'z'}; 
+                head = head';
+                txt = sprintf('%s\t',head{:}); 
+                txt(end) = '';                
+                dlmwrite(fname,txt,'');                                
+                dlmwrite(fname,auxmat,'-append');                                
 
                 % csv file: fit data
                 fprintf('Exporting CSV file of regression fit data for well(%d,%d); DRT %d... \n', ia(i), ja(i), drt(j) );  
                 fname = fullfile( '../csv/', strcat(regname,num2str( ia(i) ),'_J', num2str( ja(i) ),'_DRT_',num2str( drt(j) ),'_FitData','.csv' ) );
-                aux = [ dataDRT{j,4} dataDRT{j,5} dataDRT{j,6} ];
-                csvwrite(fname, aux );
+                
+                % REMARK: rj value from regression() above is computed by Matlab 
+                %         as it is. To have R-squared (R^2) value 
+                %         (Pearson correlation), we should save rj*rj, i.e.
+                %         ----> dataDRT{j,4}*dataDRT{j,4}
+                %
+                aux = [ dataDRT{j,4}*dataDRT{j,4} dataDRT{j,5} dataDRT{j,6} ];
+                
+                % header
+                head = {'R^2,';'slope,';'offset'}; 
+                head = head';
+                txt = sprintf('%s\t',head{:}); 
+                txt(end) = '';                
+                dlmwrite(fname,txt,'');                                
+                dlmwrite(fname,aux,'-append');                                
                 
                 % print to file    
                 print('-dpdf','-r0',fullfile( '../figs/', ...

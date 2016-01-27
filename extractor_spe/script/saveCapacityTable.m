@@ -6,7 +6,7 @@ function [ outfile ] = saveCapacityTable( Madj, c )
 %              c: capacity values
 
 % temporary edge file
-outfile = '../tmp/capacity.txt';
+outfile = '../tmp/capacity';
 
 if issparse(Madj)
     [i,j] = find(Madj == 1);

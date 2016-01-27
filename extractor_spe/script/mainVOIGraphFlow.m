@@ -4,7 +4,6 @@ clear all; close all; clc;
 
 %% Load properties 
 
-
 aux = load('../mat/PHI.mat');
 PHI = aux.PHI;
 aux = load('../mat/KN_Field.mat');
@@ -17,15 +16,25 @@ base_dir = '../txt/press_45_68/';
 pFiles = dir( strcat(base_dir,'*.txt') ); 
 numfiles = length(pFiles);
 
+% well
+ic = 45; jc = 68;
+
+wellfile = strcat( 'Well_I',num2str(ic),'_J',num2str(jc) );
+dbase = strcat( '../mat/',wellfile,'/' );
+
 drtVal = '7'; % DRT to get
 
 % metrics data structure
-aux = load( strcat('../mat/VOI_DRT_',drtVal,'_MetricsData_.mat') );
-metrics = aux.metrics; % components with more than 10 voxels
+aux = load( strcat(dbase,'VOI_DRT_',drtVal,'_MetricsData.mat') );
+metrics = aux.metrics;
+
+aux = load( strcat(dbase,'VOI_DRT_',drtVal,'_LinRegrData.mat') );
+linregr = aux.linregr;
 
 % DRT data structure
-aux = load( strcat('../mat/DRT_VOI_',drtVal,'_Well_I45_J68.mat') );
-VOISt = aux.VOISt; % all components
+aux = load( strcat(dbase,'VOI_DRT_',drtVal,'_',wellfile,'.mat') );
+VOISt = aux.VOISt;
+val = VOISt.value;
 
 
 % loop over pressure files
@@ -33,7 +42,7 @@ for k = 1:numfiles
     
     % REMARK: remove the 2 first lines out from the CMG .txt file
     
-    % load files
+    % load files    
     press = load( strcat(base_dir,pFiles(k).name),'-ascii' );     
     P = assemble3DPressure( press,I,J,K );    
     %plot3DField(I,J,K,P,'Pressure Field');
@@ -72,20 +81,25 @@ for k = 1:numfiles
         end % close cluster's element loop  
         
         % ----- creating SNAP interface                
-        capfile = saveCapacityTable(MadjFlowP, P(cvi) );  
+        %capfile = saveCapacityTable(MadjFlowP, P(cvi) );  
         %! ./../cpp/graphFlow
+        %! python ../py/flow.py
+        %commandStr = 'python ../py/flow.py';
+        %[status, commandOut] = system(commandStr);
         %[nodeID,deg,clns,betw] = getMetricsData(capfile);                
         
         % print table of flow network
         
 
         % save .vtk 
-        fname = strcat( 'pressure_time',num2str(k-1) );    
-        %saveVtkCellCentered( P, fname, 'pressure_cell', 'pressure_point');    
+        [~,fname,~] = fileparts( strcat(base_dir,pFiles(k).name) );        
+        saveVtkCellCentered( P, fname, 'pressure_cell', 'pressure_point');    
 
         % save .mat
-        %save( strcat('../mat/',fname,'.mat') );
-
+        save( strcat('../mat/',fname,'.mat'), 'P' );                
+        
+        clear P;
+        
     end
 
 
