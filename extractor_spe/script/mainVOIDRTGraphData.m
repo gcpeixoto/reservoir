@@ -17,7 +17,7 @@ splshScreenVOIGraphData;
 DRT = replaceInfDRT('../mat/DRT_Field.mat');
 
 % well
-ic = 26; jc = 120;
+ic = 26; jc =120;
  
 % directory
 dbase = strcat( '../mat/Well_I',num2str(ic),'_J',num2str(jc),'/' );
@@ -124,7 +124,7 @@ for k = 1:numfiles
         % --- plots the component 
         for q = 1:lim;            
             cvi = st.VOISt.compVoxelInds{ cplot(q) };         
-            plotVoxelGraphComp( DRT,cvi,val,cplot(q),0.6,bone,'p', [-37.5,30],'eps');                        
+            plotVoxelGraphComp( DRT,cvi,val,cplot(q),0.6,bone,'p', [-37.5,30],'pdf');                        
         end
         
     end   

@@ -84,5 +84,12 @@ for  i = 1:length(vList)
     end
     
 end
+id = vi6n ~= 0;
+vi6n = vi6n(id);
+vc6n = vc6n(id,:);
+f6n = f6n(id);
+
+
+end
     
 

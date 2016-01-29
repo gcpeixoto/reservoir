@@ -14,16 +14,18 @@ function plotMetricField( cvc,mfield,mname,idComp,val,cvcfar,sz,fmt,varargin )
 if nargin == 5
     cvcfar = cvc;
     sz = 40;
+    sz2 = sz;
     fmt = 'pdf';        
 elseif nargin == 6
     sz = 40;
+    sz2 = 300;
     fmt = 'pdf';        
 end
 
 figure    
 scatter3( cvc(:,2), cvc(:,1), cvc(:,3),sz,mfield,'filled');
 hold on
-scatter3(cvcfar(:,2),cvcfar(:,1),cvcfar(:,3),300,'k'); % highlight farthest points 
+scatter3(cvcfar(:,2),cvcfar(:,1),cvcfar(:,3),sz2,'k'); % highlight farthest points 
 grid off
 axis equal; view(3); axis tight; axis vis3d; grid off;             
 set(gca,'ZDir','reverse');    
