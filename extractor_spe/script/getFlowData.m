@@ -1,4 +1,4 @@
-function maxflow = getFlowData(capfile)
+function maxflow = getFlowData(capfile,ssfile)
 % GETMETRICSFLOW get flow data computed from NETWORKX.
 
 pyi = setPyInterpreter('/usr/local/bin/python');
@@ -11,7 +11,8 @@ if status ~= 0
     warning('Check flow data calculation.')
 end
 
-% clean the temporary file
-delete(capfile);
+% delete temporary files
+%delete(capfile); 
+%delete(ssfile); 
 
 end

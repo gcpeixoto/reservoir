@@ -16,7 +16,10 @@ kxname  = '../mat/KX.mat';
 kyname  = '../mat/KY.mat';
 kzname  = '../mat/KZ.mat';
 
-[PHI,KX,KY,KZ] = loadMatFiles(phiname,kxname,kyname,kzname);
+load(phiname,'PHI');
+load(kxname,'KX');
+load(kyname,'KY');
+load(kzname,'KZ');
 
 %% INPUT DATA 
 
@@ -46,8 +49,7 @@ plotVoxelNeigh3D(ic,jc,kc,P,PHIVZ,1.0);
 % plot all DRTs
 drt = unique(DRTV(:));
 for i = 1:length(drt)
-     plotVoxelNeighByValue(ic,jc,kc,P,DRTV,drt(1),1.0,'DRT');   
+     plotVoxelNeighByValue(ic,jc,kc,P,DRTV,drt(i),1.0,'DRT');   
 end    
   
-close all
 diary off

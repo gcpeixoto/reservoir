@@ -1,6 +1,6 @@
 function activateLog
 
-diary('../log/extractorSPE.log'); % TODO improve the log register
+diary( strcat('../log/',mfilename,'.log') );
 diary on
 
 end

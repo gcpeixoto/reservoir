@@ -14,7 +14,11 @@ phiname = '../mat/PHI.mat';
 kxname  = '../mat/KX.mat';
 kyname  = '../mat/KY.mat';
 kzname  = '../mat/KZ.mat';
-[PHI,KX,KY,KZ] = loadMatFiles(phiname,kxname,kyname,kzname);
+
+load(phiname,'PHI');
+load(kxname,'KX');
+load(kyname,'KY');
+load(kzname,'KZ');
 
 aux = load('../mat/DRT_Field.mat');
 DRT = aux.DRT;

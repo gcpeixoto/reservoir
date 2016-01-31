@@ -35,7 +35,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(1,:) = aux;        
         vi6n(1) = ind;
-        f6n(1) = F(ind);        
+        f6n(1) = F( viList(ind) );        
     end
     
     % -x
@@ -44,7 +44,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(2,:) = aux;        
         vi6n(2) = ind;
-        f6n(2) = F(ind);        
+        f6n(2) = F( viList(ind) );        
     end
     
     % +y
@@ -53,7 +53,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(3,:) = aux;        
         vi6n(3) = ind;
-        f6n(3) = F(ind);        
+        f6n(3) = F( viList(ind) );        
     end
     
     % -y
@@ -62,7 +62,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(4,:) = aux;        
         vi6n(4) = ind;
-        f6n(4) = F(ind);        
+        f6n(4) = F( viList(ind) );        
     end
     
     % +z
@@ -71,7 +71,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(5,:) = aux;        
         vi6n(5) = ind;
-        f6n(5) = F(ind);        
+        f6n(5) = F( viList(ind) );        
     end
     
     % -z
@@ -80,7 +80,7 @@ for  i = 1:length(vList)
     if ~isempty(ind)
         vc6n(6,:) = aux;        
         vi6n(6) = ind;
-        f6n(6) = F(ind);        
+        f6n(6) = F( viList(ind) );        
     end
     
 end

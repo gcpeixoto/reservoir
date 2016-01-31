@@ -15,66 +15,56 @@
 %         several data for analysis and visualization
 %     
 
-%% INPUT SETUP
+%% DEFAULTS 
 
-activateLog;    % log
-splshScreen;    % screen
-setOptions;     % defaults
+clear all; close all;
+activateLog;             % log
+splshScreenExtractor;    % screen
+setOptions;              % defaults
+
+%% FILE PATHS
+
+% .mat files
+phiname = '../mat/PHI.mat';
+kxname  = '../mat/KX.mat';
+kyname  = '../mat/KY.mat';
+kzname  = '../mat/KZ.mat';
+
+%. dat files
+phidat = setFile('../dat/spe_phi.dat');
+perdat = setFile('../dat/spe_perm.dat');    
+    
+%% INPUT DATA
 
 % Reloading section
-inrrd = false;
 inrr = input('----> Rerun extractor? [0] no; [1] yes \n');
 
-if inrr == 1 % rerun       
-    
-    clear all; close all; format long; 
-        
-    % defined here after clear all
-    inrrd = true; 
-    phiname = setFile('../dat/spe_phi.dat');
-    pername = setFile('../dat/spe_perm.dat');
-    
-    disp('Starting new session...');
-            
-elseif inrr == 0 % reload    
-    format long;
-        
-    fidphi = fopen('../mat/PHI.mat');
-    fidkx  = fopen('../mat/KX.mat');
-    fidky  = fopen('../mat/KY.mat');
-    fidkz  = fopen('../mat/KZ.mat');
-    
-    if fidphi == -1 || fidkx == -1 || fidky == -1 || fidkz == -1       
-      warning('Some required file was not found. Rerunning...');
-      
-    else
-        disp('Reloading saved .mat files...');        
-        
-        a = load('../mat/PHI.mat');
-        PHI = a.PHI;
-        
-        a = load('../mat/KX.mat');
-        KX = a.KX;
-        
-        a = load('../mat/KY.mat');
-        KY = a.KY;
-        
-        a = load('../mat/KZ.mat');     
-        KZ = a.KZ;
-        
-    end
-        
+if inrr == 1             % rerun       
+                     
+    disp('----> Rebuilding porosity and permeability matrices...');        
+    phi = load(phidat,'-ascii');
+    per = load(perdat,'-ascii');
+    [ PHI, KX, KY, KZ ] = assemble3DArrays( phi, per, I, J, K );
+         
+elseif inrr == 0         % reload    
+             
+    disp('----> Reloading porosity and permeability matrices...');                    
+    load(phiname,'PHI');
+    load(kxname,'KX');
+    load(kyname,'KY');
+    load(kzname,'KZ');
+                      
 else
     error('Option not recognized. Choose 0 or 1');
 end
 
-%% GRID BOUNDS (SPE Project 2)
-[I,J,K] = setGridBounds(60,220,85); % default
-
+%% GRID BOUNDS 
+[I,J,K] = setGridBounds(60,220,85);    
 
 %% RUN OPTIONS
 
-opt = input('----> Choose method for well extraction: [0] N random wells; [1] specific well: \n');
+opt = input(['----> Choose method for well extraction:',... 
+             '[0] N random wells; [1] specific well: \n']);
 
 if ( opt == 0 || isempty(opt) ) % random
     
@@ -215,13 +205,6 @@ if pltdrtd == 1;
 end
 
 disp('Options saved. Running extractor...');
-
-%% MATRIX OPERATIONS
-
-if inrrd % if rerun is active, reassemble            
-    [phi,per] = loadFiles(phiname,pername);    
-    [ PHI, KX, KY, KZ ] = assemble3DArrays( phi, per, I, J, K );
-end
              
 %% WELL STRUCTURE
 
@@ -359,39 +342,16 @@ for i = 1:N
 end
 
 
-%% RESERVOIR PLOT
+%% 3D RESERVOIR PLOT
 
-% mounting meshgrid for plotting     
-i = 1:I;
-j = 1:J;
-k = K:-1:1; % contrary to show plot upward
-[JJ,II,KK] = meshgrid(j,i,k);
-
-if pltd    
-    disp('Plotting 3D reservoirs...')
-    figure 
-    h = gca;
-    set(h,'YDir','reverse'); % z-depth growing downward
-    slice(JJ,II,KK,PHI,j,i,k)
-        
-    figure 
-    h = gca;
-    set(h,'YDir','reverse');
-    slice(JJ,II,KK,KX,j,i,k)            
-    
-    figure 
-    h = gca;
-    set(h,'YDir','reverse');
-    slice(JJ,II,KK,KY,j,i,k)            
-    
-    figure 
-    h = gca;
-    set(h,'YDir','reverse');
-    slice(JJ,II,KK,KZ,j,i,k)
+if pltd        
+    plot3DReservoir(I,J,K,PHI);     % visualize the 3D field
 end
 
-%----------------- DISPERSION GRAPHS 
+%% DISPERSIONS BY DEPTH 
+
 %{
+
 
   depth
   z @surface (voxel 1)
@@ -420,7 +380,7 @@ if pltr
     
     i = 1;
     while i <= N     
-        fprintf('Plotting dispersion graphs for well %d...\n',i)                  
+        fprintf('Plotting dispersions for well %d...\n',i)                  
         
         % --------------- porosity 
         figure                                
@@ -434,7 +394,7 @@ if pltr
         xlabel('$ \phi $','interpreter','latex');
         ylabel('z'); 
         
-        % --------------- porosity - x 
+        % --------------- permeability - x 
         subplot(2,2,2)                 
         scatter(wkx{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','g')
         h = gca;
@@ -445,7 +405,7 @@ if pltr
         xlabel('$ \kappa_x $','interpreter','latex');
         ylabel('z'); 
         
-        % --------------- porosity - y
+        % --------------- permeability - y
         subplot(2,2,3)                 
         scatter(wky{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','b')
         h = gca;
@@ -456,7 +416,7 @@ if pltr
         xlabel('$ \kappa_y $','interpreter','latex');
         ylabel('z'); 
         
-        % --------------- porosity - z
+        % --------------- permeability - z
         subplot(2,2,4)                        
         scatter(wkz{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','m')        
         h = gca;

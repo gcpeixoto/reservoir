@@ -9,6 +9,7 @@ set(0,'DefaultAxesGridLineStyle',':');
 set(0,'DefaultAxesFontName','Helvetica');
 set(0,'DefaultTextFontName','Helvetica');
 set(0,'DefaultAxesTickDir','out');
+format long
 
 end
 
