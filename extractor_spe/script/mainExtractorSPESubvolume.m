@@ -1,10 +1,15 @@
-%% mainExtractorSPESubvolume
+%% mainExtractorSPESubvolume.m - Subvolume data extractor for oil wells
+      
+%     authors: Dr. Gustavo Peixoto de Oliveira
+%              Dr. Waldir Leite Roque
+%              @Federal University of Paraiba
+%     mail: gustavo.oliveira@ci.ufpb.br    
+%     date: Sep 21st, 2015  
 
 %% DEFAULTS
-clear all; close all; clc; format long;
-diary('../log/extractor_SPE_subdomain.log');
-diary on
 
+clear all; close all; clc;
+activateLog(mfilename);
 setOptions;
 splshScreenSub;
 

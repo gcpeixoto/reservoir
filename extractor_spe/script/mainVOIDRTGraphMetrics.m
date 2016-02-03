@@ -14,21 +14,16 @@
 %
 
 %% DEFAULTS
-clear all; close all; clc; format long;
-delete('../log/VOIDRTgraphMetrics.log');
-diary('../log/VOIDRTgraphMetrics.log');
-diary on
-
+clear all; close all; clc;
+activateLog(mfilename);
+setOptions;
 splshScreenVOIGraphMetrics;
 
 %% LOAD FILES
 
-aux = load('../mat/DRT_Field.mat');
-DRT = aux.DRT;
-aux = load('../mat/PHIZ_Field.mat');
-PHIZ = aux.PHIZ;
-aux = load('../mat/RQI_Field.mat');
-RQI = aux.RQI;
+load('../mat/DRT_Field.mat','DRT');
+load('../mat/PHIZ_Field.mat', 'PHIZ');
+load('../mat/RQI_Field.mat', 'RQI');
 
 % well 
 ic = 26; jc = 120;
@@ -38,7 +33,6 @@ matFiles = dir( strcat(dbase,'VOI_DRT*.mat') );
 numfiles = length(matFiles);
     
 % sweeping DRTs
-
 for k = 1:numfiles 
     
     st = load( strcat(dbase,matFiles(k).name) ); 

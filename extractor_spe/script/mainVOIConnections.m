@@ -8,10 +8,13 @@
 %   Description: gets the network and connected components
 %                for a VOI around a given seed voxel and 
 %                stores data structure
-%
+
+
+%% Defaults
 
 clear all; close all; clc;
-splshScreenVOIConn;
+activateLog(mfilename);
+splshScreenVOIConnection;
 
 %%
 

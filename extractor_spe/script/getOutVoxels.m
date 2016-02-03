@@ -1,4 +1,4 @@
-function [ outcvc, outcvi ] = getOutVoxels( cvc,comp,drtVal,wellname,ext,varargin )
+function [ outcvc, outcvi, fout ] = getOutVoxels( cvc,comp,drtVal,wellname,ext,varargin )
 % GETOUTVOXELS extract the complementary set of a cluster bounded by 
 %              a box
 %
@@ -10,6 +10,7 @@ function [ outcvc, outcvi ] = getOutVoxels( cvc,comp,drtVal,wellname,ext,varargi
 %   output:
 %      outcvc: complementary of cluster cluster's coordinates
 %      outcvi: voxel indices in relation to box's indices
+%        fout: output file
 %
 %   Remark: .txt file required to be imported into CMG in order to 
 %           characterize the cluster's irregular geometry
@@ -48,7 +49,7 @@ K = km:kM;
 allcvc = [];
 for i = 1:length(I)
     for j = 1:length(J)
-        for k = 1:length(K)            
+        for k = 1:length(K)                
             allcvc = [ allcvc; [I(i),J(j),K(k)] ];  
         end
     end
@@ -58,7 +59,7 @@ end
 [outcvc,outcvi] = setdiff(allcvc,cvc,'rows');
            
 % write to file
-fout = strcat( '../txt/','OutCoords_DRT_',num2str(drtVal),... 
+fout = strcat( '../txt/',wellname,'/','OutCoords_DRT_',num2str(drtVal),... 
                    '_Cluster_',num2str(comp),'_',wellname,ext );    
 
 dlmwrite(fout,['x' 'y' 'z'],'delimiter',' ');

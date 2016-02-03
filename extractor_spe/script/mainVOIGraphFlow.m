@@ -18,22 +18,17 @@ ic = 45; jc = 68;
 
 % DRT 
 %drtVal = input('----> Enter DRT: \n');
-drtVal = 7;
+drtVal = 8;
 
 wellfile = strcat( 'Well_I',num2str(ic),'_J',num2str(jc) );
 dbase = strcat( '../mat/',wellfile,'/' );
 
 % metrics data structure
-aux = load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_MetricsData.mat') );
-metrics = aux.metrics;
-
-aux = load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_LinRegrData.mat') );
-linregr = aux.linregr;
+load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_MetricsData.mat'),'metrics' );
+load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_LinRegrData.mat'),'linregr' );
 
 % DRT data structure
-aux = load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_',wellfile,'.mat') );
-VOISt = aux.VOISt;
-val = VOISt.value;
+load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_',wellfile,'.mat'),'VOISt' );
 
 % Rerun to avoid assembly
 %rerun = input('\n ----> Load .txt files for pressure? [0] no; [1] yes \n');
@@ -51,10 +46,9 @@ else
     error('Please, enter 0 or 1.');
 end
 
-
 % loop over pressure files
-%for k = 1:numfiles
-for k = numfiles
+%for k = 2:numfiles
+for k = 2:4
     
     [~,fname,~] = fileparts( strcat(dbase,pFiles(k).name) );        
     flows.well = [ic,jc];
@@ -70,8 +64,7 @@ for k = numfiles
         %plot3DField(I,J,K,P,'Pressure Field');
         
     else        % .mat
-        press = load( strcat(dbase,pFiles(k).name) );     
-        P = press.P;
+        load( strcat(dbase,pFiles(k).name),'P' );             
         
     end
     
@@ -82,25 +75,31 @@ for k = numfiles
 
         cvc = VOISt.compVoxelCoords{n};
         cvi = VOISt.compVoxelInds{n};
-        %plotPField(cvc,P(cvi),1,drtVal);
+        plotPField(cvc,P(cvi),1,drtVal);
                         
         % adjacency matrix
         MadjFlowP = sparse( length(cvc),length(cvc) );
         
+        % plotVoxelGraphComp(DRT,inds,drtVal,n,0.5)
+        VC6N = [];
+        VI6NGLOB = [];
         % cluster's elements loop
         for nv = 1:length(cvc)                                      
-            [ vc6n, vi6n, p6n ] = getVoxel6Neigh( cvc(nv,:), cvc, cvi, P );                                
-                                    
+            [ vc6n, vi6nloc, vi6nglob, p6n ] = getVoxel6Neigh( cvc(nv,:), cvc, cvi, P );                                
+                                   
+            VC6N = [VC6N; vc6n];
+            VI6NGLOB = [VI6NGLOB; vi6nglob];
+            
             pc = P( cvi(nv) );  % pressure at the voxel 
             
             %fprintf('-----> Voxel = %d; X = [%d %d %d]; p = %f \n',...
             %         nv,cvc(nv,1),cvc(nv,2),cvc(nv,3),pc);
             
             % finds voxel's 6-neighbours
-            for viz = 1:length(vi6n)
+            for viz = 1:length(vi6nloc)
                 
-                    %fprintf('------> Voxel = %d; X = [%d %d %d]; p = %f \n',...
-                    %    vi6n(viz),vc6n(viz,1),vc6n(viz,2),vc6n(viz,3),p6n(viz));
+                %fprintf('------> Voxel = %d; X = [%d %d %d]; p = %f \n',...
+                %    vi6n(viz),vc6n(viz,1),vc6n(viz,2),vc6n(viz,3),p6n(viz));
 
                 % checking pressure gradient to fill the 
                 % adjacency matrix for the directed
@@ -134,19 +133,20 @@ for k = numfiles
                 
                 if dp > 0                     
                     %disp('-------> dp > 0'); 
-                    MadjFlowP( vi6n(viz), nv ) = 1;                        
+                    MadjFlowP( vi6nloc(viz), nv ) = 1;                        
                     
                 elseif dp < 0 
                     %disp('-------> dp < 0'); 
-                    MadjFlowP( nv, vi6n(viz) ) = 1;                       
+                    MadjFlowP( nv, vi6nloc(viz) ) = 1;                       
                     
                 end                          
                 
             end % close 6-neighbour loop
-                       
-
+                               
         end % close cluster's element loop  
-                                        
+                       
+        plotMetricField(VC6N,P(VI6NGLOB),'bet',n,drtVal);
+        
         % ----- creating NETWORKX interface                
         
         % max closeness voxel
@@ -160,12 +160,11 @@ for k = numfiles
         iminclo{n} = find( closeness{n} == minclo{n} );
         cvcminclo{n} = cvc(iminclo{n},:);
                         
-        % export parameters to networkx
-        [capfile,ssfile] = setGraphParams(MadjFlowP, P(cvi),imaxclo{n},iminclo{n} );         
-        %maxflow = getFlowData(capfile,ssfile); 
-        
-        
-
+        % export parameters to networkx 
+        sink = find( cvc(:,3) == min(cvc(:,3)) ); % minimum z
+        sink = sink(1); % first voxel with minimum z
+        [capfile,ssfile] = setGraphParams(MadjFlowP, P(cvi),imaxclo{n},sink );         
+        %maxflow = getFlowData(capfile,ssfile);                 
         %flows.year{k}.cluster{n}.maxflow = maxflow;
     
     end % close cluster's loop
@@ -178,6 +177,5 @@ for k = numfiles
         save( strcat('../mat/',fname,'.mat'), 'P' );                
     end
         
-    clear P;
 
 end % end loop of pressure files

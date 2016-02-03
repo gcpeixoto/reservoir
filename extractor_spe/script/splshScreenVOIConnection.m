@@ -1,4 +1,4 @@
-function splshScreenVOIConn( )
+function splshScreenVOIConnection
 
 disp( repmat('-', [1 63] ) );
 disp('           SPE WELL DATA EXTRACTOR - VOI CONNECTIONS           ');
