@@ -20,7 +20,28 @@ activateLog(mfilename);  % log
 splshScreenExtractor;    % screen
 setOptions;              % defaults
 
-%% FILE PATHS
+%% ADVICE ABOUT CALLING PRINT/PLOT FUNCTIONS 
+%
+% 'print' and 'plot' functions are time-consuming and were 
+% switched off by default. In case of print/plot something to file
+% or only for visualization purposes, switch on the required flags
+
+% print flags 
+pflag_dispersion = false;      % well's dispersion plots
+pflag_baltman    = false;      % Bland-Altman plots  
+pflag_regression = false;      % linear regression plots
+pflag_histDRT    = false;      % DRT histogram plots
+
+% plot flags 
+pltflag_reservoir3D = false;   % 3D view of reservoir
+pltflag_wellDisp    = false;   % well's dispersion plots (by depth)
+pltflag_vtk         = false;   % export data to VTK
+pltflag_HFULoc      = false;   % DRT map overview (HFU locations)
+pltflag_regression  = false;   % regression fit-line plots
+pltflag_histDRT     = false;   % histogram of DRT distribution
+
+
+%% PATHS TO REQUIRED INPUT FILES (POROSITY AND PERMEABILITY)
 
 % .mat files
 phiname = '../mat/PHI.mat';
@@ -31,10 +52,13 @@ kzname  = '../mat/KZ.mat';
 %. dat files
 phidat = setFile('../dat/spe_phi.dat');
 perdat = setFile('../dat/spe_perm.dat');    
-    
-%% INPUT DATA
 
-% Reloading section
+%% GRID BOUNDS
+[I,J,K] = setGridBounds(60,220,85);  % SPE 2 model default. DO NOT CHANGE!
+    
+%% RUN OPTIONS
+
+% rerun / reload
 inrr = input('----> Rerun extractor? [0] no; [1] yes \n');
 
 if inrr == 1             % rerun       
@@ -43,6 +67,8 @@ if inrr == 1             % rerun
     phi = load(phidat,'-ascii');
     per = load(perdat,'-ascii');
     [ PHI, KX, KY, KZ ] = assemble3DArrays( phi, per, I, J, K );
+    
+    svmat = true; % enables .mat saving
          
 elseif inrr == 0         % reload    
              
@@ -51,22 +77,20 @@ elseif inrr == 0         % reload
     load(kxname,'KX');
     load(kyname,'KY');
     load(kzname,'KZ');
+    
+    svmat = false; % disables .mat saving
                       
 else
     error('Option not recognized. Choose 0 or 1');
 end
 
-%% GRID BOUNDS 
-[I,J,K] = setGridBounds(60,220,85);    
-
-%% RUN OPTIONS
-
+% method for well extraction: random / specific 
 opt = input(['----> Choose method for well extraction:',... 
              '[0] N random wells; [1] specific well: \n']);
 
-if ( opt == 0 || isempty(opt) ) % random
+if ( opt == 0 || isempty(opt) ) % random    
     
-    N = input('----> Choose number of random wells to extract: \n');
+    N = input('----> Choose number of random wells to extract: \n');    
     
     if N > I*J
         error( strcat(' > Maximum number of wells to extract is ', num2str(I*J),'!') ); 
@@ -93,32 +117,31 @@ else
     error('Option not valid.');
 end
 
-pltd = false;
-pltda = input('----> Plot 3D reservoir? [0] no; [1] yes. \n');
-if pltda == 1
-    pltd = true;
-end
-
-pltr = false;
-pltra = input('----> Plot and print well data to file? [0] no; [1] yes. \n');
-if pltra == 1
-    pltr = true;
-end
-
-vtk = false;
-vtkd = input('----> Export data to VTK for 3D visualization? [0] no; [1] yes. \n');
-if vtkd == 1;
-    vtk = true;
-end
-
+% well data (gross csv)
 csv = false;
-csvd = input('----> Export well data to CSV? [0] no; [1] yes. \n');
+csvd = input('----> Export gross well data to CSV? [0] no; [1] yes. \n');
 if csvd == 1;
     csv = true;
 end
 
+% Regression analysis
+hist = false;
+histd = input('----> Compute histograms and regression analysis? [0] no; [1] yes. \n');
+if histd == 1;
+    hist = true;
+end
+
+%%%%%%%%%%%%%%%%% BLAND-ALTMAN PLOTS (UNDER DEVELOPMENT) %%%%%%%%%%%%%%%%%
+bland = false;
+%blandd = input('----> Compute Bland-Altman plots? [0] no; [1] yes. \n');
+%if blandd == 1;
+%    bland = true;
+%end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%    CONNATE WATER (UNDER DEVELOPMENT     %%%%%%%%%%%%%%%%%%%%%
 wsati = 0.0; % irreducible water saturation distribution
-%%%%%%%%%%%%       THIS WILL BE USED LATER!       %%%%%%%%%%%%%%%%%%%%%%%%%
+%
 %
 % ws = input('----> Include irreducible water saturation distribution? [0] no; [1] yes. \n');
 % if ws == 1;            
@@ -177,30 +200,6 @@ wsati = 0.0; % irreducible water saturation distribution
 %     
 % end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-bland = false;
-blandd = input('----> Plot and export Bland-Altman diagrams to file? [0] no; [1] yes. \n');
-if blandd == 1;
-    bland = true;
-end
-
-hist = false;
-histd = input('----> Plot and export histograms and regression analyses to file? [0] no; [1] yes. \n');
-if histd == 1;
-    hist = true;
-end
-
-svmat = false;
-svmatd = input('----> Save .mat 3D arrays (porosity, permeability) to file? [0] no; [1] yes. \n');
-if svmatd == 1;
-    svmat = true;
-end
-
-pltdrt = false;
-pltdrtd = input('----> Plot and export HFU locations to file? [0] no; [1] yes. \n');
-if pltdrtd == 1;
-    pltdrt = true;
-end
 
 disp('Options saved. Running extractor...');
              
@@ -342,8 +341,8 @@ end
 
 %% 3D RESERVOIR PLOT
 
-if pltd        
-    plot3DReservoir(I,J,K,PHI);     % visualize the 3D field
+if pltflag_reservoir3D == true           
+    plot3DReservoir(I,J,K,PHI); % visualize the 3D field (default: PHI)
 end
 
 %% DISPERSIONS BY DEPTH 
@@ -364,7 +363,7 @@ end
 
 %}
 
-if pltr      
+if pltflag_wellDisp == true      
     
     %{ 
         Remark: fliplr(k) and 'Ydir reverse' are necessary to view 
@@ -426,7 +425,9 @@ if pltr
         ylabel('z'); 
                  
         % print to file
-        print('-dpdf','-r0',fullfile( '../figs/', strcat(figname,num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
+        if pflag_dispersion == true
+            print('-dpdf','-r0',fullfile( '../figs/', strcat(figname,num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
+        end
         
         i = i+1; 
     end
@@ -434,7 +435,7 @@ end
 
 %% VTK EXPORT
 
-if vtk
+if pltflag_vtk == true
     disp('Exporting to VTK...');
     savevtk_structured_spe(I,J,K,PHI,KX,KY,KZ,'../vtk/spe-phi-k-reservoir');                    
     
@@ -502,7 +503,7 @@ end
 
 %% Saving PHI,KX=KY,KZ to file for posterior use
 
-if svmat
+if svmat == true
     disp('Saving .mat files...');
     save('../mat/PHI.mat','PHI');
     save('../mat/KX.mat','KX');
@@ -525,7 +526,7 @@ if bland && ~isempty(wsati) % if wsat is empty, there's nothing to compare
     baname = 'Bland-Altman_I';
 
     for i = 1:N
-        fprintf('Saving Bland-Altman diagram for well %d... \n',i);  
+        fprintf('Saving Bland-Altman plot for well %d... \n',i);  
         
         dif{i} = wMat{i,11} - wMat{i,13};    
         med{i} = 0.5*( wMat{i,11} + wMat{i,13} );
@@ -548,8 +549,9 @@ if bland && ~isempty(wsati) % if wsat is empty, there's nothing to compare
         ylabel(' $ FZI_{AM-IG} $','interpreter','latex');  
 
         % print to file
-        print('-dpdf','-r0',fullfile( '../figs/', strcat(baname,num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
-
+        if pflag_baltman == true
+            print('-dpdf','-r0',fullfile( '../figs/', strcat(baname,num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
+        end
     end
     
 end
@@ -572,17 +574,21 @@ if hist
         frq = tbh(:,2);
         frq = frq(idt); % statistical frequencies
 
-        figure    
-        stem(drt,frq,'fill','k');
-        grid('on');    
-        xlim([ min(drt)-0.5 max(drt)+0.5 ]);
-        title( strcat('Histogram - DRTs (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );            
-        xlabel(' $ DRT $','interpreter','latex');  
-        ylabel('frequency');
-        print('-dpdf','-r0',fullfile( '../figs/', ...
+        if pltflag_histDRT == true
+            figure    
+            bar(drt,frq,'k');        
+            xlim([ min(drt)-0.5 max(drt)+0.5 ]);
+            title( strcat('Histogram - DRTs (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );            
+            xlabel(' $ DRT $','interpreter','latex');  
+            ylabel('frequency');
+        end
+        
+        if pflag_histDRT == true
+            print('-dpdf','-r0',fullfile( '../figs/', ...
                        strcat(hname,num2str( ia(i) ),'_J', ...
                                       num2str( ja(i) ) ) ) ); 
-
+        end
+        
         % create cell for best DRTs found                         
         if i == 1
             dataDRT = cell( length(drt), 6 );        
@@ -607,13 +613,15 @@ if hist
                 
                 drtgood = [ drtgood; drt(j) ];                
                 
-                figure             
-                PLR = plotregression( dataDRT{j,1}, dataDRT{j,2}, ...
-                    strcat('(',num2str( ia(i) ),    ...
+                if pltflag_regression == true
+                    figure             
+                    PLR = plotregression( dataDRT{j,1}, dataDRT{j,2}, ...
+                        strcat('(',num2str( ia(i) ),    ...
                                    ',',num2str( ja(i) ),')',...
                                 ' DRT=',num2str( drt(j) ),' tol_s=',num2str(seps) ) );
-                
-                setLRPlot(PLR); % graph appearance
+                    
+                    setLRPlot(PLR); % graph appearance
+                end
                 
                 % csv file [ logphiz, logRQI, depth ] per DRT                
                 fprintf('Exporting CSV file of logs/depth data for well(%d,%d); DRT %d... \n', ia(i), ja(i), drt(j) );  
@@ -647,21 +655,19 @@ if hist
                 dlmwrite(fname,txt,'');                                
                 dlmwrite(fname,aux,'-append');                                
                 
-                % print to file    
-                print('-dpdf','-r0',fullfile( '../figs/', ...
+                % print to file   
+                if pflag_regression == true
+                    print('-dpdf','-r0',fullfile( '../figs/', ...
                        strcat(regname,num2str( ia(i) ),'_J', ...
                                       num2str( ja(i) ), ...
                                       '_DRT_',num2str( drt(j) ) ) ) );                
+                end
                 
             end
 
         end   
-        
-        % TODO (OK for a unique well; not optimized for all)
-        % execCSVCondenser; % merging .csv files of the best DRTs into one
-        
-        
-        if pltdrt
+                                
+        if pltflag_HFULoc == true
             % Selecting the best DRTs for plotting
             depths = cell(1,length(drtgood));
             for k = 1:length(drtgood)
@@ -679,9 +685,7 @@ if hist
 
 end
 
-%% Final output
-disp('Closing figures...')
-close all;
+%% ENDING
 disp('----> E X E C U T I O N    H A S    F I N I S H E D.');
-
 diary off
+

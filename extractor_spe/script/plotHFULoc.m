@@ -12,7 +12,7 @@ fname = 'HFULocationsI';
 for i = 1:length(DRT)    
     hold on    
     xlim( [ min(DRT-1) max(DRT+1) ] );    
-    plot( DRT(i), fliplr( Kd{i} ),'ko', 'MarkerFaceColor', 'k' );         
+    plot( DRT(i), fliplr( Kd{i} ),'k*', 'MarkerFaceColor', 'k' );         
 end
 
 % print to file    
