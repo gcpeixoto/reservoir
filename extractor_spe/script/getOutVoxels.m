@@ -1,4 +1,4 @@
-function [ outcvc, outcvi, fout ] = getOutVoxels( cvc,comp,drtVal,wellname,ext,varargin )
+function [ outcvc, outcvi, fout, fin ] = getOutVoxels( cvc,comp,drtVal,wellname,ext,varargin )
 % GETOUTVOXELS extract the complementary set of a cluster bounded by 
 %              a box
 %
@@ -62,8 +62,15 @@ end
 fout = strcat( '../txt/',wellname,'/','OutCoords_DRT_',num2str(drtVal),... 
                    '_Cluster_',num2str(comp),'_',wellname,ext );    
 
+fin = strcat( '../csv/subdomain/','InCoords_DRT_',num2str(drtVal),... 
+                   '_Cluster_',num2str(comp),'_',wellname,'.csv' );    
+               
+               
 dlmwrite(fout,['x' 'y' 'z'],'delimiter',' ');
 dlmwrite(fout,outcvc,'-append','delimiter',' '); 
+
+dlmwrite(fin,['x' 'y' 'z'],'delimiter',',');
+dlmwrite(fin,cvc,'-append','delimiter',','); 
 
 end
 
