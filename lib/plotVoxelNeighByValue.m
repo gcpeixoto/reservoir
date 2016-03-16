@@ -1,4 +1,4 @@
-function plotVoxelNeighByValue( ic,jc,kc,P,PV,val,alpha,tname)
+function plotVoxelNeighByValue( ic,jc,kc,P,PV,val,alpha,tname,p)
 % PLOTVOXELNEIGHBYVALUE
 %     input: 
 %         ic,jc,kc: central voxel coordinate
@@ -8,6 +8,7 @@ function plotVoxelNeighByValue( ic,jc,kc,P,PV,val,alpha,tname)
 %               ZL: indices of PV whose entries are zero
 %            alpha: face color transparency               
 %            tname: variable name to append in file name
+%                p: print flag (true,false)
 %                     
 % 
 %     required: 
@@ -52,7 +53,6 @@ end
 fig_color='w'; fig_colordef='white';
 cMap  = jet(250);
 
-figure 
 [F,V,C]=ind2patch(IND,PV,'v');
 figuremax(fig_color,fig_colordef);
 title( strcat('Voxel neighbourhood V(',num2str(ic),',',num2str(jc),',',num2str(kc),'),',tname,'=', num2str(val) ) );
@@ -74,15 +74,17 @@ colormap(cMap);
 caxis( [ min(PV(:)), max(PV(:)) ] );
 %colorbar
 
-% print to file    
-print('-depsc2','-r0',fullfile( '../figs/', ...
+if p
+    
+    % print to file    
+    print('-depsc2','-r0',fullfile( '../figs/', ...
     strcat('VoxelNeighByValue_IC_',num2str( ic ),...
                             '_JC_',num2str( jc ),...
                             '_KC_',num2str( kc ),...
                             '_P_' ,num2str( P  ),...
                             '_',tname,'_'       ,...
                                    num2str(val ) ) ) );  
-
+end
 
 
 end

@@ -1,7 +1,20 @@
 %% mainVOIGraphFlow
 
 clear all; close all; clc; 
-splshScreenVOIGraphFlow();
+
+% classes
+dm = SPEDirManager;
+dm.activateLog(mfilename);
+
+d = SPEDisplay;
+d.printSplScreen(mfilename); 
+d.printings(d.author1,d.author2,d.inst,d.progStat{1});
+d.setOptions;                
+d.extractorSPEDependency;
+d.graphDataDependency;
+d.VOIgraphDataDependency;
+
+d.dispTest;
 
 %% Load properties 
 
@@ -18,7 +31,7 @@ ic = 45; jc = 68;
 
 % DRT 
 %drtVal = input('----> Enter DRT: \n');
-drtVal = 8;
+drtVal = 7;
 
 wellfile = strcat( 'Well_I',num2str(ic),'_J',num2str(jc) );
 dbase = strcat( '../mat/',wellfile,'/' );
@@ -48,7 +61,7 @@ end
 
 % loop over pressure files
 %for k = 2:numfiles
-for k = 2:4
+for k = 1
     
     [~,fname,~] = fileparts( strcat(dbase,pFiles(k).name) );        
     flows.well = [ic,jc];
@@ -75,7 +88,7 @@ for k = 2:4
 
         cvc = VOISt.compVoxelCoords{n};
         cvi = VOISt.compVoxelInds{n};
-        plotPField(cvc,P(cvi),1,drtVal);
+        %plotPField(cvc,P(cvi),1,drtVal);
                         
         % adjacency matrix
         MadjFlowP = sparse( length(cvc),length(cvc) );
@@ -145,8 +158,8 @@ for k = 2:4
                                
         end % close cluster's element loop  
                        
-        plotMetricField(VC6N,P(VI6NGLOB),'bet',n,drtVal);
-        
+        %plotMetricField(VC6N,P(VI6NGLOB),'bet',n,drtVal);
+                        
         % ----- creating NETWORKX interface                
         
         % max closeness voxel

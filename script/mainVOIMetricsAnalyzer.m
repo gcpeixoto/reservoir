@@ -1,4 +1,4 @@
-%% mainVOIMetricsAnalyzer
+    %% mainVOIMetricsAnalyzer
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -13,14 +13,24 @@
 %% Default
 
 clear all; close all; clc;
-activateLog(mfilename);  % log
-setOptions;
+
+% classes
+dm = SPEDirManager;
+dm.activateLog(mfilename);
+
+d = SPEDisplay;
+d.printSplScreen(mfilename); 
+d.printings(d.author1,d.author2,d.inst,d.progStat{1});
+d.setOptions;                
+d.extractorSPEDependency;    
+d.VOIgraphDataDependency;
+d.VOIgraphMetricsDependency;
 
 %% 
 
 ic = 45; jc = 68; % well coordinates
 P = 14;           % reservoir radius
-drtVal = 13;      % DRT to get
+drtVal = 14;      % DRT to get
 
 % file name
 wellfile = strcat( 'Well_I',num2str(ic),'_J',num2str(jc) );
@@ -33,9 +43,15 @@ load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_LinRegrData.mat'),'linregr' );
 % DRT data structure
 load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_',wellfile,'.mat'),'VOISt' );
 
+% KN 
+load('../mat/KN_Field.mat','KN');
+
+% load DRT matrix
+DRT = replaceInfDRT('../mat/DRT_Field.mat');
+
 ncomp = numel(metrics.idComp);      % number of components
 
-nc = 3;
+nc = 4;
 % nc = ncomp; % check error above comp 17 for (45,68), (26,120)!
 %sumcomp = 0; % total number of voxels for the current DRT (nc components)
 for n = 1:nc
@@ -97,8 +113,8 @@ for n = 1:nc
     %plotMetricField(compVoxelCoords{n},betweeness{n},'bet',n,drtVal);
     %plotMetricField(compVoxelCoords{n},degree{n},'deg',n,drtVal);  
     
-    % finding complemetary portion of cluster for using with CMG modeling
-    [outcvc,outcvi,fout] = getOutVoxels(compVoxelCoords{n},n,drtVal,wellfile);
+    % finding complementary portion of cluster for using with CMG modeling
+    [outcvc,outcvi,fout,fin] = getOutVoxels(compVoxelCoords{n},n,drtVal,wellfile);
     
     % parsing file with Python
     pyi = setPyInterpreter('/usr/local/bin/python');    
@@ -110,23 +126,25 @@ for n = 1:nc
     fname = strcat('DRT_',num2str(drtVal),'_Info_Cluster_',num2str(n));                
         
     % centralities
-    hdr = {'x','y','z','b','c','d'};    
+    hdr = {'x,';'y,';'z,';'betweeness,';'closeness,';'degree,';'kn'}; 
+    hdr = hdr';    
     A = [ compVoxelCoords{n}(:,1),...
           compVoxelCoords{n}(:,2),...
           compVoxelCoords{n}(:,3),...
           betweeness{n},...
           closeness{n},...
-          degree{n} ];                        
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),hdr,'delimiter',',');
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),A,'-append','delimiter',',','precision','%g');                        
+          degree{n},...
+          KN(compVoxelInds{n}) ];                        
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),hdr,'delimiter','');
+    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),A,'-append','delimiter',',','precision','%g');                            
     
     % max closeness point
     
-    % transform to CMG coordinates
-    cvcmaxcloloc = global2LocalCluster(cvcmaxclo{n}(1),...
-                                       cvcmaxclo{n}(2),...
-                                       cvcmaxclo{n}(3),...
-                                     klims(1),ic,jc,P);    
+    % transform to CMG coordinates (get first in the list)
+    cvcmaxcloloc = global2LocalCluster(cvcmaxclo{n}(1,1),...
+                                       cvcmaxclo{n}(1,2),...
+                                       cvcmaxclo{n}(1,3),...
+                                       ilims(1),jlims(1),klims(1));    
     dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'P','-append','roffset',1,'delimiter',',');                    
     dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),cvcmaxclo{n}(1,:),'-append','delimiter',','); % global coords                     
     dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),cvcmaxcloloc,'-append','delimiter',',');      % local coords
@@ -134,11 +152,11 @@ for n = 1:nc
     
     % min closeness point
     
-    % transform to CMG coordinates
-    cvcmincloloc = global2LocalCluster(cvcminclo{n}(1),...
-                                       cvcminclo{n}(2),...
-                                       cvcminclo{n}(3),...
-                                     klims(1),ic,jc,P);    
+    % transform to CMG coordinates (get first in the list)        
+    cvcmincloloc = global2LocalCluster(cvcminclo{n}(1,1),...
+                                       cvcminclo{n}(1,2),...
+                                       cvcminclo{n}(1,3),...
+                                       ilims(1),jlims(1),klims(1));    
     
     dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'Q','-append','roffset',1,'delimiter',',');                    
     dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),cvcminclo{n}(1,:),'-append','delimiter',','); % global coords                     
@@ -150,7 +168,7 @@ for n = 1:nc
     CVCFarLoc = global2LocalCluster(CVCFar(:,1),...
                                     CVCFar(:,2),...
                                     CVCFar(:,3),...
-                              klims(1),ic,jc,P); 
+                                    ilims(1),jlims(1),klims(1));    
     
     dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'X','-append','roffset',1,'delimiter',',');                    
     dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),CVCFar,'-append','delimiter',',','precision','%d');
@@ -173,6 +191,20 @@ for n = 1:nc
     a = [ linregr.slope{n},linregr.Pearson{n} ];
     dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),hdr,'-append','roffset',1,'delimiter',',');
     dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),a,'-append','delimiter',',','precision','%g');                        
-        
-               
+            
+    % header
+    hdr = {'LogPhiz,';'LogRQI'}; 
+    hdr = hdr';    
+    a = [ linregr.logPHIZ{n}, linregr.logRQI{n} ];
+    dlmwrite(strcat('../csv/subdomain/',fname,'LogData.csv'),hdr,'');                                
+    dlmwrite(strcat('../csv/subdomain/',fname,'LogData.csv'),a,'-append','delimiter',',','precision','%g');                
+    
+    % export cluster image sequence
+    cluster2image(DRT,drtVal,ilims,jlims,klims,fname);
+    
+    
 end
+
+%% ENDING
+d.printings(d.progStat{2});
+dm.deactivateLog;

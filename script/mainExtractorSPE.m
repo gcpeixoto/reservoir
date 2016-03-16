@@ -16,9 +16,16 @@
 %% DEFAULTS 
 
 clear all; close all; clc;
-activateLog(mfilename);  % log
-splshScreenExtractor;    % screen
-setOptions;              % defaults
+
+% classes
+dm = SPEDirManager;
+dm.activateLog(mfilename);
+
+d = SPEDisplay;
+d.printSplScreen(mfilename); 
+d.printings(d.author1,d.author2,d.inst,d.progStat{1});
+d.setOptions;                
+d.extractorSPEwarning;       
 
 %% ADVICE ABOUT CALLING PRINT/PLOT FUNCTIONS 
 %
@@ -36,7 +43,7 @@ pflag_histDRT    = false;      % DRT histogram plots
 pltflag_reservoir3D = false;   % 3D view of reservoir
 pltflag_wellDisp    = false;   % well's dispersion plots (by depth)
 pltflag_vtk         = false;   % export data to VTK
-pltflag_HFULoc      = false;   % DRT map overview (HFU locations)
+pltflag_HFULoc      = true;   % DRT map overview (HFU locations)
 pltflag_regression  = false;   % regression fit-line plots
 pltflag_histDRT     = false;   % histogram of DRT distribution
 
@@ -44,6 +51,7 @@ pltflag_histDRT     = false;   % histogram of DRT distribution
 %% PATHS TO REQUIRED INPUT FILES (POROSITY AND PERMEABILITY)
 
 % .mat files
+
 phiname = '../mat/PHI.mat';
 kxname  = '../mat/KX.mat';
 kyname  = '../mat/KY.mat';
@@ -59,11 +67,11 @@ perdat = setFile('../dat/spe_perm.dat');
 %% RUN OPTIONS
 
 % rerun / reload
-inrr = input('----> Rerun extractor? [0] no; [1] yes \n');
+inrr = input(d.extSPERerun);
 
 if inrr == 1             % rerun       
                      
-    disp('----> Rebuilding porosity and permeability matrices...');        
+    d.dispMsg(d.extSPERebuild);        
     phi = load(phidat,'-ascii');
     per = load(perdat,'-ascii');
     [ PHI, KX, KY, KZ ] = assemble3DArrays( phi, per, I, J, K );
@@ -72,25 +80,24 @@ if inrr == 1             % rerun
          
 elseif inrr == 0         % reload    
              
-    disp('----> Reloading porosity and permeability matrices...');                    
-    load(phiname,'PHI');
+    d.dispMsg(d.extSPEReload);                            
+    load(phiname,'PHI');    
     load(kxname,'KX');
     load(kyname,'KY');
-    load(kzname,'KZ');
+    load(kzname,'KZ');    
     
     svmat = false; % disables .mat saving
                       
 else
-    error('Option not recognized. Choose 0 or 1');
+    d.dispNotValid;
 end
 
 % method for well extraction: random / specific 
-opt = input(['----> Choose method for well extraction:',... 
-             '[0] N random wells; [1] specific well: \n']);
+opt = input(d.extSPEWExt);
 
 if ( opt == 0 || isempty(opt) ) % random    
     
-    N = input('----> Choose number of random wells to extract: \n');    
+    N = input(d.extSPEChooseN);    
     
     if N > I*J
         error( strcat(' > Maximum number of wells to extract is ', num2str(I*J),'!') ); 
@@ -104,8 +111,8 @@ elseif opt == 1 % specific
     
     N = 1;
     
-    ia = input('-------> Enter with I coordinate of the well: \n');
-    ja = input('-------> Enter with J coordinate of the well: \n');    
+    ia = input(d.extSPEWellI);
+    ja = input(d.extSPEWellJ);    
               
     if ia > I || ja > J 
         error( strcat( 'Maximum I= ',num2str(I), ' Maximum J= ',num2str(J) ) );
@@ -114,19 +121,19 @@ elseif opt == 1 % specific
     end
     
 else
-    error('Option not valid.');
+    d.dispNotValid;
 end
 
 % well data (gross csv)
 csv = false;
-csvd = input('----> Export gross well data to CSV? [0] no; [1] yes. \n');
+csvd = input(d.extSPEGrossCSV);
 if csvd == 1;
     csv = true;
 end
 
 % Regression analysis
 hist = false;
-histd = input('----> Compute histograms and regression analysis? [0] no; [1] yes. \n');
+histd = input(d.extSPELinRegr);
 if histd == 1;
     hist = true;
 end
@@ -347,86 +354,25 @@ end
 
 %% DISPERSIONS BY DEPTH 
 
-%{
-
-
-  depth
-  z @surface (voxel 1)
-    | o
-    |     o
-    |    
-    |o   
-    |  o 
-    |       o
-     ---------> phi, k(.)
-         
-
-%}
-
 if pltflag_wellDisp == true      
-    
-    %{ 
-        Remark: fliplr(k) and 'Ydir reverse' are necessary to view 
-        the dispersion data of the reservoir's with z = 0 at the
-        free surface and z = zmax at the bottom.        
-      
-    %}
-    dpx = 0.3; % graph padding
-    dpy = 2;    
-    figname = 'dispersion_I';
-    
+            
     i = 1;
     while i <= N     
         fprintf('Plotting dispersions for well %d...\n',i)                  
-        
-        % --------------- porosity 
+                
         figure                                
         subplot(2,2,1)              
-        scatter(wphi{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','r')
-        h = gca;
-        set(h,'YGrid','on','YDir','reverse');
-        xlim( [ (1.0 - dpx)*min(wphi{i}) (1.0 + dpx)*max(wphi{i}) ] )
-        ylim( [ -dpy K+dpy ] );        
-        title( strcat('Well (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );        
-        xlabel('$ \phi $','interpreter','latex');
-        ylabel('z'); 
-        
-        % --------------- permeability - x 
+        plotDispersion( wphi{i},wMat{i,3},'phi',ia,ja,i,'d','r');                        
         subplot(2,2,2)                 
-        scatter(wkx{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','g')
-        h = gca;
-        set(h,'YGrid','on','YDir','reverse');
-        xlim( [ (1.0 - dpx)*min(wkx{i}) (1.0 + dpx)*max(wkx{i}) ] )
-        ylim( [ -dpy K+dpy ] );
-        title( strcat('Well (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );        
-        xlabel('$ \kappa_x $','interpreter','latex');
-        ylabel('z'); 
-        
-        % --------------- permeability - y
+        plotDispersion( wkx{i},wMat{i,3},'kx',ia,ja,i,'d','g');                                      
         subplot(2,2,3)                 
-        scatter(wky{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','b')
-        h = gca;
-        set(h,'YGrid','on','YDir','reverse');
-        xlim( [ (1.0 - dpx)*min(wky{i}) (1.0 + dpx)*max(wky{i}) ] )
-        ylim( [ -dpy K+dpy ] );
-        title( strcat('Well (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );        
-        xlabel('$ \kappa_y $','interpreter','latex');
-        ylabel('z'); 
-        
-        % --------------- permeability - z
+        plotDispersion( wky{i},wMat{i,3},'ky',ia,ja,i,'d','b');                                        
         subplot(2,2,4)                        
-        scatter(wkz{i},fliplr(wMat{i,3}),'fill','d','MarkerFaceColor','m')        
-        h = gca;
-        set(h,'YGrid','on','YDir','reverse');
-        xlim( [ (1.0 - dpx)*min(wkz{i}) (1.0 + dpx)*max(wkz{i}) ] )
-        ylim( [ -dpy K+dpy ] );        
-        title( strcat('Well (',num2str( ia(i) ),',',num2str( ja(i) ),')' ) );        
-        xlabel('$ \kappa_z $','interpreter','latex');
-        ylabel('z'); 
+        plotDispersion( wkz{i},wMat{i,3},'kz',ia,ja,i,'d','m');                        
                  
         % print to file
         if pflag_dispersion == true
-            print('-dpdf','-r0',fullfile( '../figs/', strcat(figname,num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
+            print('-dpdf','-r0',fullfile( '../figs/', strcat('Dispersion_I',num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
         end
         
         i = i+1; 
@@ -437,15 +383,7 @@ end
 
 if pltflag_vtk == true
     disp('Exporting to VTK...');
-    savevtk_structured_spe(I,J,K,PHI,KX,KY,KZ,'../vtk/spe-phi-k-reservoir');                    
-    
-    i = 1;    
-    while i <= N  
-        I = ia(i); J = ja(i) ;
-        savevtk_structured_well_spe( i,I,J,wphi{i},wkx{i},wky{i},wkz{i},...
-                            strcat( '../vtk/spe-phi-k-well',num2str(i),'-',num2str(I),'_',num2str(J)) );                            
-        i = i + 1;        
-    end
+    savevtk_structured_spe(I,J,K,PHI,KX,KY,KZ,'../vtk/spe-phi-k-reservoir');                                
 end
 
 %% CSV EXPORT
@@ -677,7 +615,8 @@ if hist
             end
 
             % plot the best HFU locations per well
-            plotHFULoc( drtgood,depths,ia(i),ja(i) ); 
+            %drt2color = 13;
+            %plotHFULoc( drtgood,depths,ia(i),ja(i),drt2color ); 
         end
                 
 
@@ -686,6 +625,6 @@ if hist
 end
 
 %% ENDING
-disp('----> E X E C U T I O N    H A S    F I N I S H E D.');
-diary off
+d.printings(d.progStat{2});
+dm.deactivateLog;
 

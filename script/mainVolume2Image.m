@@ -1,13 +1,26 @@
-%% mainSubvolume2Image.m
+%% mainVolume2Image.m
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
 %   mail: gustavo.oliveira@ci.ufpb.br    
-%   date: Nov 16th, 2015      
+%   date: Nov 12nd, 2015      
 %
-%   Description: export reservoir data to image sequence
+%   Description: export reservoir volume data to image sequence
 
 clear all; close all; clc;
+
+% classes
+dm = SPEDirManager;
+dm.activateLog(mfilename);
+
+d = SPEDisplay;
+d.printSplScreen(mfilename); 
+d.printings(d.author1,d.author2,d.inst,d.progStat{1});
+d.setOptions;                
+d.extractorSPEDependency;  
+d.graphDataDependency;
+
+%%
 
 % file paths
 phiname = '../mat/PHI.mat';
@@ -24,18 +37,6 @@ aux = load('../mat/DRT_Field.mat');
 DRT = aux.DRT;
 id = find(DRT(:) == -Inf); % eliminating -Inf
 DRT(id) = 0.0;
-
-ic = 45; jc = 68; % well
-P = [14,14]; % VOI rings
-
-DRT = DRT( ic-P(1):ic+P(1), jc-P(2):jc+P(2), : );
-PHI = PHI( ic-P(1):ic+P(1), jc-P(2):jc+P(2), : );
-KX = KX( ic-P(1):ic+P(1), jc-P(2):jc+P(2), : );
-KY = KY( ic-P(1):ic+P(1), jc-P(2):jc+P(2), : );
-KZ = KZ( ic-P(1):ic+P(1), jc-P(2):jc+P(2), : );
-
-drt = 13;
-DRT = DRT == drt;
 
 met  = 'gray';
 switch met
@@ -61,6 +62,9 @@ svdir = '../img/';
 %fmt = '.tif';
 fmt = '.jpg';
 
+% option to compress to zip
+compr = false;
+
 % sweep layers
 for k = 1:size(PHI,3)    
     
@@ -68,35 +72,49 @@ for k = 1:size(PHI,3)
     %aux = num2str( size(PHI,3) - k + 1); 
     aux = num2str(k); 
     
-    reldir = 'subvol_phi_img';
+    reldir = 'phi_img';
     [~,~,~] = mkdir(svdir,reldir); % creates dir
-    name = 'subvol_phi_';    
+    name = 'spe2_phi_';    
     img = PHI(:,:,k);
         
     imwrite(img, strcat( fullfile(svdir, reldir, strcat(name,aux) ),fmt) );        
     
-    reldir = 'subvol_kx_img';
+    reldir = 'kx_img';
     [~,~,~] = mkdir(svdir,reldir);    
-    name = 'subvol_kx_';    
+    name = 'spe2_kx_';    
     img = KX(:,:,k);
     imwrite(img, strcat( fullfile(svdir, reldir, strcat(name,aux) ),fmt) );        
     
-    reldir = 'subvol_ky_img';
+    reldir = 'ky_img';
     [~,~,~] = mkdir(svdir,reldir);    
-    name = 'subvol_ky_';    
+    name = 'spe2_ky_';    
     img = KX(:,:,k);
     imwrite(img, strcat( fullfile(svdir, reldir, strcat(name,aux) ),fmt) );        
     
-    reldir = 'subvol_kz_img';
+    reldir = 'kz_img';
     [~,~,~] = mkdir(svdir,reldir);    
-    name = 'subvol_kz_';    
+    name = 'spe2_kz_';    
     img = KZ(:,:,k);
     imwrite(img, strcat( fullfile(svdir, reldir, strcat(name,aux) ),fmt) );        
     
-    reldir = strcat('subvol_drt',num2str(drt),'_img');
+    reldir = 'drt_img';
     [~,~,~] = mkdir(svdir,reldir);    
-    name = strcat('subvol_drt',num2str(drt),'_');    
+    name = 'spe2_drt_';    
     img = DRT(:,:,k);
     imwrite(img, strcat( fullfile(svdir, reldir, strcat(name,aux) ),fmt) );        
         
 end
+
+% compress files?
+if compr == true    
+    vol2Im = '-----> Compressing images to .zip...';
+    ! zip -1r ../img/phi ../img/phi_img/
+    ! zip -1r ../img/kx  ../img/kx_img/*
+    ! zip -1r ../img/ky  ../img/ky_img/*
+    ! zip -1r ../img/kz  ../img/kz_img/*
+    ! zip -1r ../img/drt ../img/drt_img/*        
+end
+
+%% ENDING
+d.printings(d.progStat{2});
+dm.deactivateLog;

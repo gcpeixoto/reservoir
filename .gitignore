@@ -15,5 +15,5 @@
 *.txt
 graphFlow
 graphMetrics
-extractor_spe/tmp/
-extractor_spe/dat/subdomain/
+tmp/
+dat/subdomain/

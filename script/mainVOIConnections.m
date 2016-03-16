@@ -6,23 +6,31 @@
 %   date: Oct 27th, 2015      
 %
 %   Description: gets the network and connected components
-%                for a VOI around a given seed voxel and 
-%                stores data structure
+%                for a VOI and stores data structure
 
 
 %% Defaults
 
 clear all; close all; clc;
-activateLog(mfilename);
-splshScreenVOIConnection;
+
+% classes
+dm = SPEDirManager;
+dm.activateLog(mfilename);
+
+d = SPEDisplay;
+d.printSplScreen(mfilename); 
+d.printings(d.author1,d.author2,d.inst,d.progStat{1});
+d.setOptions;                
+d.extractorSPEDependency;    
+d.graphDataDependency; 
 
 %%
 
 % load DRT matrix
 DRT = replaceInfDRT('../mat/DRT_Field.mat');
 
-ic = 26; jc = 120; kc = 1; % seed voxel
-P = [14,14,84]; % VOI rings
+ic = 45; jc = 68; kc = 1; % seed voxel (surface)
+P = [14,14,84]; % VOI rings (size) 
 
 % create dir
 wname = strcat('Well_I',num2str(ic),'_J',num2str(jc)); 
@@ -35,15 +43,6 @@ drtWell = unique ( reshape(drtWell, [size(DRT,3) 1]) );
 
 % get VOI
 [drt,VN,IND] = getVoxelRegion(ic,jc,kc,P,DRT);
-
-%%%% PLOT VOI
-% [F,V,C]=ind2patch(IND,DRT,'v');
-% hold on
-% patch('Faces',F,'Vertices',V,'FaceColor','flat','CData',C,'EdgeColor','k','FaceAlpha',0.5);
-% axis equal; view(3); axis tight; axis vis3d; grid off;
-% set(gca,'ZDir','reverse');
-% print('-dpdf','-r0','../figs/graphpath/VOI');
-%%%%
 
 % defining structure fields
 drtVOI.seed = [ic,jc,kc];
@@ -89,7 +88,8 @@ for m = 1:length( drtVOI.value )
                                ( coordsDRT(i,3) - coordsDRT(j,3) )^2 ); 
                   
                   % detecting neighbour voxels
-                  if dist <= sqrt(3)
+                  % if dist <= sqrt(3) %  26-neigh criterion (invalid for % CMG)
+                  if dist <= 1 %  6-neigh criterion
                       indIJ = [ indIJ; [ i j ] ];
                       edgeList = indIJ;                       
                   end                  
@@ -132,6 +132,10 @@ for m = 1:length( drtVOI.value )
     
     clear VOISt
 end
+
+%% ENDINGS
+d.printings(d.progStat{2});
+dm.deactivateLog;
 
 
 

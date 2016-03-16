@@ -1,4 +1,4 @@
-function plotVoxelNeigh3D(ic,jc,kc,P,PV,alpha,ZL,flag,tname,varargin)
+function plotVoxelNeigh3D(ic,jc,kc,P,PV,alpha,ZL,flag,tname,p,varargin)
 %  PLOTVOXELNEIGH3D plots the 26-neighborhood
 %     input: 
 %         ic,jc,kc: central voxel coordinate
@@ -10,6 +10,7 @@ function plotVoxelNeigh3D(ic,jc,kc,P,PV,alpha,ZL,flag,tname,varargin)
 %             flag: plot only voxels with zero entry?
 %                   'nonzero': yes; (default: no) 
 %            tname: character title name
+%                 p: print flag (true, false)
 %                     
 % 
 %     required: 
@@ -25,12 +26,12 @@ elseif nargin >= 6 && nargin < 9
     ZL = [];
     flag = '';
     tname = '';
+    p = false;
 end
     
 fig_color='w'; fig_colordef='white';
 cMap=jet(250);
 
-figure 
 if strcmp(flag,'nonzero') % plot only nonzero    
     indPatch = 1:numel(PV); % getting linear indices
     indPatch = setdiff(indPatch,ZL); % only nonzero    
@@ -56,9 +57,11 @@ set(gca,'XTick',[],'YTick',[],'ZTick',[])
 colormap(cMap); caxis( [ min(PV(:)), max(PV(:)) ] );
 colorbar
 
-% print to file    
-print('-depsc2','-r0',fullfile( '../figs/', ...
-    strcat('VoxelNeigh_IC_',num2str( ic ),'_JC', ...
-    num2str( jc ),'_KC_',num2str( kc ) ) ) );  
+if p
+    % print to file    
+    print('-depsc2','-r0',fullfile( '../figs/', ...
+        strcat('VoxelNeigh_IC_',num2str( ic ),'_JC', ...
+        num2str( jc ),'_KC_',num2str( kc ) ) ) );  
+end
 
 end

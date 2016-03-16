@@ -9,9 +9,16 @@
 %% DEFAULTS
 
 clear all; close all; clc;
-activateLog(mfilename);
-setOptions;
-splshScreenSub;
+
+% classes
+dm = SPEDirManager;
+dm.activateLog(mfilename);
+
+d = SPEDisplay;
+d.printSplScreen(mfilename); 
+d.printings(d.author1,d.author2,d.inst,d.progStat{1});
+d.setOptions;                
+d.extractorSPEDependency;    
 
 %% LOAD FILES
 
@@ -28,10 +35,10 @@ load(kzname,'KZ');
 
 %% INPUT DATA 
 
-ic = input('-----> Choose central voxel i coordinate: \n');
-jc = input('-----> Choose central voxel j coordinate: \n');
-kc = input('-----> Choose central voxel k coordinate: \n');
-P  = input('-----> Choose P ring radius: \n');
+ic = input(d.dispCCoord(1));
+jc = input(d.dispCCoord(2));
+kc = input(d.dispCCoord(3));
+P  = input(d.extSPESP);
 
 %% COMPUTATION
 
@@ -54,7 +61,9 @@ plotVoxelNeigh3D(ic,jc,kc,P,PHIVZ,1.0);
 % plot all DRTs
 drt = unique(DRTV(:));
 for i = 1:length(drt)
-     plotVoxelNeighByValue(ic,jc,kc,P,DRTV,drt(i),1.0,'DRT');   
+     plotVoxelNeighByValue(ic,jc,kc,P,DRTV,drt(i),1.0,'DRT',false);   
 end    
   
-diary off
+%% ENDING
+d.printings(d.progStat{2});
+dm.deactivateLog;

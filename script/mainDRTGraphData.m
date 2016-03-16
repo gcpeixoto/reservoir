@@ -16,12 +16,17 @@
 %
 
 %% DEFAULTS
-clear all; close all; clc; format long;
-delete('../log/extractorDRTGraphPath.log');
-diary('../log/extractorDRTGraphPath.log');
-diary on
+clear all; close all; clc;
 
-setOptions;
+% classes
+dm = SPEDirManager;
+dm.activateLog(mfilename);
+
+d = SPEDisplay;
+d.printSplScreen(mfilename); 
+d.printings(d.author1,d.author2,d.inst,d.progStat{1});
+d.setOptions;                
+d.extractorSPEDependency;   
 
 %% LOAD FILES
 
@@ -100,7 +105,7 @@ for m = 1:length(drt)
         Strategy:        
                     
             - Find the entries whose distance is less than sqrt(3), which
-              stands for the 26-voxel neighbourhood
+              stands for the 6-voxel (or 26-voxel) neighbourhood
     
             - Set up sparse adjacency matrix from the entries found to be
               able to create an undirected graph
@@ -121,7 +126,8 @@ for m = 1:length(drt)
                                ( coordsDRT(i,3) - coordsDRT(j,3) )^2 ); 
                   
                   % detecting neighbour voxels
-                  if dist <= sqrt(3)
+                  % if dist <= sqrt(3) %  26-neigh criterion (invalid for CMG)
+                  if dist <= 1 %  6-neigh criterion
                       indIJ = [ indIJ; [ i j ] ];
                       edgeList = indIJ;                       
                   end                  
@@ -281,5 +287,6 @@ id = find(DRT(:) == -Inf); % eliminating -Inf
 DRT(id) = 0.0;
 saveVtkCellCentered(DRT,'DRT_3D','DRT_Voxel','DRT_Point');
 
-close all
-diary off
+%% ENDING
+d.printings(d.progStat{2});
+dm.deactivateLog;

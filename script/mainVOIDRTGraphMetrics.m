@@ -1,12 +1,12 @@
-%% mainDRTGraphMetrics
+%% mainVOIDRTGraphMetrics
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
 %   mail: gustavo.oliveira@ci.ufpb.br    
-%   date: Oct 27th, 2015        
+%   date: Nov 17th, 2015        
 %             
-%   description: compute metrics and regression analysis for the whole 
-%                field's networks based on the DRT field value.
+%   description: compute metrics and regression analysis for the VOI
+%                networks based on the DRT field value.
 %
 %   requirements:
 %        - pre-computed .mat files
@@ -14,30 +14,45 @@
 %
 
 %% DEFAULTS
-clear all; close all; clc; format long;
-delete('../log/DRTgraphMetrics.log');
-diary('../log/DRTgraphMetrics.log');
-diary on
+clear all; close all; clc;
 
-disp('---- E X E C U T I N G   G R A P H   M E T R I C S ----');
+% classes
+dm = SPEDirManager;
+dm.activateLog(mfilename);
 
-aux = load('../mat/DRT_Field.mat');
-DRT = aux.DRT;
+d = SPEDisplay;
+d.printSplScreen(mfilename); 
+d.printings(d.author1,d.author2,d.inst,d.progStat{1});
+d.setOptions;                
+d.extractorSPEDependency;    
+d.VOIgraphDataDependency;
 
-matFiles = dir('../mat/DRT_*.mat'); 
+%% LOAD FILES
+
+load('../mat/DRT_Field.mat','DRT');
+load('../mat/PHIZ_Field.mat', 'PHIZ');
+load('../mat/RQI_Field.mat', 'RQI');
+load('../mat/FZI_Field.mat', 'FZI');
+
+
+% well 
+ic = 45; jc = 68;
+
+dbase = strcat( '../mat/Well_I',num2str(ic),'_J',num2str(jc),'/' );
+matFiles = dir( strcat(dbase,'VOI_DRT*.mat') ); 
 numfiles = length(matFiles);
     
 % sweeping DRTs
 for k = 1:numfiles 
     
-    st = load( strcat('../mat/',matFiles(k).name) ); 
-    val = st.drtSt.value; 
+    st = load( strcat(dbase,matFiles(k).name) ); 
+    val = st.VOISt.value; 
     
     fprintf('----> Sweeping DRT: %d... \n',val);
     
-    avc = st.drtSt.allVoxelCoords;
-    ncomps = st.drtSt.allNComps;    
-    Madj = st.drtSt.allAdjMatrix;    
+    avc = st.VOISt.allVoxelCoords;
+    ncomps = st.VOISt.allNComps;    
+    Madj = st.VOISt.allAdjMatrix;    
     
     metrics.drtValue = val;
     linregr.drtValue = val;
@@ -45,21 +60,21 @@ for k = 1:numfiles
     count = 0;
     for idComp = 1:ncomps        
         
-        cnn = st.drtSt.compNNodes{idComp};        
+        cnn = st.VOISt.compNNodes{idComp};        
                         
         if cnn > 10 % components with more than 10 nodes
             
-            cvc = st.drtSt.compVoxelCoords{idComp};
-            cvi = st.drtSt.compVoxelInds{idComp};            
+            cvc = st.VOISt.compVoxelCoords{idComp};
+            cvi = st.VOISt.compVoxelInds{idComp};            
   
             % performs linear regression
-            logPHIZ = st.drtSt.compLogPHIZ{idComp};
-            logRQI  = st.drtSt.compLogRQI{idComp};
+            logPHIZ = log( PHIZ(cvi) );
+            logRQI  = log( RQI(cvi) );
             [ R, m, b ] = regression( logPHIZ, logRQI, 'one' );
                         
             
             % linear regression criteria            
-            if ( m >= 0.95 && m <= 1.05 ) && ( R*R >= 0.9 && R*R <= 1.0 )
+%            if ( m >= 0.95 && m <= 1.05 ) && ( R*R >= 0.9 && R*R <= 1.0 )
                           
                 fprintf('----> Good component found: %d. Computing subgraph... \n',idComp);
                 count = count + 1; % component counter
@@ -74,7 +89,7 @@ for k = 1:numfiles
                     v = [ v; id ];                        % global indices
                 end                    
                 MadjComp = subgraph( Madj, v );           % component's adjacency matrix                
-                                                
+                
                 %------------------ centrality metrics 
                 fprintf('----> Computing metrics for %d nodes... \n', size(v,1) );
                 
@@ -82,17 +97,17 @@ for k = 1:numfiles
                 edfile = saveAdjEdges(MadjComp);  
                 ! ./../cpp/graphMetrics
                 [nodeID,deg,clns,betw] = getMetricsData(edfile);                
+                                
+                % ------------- @MIT Strat. Eng. VERY SLOW! 
+                %disp('----> Computing degree centrality...');
+                %[deg,~,~] = degrees(MadjComp);            % degree centrality                
                 
-                % -------- @MIT Strat. Eng. VERY SLOW!
-                % disp('----> Computing degree centrality...');
-                % [deg,~,~] = degrees(MadjComp);            % degree centrality                
-                 
-                % disp('----> Computing closeness centrality...');
-                % clns = closeness(MadjComp);               % closeness centrality   
-                 
-                % disp('----> Computing betweeness centrality...');
-                % betw = node_betweenness_slow(MadjComp);   % betweeness centrality                
-                % betw = betw';
+                %disp('----> Computing closeness centrality...');
+                %clns = closeness(MadjComp);               % closeness centrality   
+                
+                %disp('----> Computing betweeness centrality...');
+                %betw = node_betweenness_slow(MadjComp);   % betweeness centrality                
+                %betw = betw';
                 
                 maxC = max(clns);                         % max closeness = min farness
                 iC = find( clns == maxC );                % network closer nodes
@@ -113,28 +128,28 @@ for k = 1:numfiles
                 linregr.slope{count} = m;
                 linregr.offset{count} = b;
                 linregr.logPHIZ{count} = logPHIZ;
-                linregr.logRQI{count} = logRQI;
-                                                
-            end % regression loop
+                linregr.logRQI{count} = logRQI;                                
+                
+%            end % regression loop
             
         end % components with > 10 loop
         
     end % components loop
     
     if count ~= 0 % saving structure to .mat, if any 
-        save( strcat('../mat/DRT_',num2str( val ),'_MetricsData_','.mat'),'metrics');
+        save( strcat(dbase,'VOI_DRT_',num2str( val ),'_MetricsData','.mat'),'metrics');
         disp('----> metrics .mat file saved.')
 
-        save( strcat('../mat/DRT_',num2str( val ),'_LinRegrData_','.mat'),'linregr'); 
+        save( strcat(dbase,'VOI_DRT_',num2str( val ),'_LinRegrData','.mat'),'linregr'); 
         disp('----> regression .mat file saved.')
     else
         disp('----> No components found.');
     end
     
-    clear metrics linregr
+    clear VOISt;
     
 end % DRT loop
 
-%close all
-diary off
-disp('---- N O R M A L   T E R M I N A T I O N ----');
+%% ENDING
+d.printings(d.progStat{2});
+dm.deactivateLog;

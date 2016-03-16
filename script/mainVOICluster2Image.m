@@ -1,13 +1,30 @@
-%% mainComponent2Image.m
+%% mainVOICluster2Image.m
+%   authors: Dr. Gustavo Peixoto de Oliveira
+%            Dr. Waldir Leite Roque
+%            @Federal University of Paraiba
+%   mail: gustavo.oliveira@ci.ufpb.br    
+%   date: Nov 12nd, 2015      
+%
+%   Description: export cluster data to image sequence
 
 clear all; close all;
+
+% classes
+dm = SPEDirManager;
+dm.activateLog(mfilename);
+
+d = SPEDisplay;
+d.printSplScreen(mfilename); 
+d.printings(d.author1,d.author2,d.inst,d.progStat{1});
+d.setOptions;                
+d.extractorSPEDependency;  
+d.graphDataDependency;
+d.VOIgraphDataDependency;
+
 %% 
 
 % load DRT matrix
-aux = load('../mat/DRT_Field.mat');
-DRT = aux.DRT;
-id = find(DRT(:) == -Inf); % eliminating -Inf
-DRT(id) = 0.0;
+DRT = replaceInfDRT('../mat/DRT_Field.mat');
 DRT = 0*DRT;
 
 ic = 45; jc = 68; % well
@@ -39,3 +56,6 @@ for k = 1:size(vol,3);
     imwrite(img, strcat( fullfile(svdir, reldir, strcat(name,aux) ),fmt) );        
 end
     
+%% ENDING
+d.printings(d.progStat{2});
+dm.deactivateLog;
