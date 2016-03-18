@@ -43,10 +43,15 @@ pflag_histDRT    = false;      % DRT histogram plots
 pltflag_reservoir3D = false;   % 3D view of reservoir
 pltflag_wellDisp    = false;   % well's dispersion plots (by depth)
 pltflag_vtk         = false;   % export data to VTK
-pltflag_HFULoc      = true;   % DRT map overview (HFU locations)
+pltflag_HFULoc      = false;   % DRT map overview (HFU locations)
 pltflag_regression  = false;   % regression fit-line plots
 pltflag_histDRT     = false;   % histogram of DRT distribution
 
+%% DIR SETTING
+pflags = [pflag_dispersion,pflag_dispersion,pflag_regression,pflag_histDRT];
+if any(pflags)
+    if exist('../figs','dir') ~= 7; mkdir('../figs'); end    
+end
 
 %% PATHS TO REQUIRED INPUT FILES (POROSITY AND PERMEABILITY)
 
@@ -58,8 +63,8 @@ kyname  = '../mat/KY.mat';
 kzname  = '../mat/KZ.mat';
 
 %. dat files
-phidat = setFile('../dat/spe_phi.dat');
-perdat = setFile('../dat/spe_perm.dat');    
+phidat = '../dat/spe_phi.dat';
+perdat = '../dat/spe_perm.dat';    
 
 %% GRID BOUNDS
 [I,J,K] = setGridBounds(60,220,85);  % SPE 2 model default. DO NOT CHANGE!
@@ -104,7 +109,7 @@ if ( opt == 0 || isempty(opt) ) % random
     else        
         ia = randperm(I);   ia = ia(1:N);
         ja = randperm(J);   ja = ja(1:N);
-        printWellTable( ia, ja, N );
+        d.printWellTable( ia, ja, N );
     end
     
 elseif opt == 1 % specific
@@ -117,7 +122,7 @@ elseif opt == 1 % specific
     if ia > I || ja > J 
         error( strcat( 'Maximum I= ',num2str(I), ' Maximum J= ',num2str(J) ) );
     else
-        printWellTable( ia, ja, N );
+        d.printWellTable( ia, ja, N );
     end
     
 else
@@ -175,7 +180,7 @@ wsati = 0.0; % irreducible water saturation distribution
 %     if wsatimin1 > wsatimax1 || wsatimin2 > wsatimax2 || wsatimin3 > wsatimax3
 %         error('Minimum fraction > maximum fraction??');    
 %     else
-%         printWSatTable(wsatimin1,wsatimax1,wsatimin2,wsatimax2,wsatimin3,wsatimax3);
+%         d.printWSatTable(wsatimin1,wsatimax1,wsatimin2,wsatimax2,wsatimin3,wsatimax3);
 %     end               
 %     
 %     %{
@@ -208,8 +213,13 @@ wsati = 0.0; % irreducible water saturation distribution
 % end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-disp('Options saved. Running extractor...');
-             
+%% DIR 
+
+if (hist == true || csv == true || bland == true)
+    if exist('../csv','dir') ~= 7; mkdir('../csv'); end    
+end
+
+disp('Options saved. Running extractor...');            
 %% WELL STRUCTURE
 
 %{
@@ -381,8 +391,11 @@ end
 
 %% VTK EXPORT
 
-if pltflag_vtk == true
-    disp('Exporting to VTK...');
+if pltflag_vtk == true 
+    
+    if exist('../vtk','dir') ~= 7; mkdir('../vtk'); end    
+    
+    disp('Exporting to VTK...');        
     savevtk_structured_spe(I,J,K,PHI,KX,KY,KZ,'../vtk/spe-phi-k-reservoir');                                
 end
 
@@ -410,8 +423,8 @@ Format of CSV file
    LogRQI: log(RQI)
     
 %}
-if csv        
-    
+if csv       
+            
     % file header used in the loop
     head = {'i,'; 'j,'; 'k,'; 'phi_e,';            ...
            'kx,'; 'ky,'; 'kz,'; 'kn,'; 'phiz,';    ...
@@ -420,8 +433,7 @@ if csv
     head = head';
     txt=sprintf('%s\t',head{:});
     txt(end)='';
-    
-    csvname = 'well_I';        
+           
     i = 1;
     while i <= N    
         aux = [ wMat{i,1} wMat{i,2} wMat{i,3} wMat{i,4} ... 
@@ -430,7 +442,7 @@ if csv
                 wMat{i,13} wMat{i,14} wMat{i,15} wMat{i,16} wMat{i,17} ];
         
         fprintf('Exporting CSV file for well %d... \n',i);  
-        fname = fullfile( '../csv/', strcat(csvname,num2str( ia(i) ),'_J', num2str( ja(i) ),'.csv' ) );        
+        fname = fullfile( '../csv/', strcat('Well_I',num2str( ia(i) ),'_J', num2str( ja(i) ),'.csv' ) );        
         dlmwrite(fname,txt,'');
         dlmwrite(fname,aux,'-append');
                 
@@ -442,6 +454,9 @@ end
 %% Saving PHI,KX=KY,KZ to file for posterior use
 
 if svmat == true
+    
+    if exist('../mat','dir') ~= 7; mkdir('../mat'); end    
+    
     disp('Saving .mat files...');
     save('../mat/PHI.mat','PHI');
     save('../mat/KX.mat','KX');
@@ -460,8 +475,6 @@ if bland && ~isempty(wsati) % if wsat is empty, there's nothing to compare
     stdDif = zeros(N,1);
     sup = zeros(N,1);
     inf = zeros(N,1);
-
-    baname = 'Bland-Altman_I';
 
     for i = 1:N
         fprintf('Saving Bland-Altman plot for well %d... \n',i);  
@@ -487,8 +500,8 @@ if bland && ~isempty(wsati) % if wsat is empty, there's nothing to compare
         ylabel(' $ FZI_{AM-IG} $','interpreter','latex');  
 
         % print to file
-        if pflag_baltman == true
-            print('-dpdf','-r0',fullfile( '../figs/', strcat(baname,num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
+        if pflag_baltman == true            
+            print('-dpdf','-r0',fullfile( '../figs/', strcat('Bland-Altman_I',num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
         end
     end
     

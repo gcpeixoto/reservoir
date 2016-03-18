@@ -1,4 +1,4 @@
-classdef SPEDirManager
+classdef SPEDirManager < handle
     %SPEDirManager directory management    
     
     properties
@@ -7,7 +7,8 @@ classdef SPEDirManager
     methods (Static)
         
         % ACTIVATELOG
-        function activateLog(mainfile)    
+        function activateLog(mainfile)  
+            if exist('../log','dir') ~= 7; mkdir('../log'); end
             delete( strcat('../log/',mainfile,'.log') ); % delete old file
             diary( strcat('../log/',mainfile,'.log') ); diary on
         end
