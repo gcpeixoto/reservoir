@@ -1,5 +1,7 @@
 %% mainVOIGraphFlow
 
+%%%%%% TEST!!!
+
 clear all; close all; clc; 
 
 % classes
