@@ -26,7 +26,11 @@ d = SPEDisplay;
 d.printSplScreen(mfilename); 
 d.printings(d.author1,d.author2,d.inst,d.progStat{1});
 d.setOptions;                
-d.extractorSPEDependency;   
+d.extractorSPEDependency; 
+
+% voxel connectivity
+% REMARK: 26-neigh is invalid for CMG (no flow; finite volume approach)
+dv = setNeighDist('6'); 
 
 %% LOAD FILES
 
@@ -125,11 +129,10 @@ for m = 1:length(drt)
                                ( coordsDRT(i,2) - coordsDRT(j,2) )^2 + ...
                                ( coordsDRT(i,3) - coordsDRT(j,3) )^2 ); 
                   
-                  % detecting neighbour voxels
-                  % if dist <= sqrt(3) %  26-neigh criterion (invalid for CMG)
-                  if dist <= 1 %  6-neigh criterion
+                  % detecting neighbour voxels                  
+                  if dist <= dv     % connectivity criterion
                       indIJ = [ indIJ; [ i j ] ];
-                      edgeList = indIJ;                       
+                      edgeList = indIJ;                      
                   end                  
               end
          end

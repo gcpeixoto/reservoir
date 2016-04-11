@@ -7,7 +7,9 @@
 %
 %   Description: gets the network and connected components
 %                for a VOI and stores data structure
-
+%
+%
+% REMARK: encouraged to use non-interactive execution to not 'block' GUI.
 
 %% Defaults
 
@@ -32,14 +34,16 @@ DRT = replaceInfDRT('../mat/DRT_Field.mat');
 ic = 45; jc = 68; kc = 1; % seed voxel (surface)
 P = [14,14,84]; % VOI rings (size) 
 
-% create dir
-wname = strcat('Well_I',num2str(ic),'_J',num2str(jc)); 
-mkdir('../mat/', wname ); 
-dirp = strcat('../mat/', wname,'/'); 
+% creates output mat dir 
+dirp = dm.createWellDir(ic,jc,'mat');
+
+% voxel connectivity
+% REMARK: 26-neigh is invalid for CMG (no flow; finite volume approach)
+dv = setNeighDist('6'); 
  
 % DRT values over the well
 drtWell = DRT(ic,jc,:); 
-drtWell = unique ( reshape(drtWell, [size(DRT,3) 1]) );
+drtWell = unique ( reshape(drtWell, [size(DRT,3), 1]) );
 
 % get VOI
 [drt,VN,IND] = getVoxelRegion(ic,jc,kc,P,DRT);
@@ -68,7 +72,6 @@ for i = 1:length(drtWell)
     
 end
 
-
 % loop to get VOI graph data 
 for m = 1:length( drtVOI.value )       
     fprintf('----> m = %d... \n',m); 
@@ -78,18 +81,15 @@ for m = 1:length( drtVOI.value )
     
     disp('----> Computing distances...');        
     indIJ = [];
-    for i = 1:size(coordsDRT,1)
-        %fprintf('----> i = %d... \n',size(coordsDRT,1)-i); 
-        for j = i:size(coordsDRT,1)
-                                                            
+    for i = 1:size(coordsDRT,1)        
+        for j = i:size(coordsDRT,1) % d(i,j) = d(j,i)                                                            
               if i ~= j % skipping null distance 
                   dist = sqrt( ( coordsDRT(i,1) - coordsDRT(j,1) )^2 + ...
                                ( coordsDRT(i,2) - coordsDRT(j,2) )^2 + ...
                                ( coordsDRT(i,3) - coordsDRT(j,3) )^2 ); 
                   
-                  % detecting neighbour voxels
-                  % if dist <= sqrt(3) %  26-neigh criterion (invalid for % CMG)
-                  if dist <= 1 %  6-neigh criterion
+                  % detecting neighbour voxels                  
+                  if dist <= dv     % connectivity criterion
                       indIJ = [ indIJ; [ i j ] ];
                       edgeList = indIJ;                       
                   end                  
@@ -97,7 +97,7 @@ for m = 1:length( drtVOI.value )
          end
     end   
     aux = [ indIJ(:,2) indIJ(:,1) ]; % reverse edges [ j i ]
-    indIJ = [ indIJ; aux ]; % filling
+    indIJ = [ indIJ; aux ];          % filling
  
     disp('----> Computing adjacency matrix...');            
     % creates adjacency matrix n x n by marking 1 for connected nodes
@@ -136,8 +136,3 @@ end
 %% ENDINGS
 d.printings(d.progStat{2});
 dm.deactivateLog;
-
-
-
-
-

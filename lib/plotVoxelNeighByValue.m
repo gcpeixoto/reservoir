@@ -12,7 +12,7 @@ function plotVoxelNeighByValue( ic,jc,kc,P,PV,val,alpha,tname,p)
 %                     
 % 
 %     required: 
-%         Function 'ind2Patch' from Gibbon code.
+%         Function 'ind2patch' from Gibbon code.
 % 
 %  Gustavo Peixoto
 

@@ -146,8 +146,7 @@ for k = 1:numfiles
         dlmwrite(strcat('../dat/subdomain/',fname,'.dat'),A,'-append','delimiter','\t');            
         dlmwrite(strcat('../dat/subdomain/',fname,'.dat'),B,'-append','roffset',1,'delimiter','\t');            
                         
-        % --- plots histogram of components
-        % cplot = [1,2,180,369,379]; DRT 14 % components to plot        
+        % --- plots histogram of components                
         cplot = 1:4; % components to plot        
         lim = length(cplot);
         figure
@@ -170,10 +169,10 @@ end
 M = [ drtval, qntComps, qntGreaterComps ];
 
 % Max col
-[ilims1,jlims1,klims1,leni1,lenj1,lenk1,Ws1,nvcol1,cvcol1] = getClusterMaxCol(C1,DRT,drtValue);
-[ilims2,jlims2,klims2,leni2,lenj2,lenk2,Ws2,nvcol2,cvcol2] = getClusterMaxCol(C2,DRT,drtValue);
-[ilims3,jlims3,klims3,leni3,lenj3,lenk3,Ws3,nvcol3,cvcol3] = getClusterMaxCol(C3,DRT,drtValue);
-[ilims4,jlims4,klims4,leni4,lenj4,lenk4,Ws4,nvcol4,cvcol4] = getClusterMaxCol(C4,DRT,drtValue);
+%[ilims1,jlims1,klims1,leni1,lenj1,lenk1,Ws1,nvcol1,cvcol1] = getClusterMaxCol(C1,DRT,drtValue);
+%[ilims2,jlims2,klims2,leni2,lenj2,lenk2,Ws2,nvcol2,cvcol2] = getClusterMaxCol(C2,DRT,drtValue);
+%[ilims3,jlims3,klims3,leni3,lenj3,lenk3,Ws3,nvcol3,cvcol3] = getClusterMaxCol(C3,DRT,drtValue);
+%[ilims4,jlims4,klims4,leni4,lenj4,lenk4,Ws4,nvcol4,cvcol4] = getClusterMaxCol(C4,DRT,drtValue);
 
 %% ENDING
 d.printings(d.progStat{2});

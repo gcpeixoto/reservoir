@@ -106,9 +106,10 @@ for k = 1:size(PHI,3)
 end
 
 % compress files?
+% Unix command: zip
 if compr == true    
     vol2Im = '-----> Compressing images to .zip...';
-    ! zip -1r ../img/phi ../img/phi_img/
+    ! zip -1r ../img/phi ../img/phi_img/*
     ! zip -1r ../img/kx  ../img/kx_img/*
     ! zip -1r ../img/ky  ../img/ky_img/*
     ! zip -1r ../img/kz  ../img/kz_img/*

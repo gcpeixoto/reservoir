@@ -49,7 +49,7 @@ A Matlab-based tool to study petroleum reservoir characterization based on the [
 * [mainDRTGraphData](md/mainDRTGraphData.md)
 * [mainDRTGraphMetrics](md/mainDRTGraphMetrics.md)
 
-### Family 2
+### Family 3
 
 * [mainVOIConnections](md/mainVOIConnections.md)
 * [mainVOIDRTGraphData](md/mainVOIDRTGraphData.md)
@@ -64,16 +64,31 @@ A Matlab-based tool to study petroleum reservoir characterization based on the [
 
 ## Third-party dependencies
 
-* [GIBBON code](http://www.gibboncode.org), by Kevin M. Moerman @MIT (some methods for data
-  processing) 
+* [GIBBON code](http://www.gibboncode.org), by Kevin M. Moerman @MIT
+  (REMARK: only the functions `ind2patch` and `logic2subind` are used
+  for plotting. However the whole toolbox is recommended.) 
 * [SNAP library](http://snap.stanford.edu), by Jure Leskovec @Stanford
-  (graph manipulation)
+  (graph manipulation; see instructions on how to compile it on
+  UNIX-based machines)
 * [Network components](http://danlarremore.com/), by Daniel Larremore @Harvard (clustering decomposition)
+* [MIT-SE Network toolbox](http://strategic.mit.edu/downloads.php?page=matlab_networks), by Buonova G., and de Weck, O.L @MIT Strategic Engineering Research Group (graph manipulation)
 
 # Instructions
 
-- Add _script_ and _lib_ dirs, as well as the dependencies (download and
-  save to any dir) to the Matlab search path by using the GUI or 
-  `addpath( genpath('gibbon_path'), genpath('network_component_path')
-  )`.
+- Download the dependencies, arrange your directory layout and compile SNAP;
+- Then, run the script `lib/configurePaths.m` or use the Matlab GUI `Set Path` 
+  to set the paths.
 
+### Suggestion of layout: 
+
+``` bash
+$USER/Programs/gibbon/
+$USER/Programs/matlab-tools/
+$USER/Programs/snap/
+```
+
+# Remarks
+
+- This toolbox is operational on Mac OSX and it is supposed to work on
+  UNIX-based platforms. For Windows, some adaptions are still required
+  to work and the code was not tested therein.
