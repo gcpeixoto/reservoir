@@ -31,8 +31,10 @@ ic = 45; jc = 68; % well
 P = [14,14]; % VOI rings
 drt = 14;
 
-aux = load('../mat/DRT_VOI_14_Well_I45_J68.mat');
-VOI = aux.VOISt;
+% load VOI structure to get cluster information
+[fout,wname] = dm.createWellDir(ic,jc,'mat');
+vfile = dm.setVOIFile(fout,wname,drt);
+load(vfile,'VOISt');
 
 % saving dir
 svdir = '../img/';
@@ -41,7 +43,7 @@ svdir = '../img/';
 fmt = '.jpg';
 
 j = 3; % component number
-ind = VOI.compVoxelInds{j};
+ind = VOISt.compVoxelInds{j};
 DRT(ind) = 1;
 vol = DRT( ic-P(1):ic+P(1), jc-P(2):jc+P(2), : );
 vol = mat2gray(vol);

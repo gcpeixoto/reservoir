@@ -33,10 +33,7 @@ load(kxname,'KX');
 load(kyname,'KY');
 load(kzname,'KZ');
 
-aux = load('../mat/DRT_Field.mat');
-DRT = aux.DRT;
-id = find(DRT(:) == -Inf); % eliminating -Inf
-DRT(id) = 0.0;
+DRT = replaceInfDRT('../mat/DRT_Field.mat');
 
 met  = 'gray';
 switch met
@@ -62,8 +59,8 @@ svdir = '../img/';
 %fmt = '.tif';
 fmt = '.jpg';
 
-% option to compress to zip
-compr = false;
+% option to compress to zip (require .zip)
+compr = true;
 
 % sweep layers
 for k = 1:size(PHI,3)    
@@ -107,13 +104,23 @@ end
 
 % compress files?
 % Unix command: zip
-if compr == true    
-    vol2Im = '-----> Compressing images to .zip...';
-    ! zip -1r ../img/phi ../img/phi_img/*
-    ! zip -1r ../img/kx  ../img/kx_img/*
-    ! zip -1r ../img/ky  ../img/ky_img/*
-    ! zip -1r ../img/kz  ../img/kz_img/*
-    ! zip -1r ../img/drt ../img/drt_img/*        
+if compr == true && isunix                  
+        
+    scal = 'phi';
+    dm.zipCmd(scal,true);            
+        
+    scal = 'kx';
+    dm.zipCmd(scal,true);               
+        
+    scal = 'ky';
+    dm.zipCmd(scal,true);               
+        
+    scal = 'kz';
+    dm.zipCmd(scal,true);               
+        
+    scal = 'drt';
+    dm.zipCmd(scal,true);                       
+            
 end
 
 %% ENDING

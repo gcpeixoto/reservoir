@@ -1,5 +1,6 @@
 %% configurePaths
-% This script adds dependent folders to your Matlab path
+% This script adds dependent folders to your Matlab path.
+% However, you can also use the GUI 'Set Path'.
 
 bdir = '/Users/gustavo/Programs/';                  % specify your base dir 
 gibbon_path = fullfile(bdir,'gibbon');              % Gibbon dir

@@ -1,4 +1,6 @@
 function cleanAllSPE
+%CLEANALLSPE delete post-processed files
+
     delete( strcat('../csv/*.csv') );
     delete( strcat('../csv/subdomain/*.csv') );
     delete( strcat('../log/*.log') );

@@ -31,10 +31,7 @@ load(kxname,'KX');
 load(kyname,'KY');
 load(kzname,'KZ');
 
-aux = load('../mat/DRT_Field.mat');
-DRT = aux.DRT;
-id = find(DRT(:) == -Inf); % eliminating -Inf
-DRT(id) = 0.0;
+DRT = replaceInfDRT('../mat/DRT_Field.mat');
 
 ic = 45; jc = 68; % well
 P = [14,14]; % VOI rings
