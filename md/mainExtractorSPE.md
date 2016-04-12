@@ -4,7 +4,7 @@ Main and primary script to extract well data.
 
 ## Pre-processing
 
-* Load porosity ![equation](http://www.sciweavers.org/tex2img.php?eq=%20%5Cphi%20&bc=Transparent&fc=Black&im=png&fs=12&ff=mathpazo&edit=0) and permeability ![equation](http://bit.ly/1NP49vQ)files to rebuild the reservoir.
+* Load porosity and permeability .dat files to rebuild the reservoir.
 
 ### Run options
 
