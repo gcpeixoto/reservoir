@@ -56,7 +56,7 @@ A Matlab-based tool to study petroleum reservoir characterization based on the [
 * [mainVOIDRTGraphMetrics](md/mainVOIDRTGraphMetrics.md)
 * [mainVOIMetricsAnalyzer](md/mainVOIMetricsAnalyzer.md)
 
-### Family 3
+### Family 4
 
 * [mainVolume2Image](md/mainVolume2Image.md)
 * [mainSubVolume2Image](md/mainSubVolume2Image.md)
@@ -70,8 +70,10 @@ A Matlab-based tool to study petroleum reservoir characterization based on the [
 * [SNAP library](http://snap.stanford.edu), by Jure Leskovec @Stanford
   (graph manipulation; see instructions on how to compile it on
   UNIX-based machines)
-* [Network components](http://danlarremore.com/), by Daniel Larremore @Harvard (clustering decomposition)
+* [Network components](http://danlarremore.com/), by Daniel Larremore @Harvard (clustering decomposition). Function is also available on Matlab File Exchange [here](http://www.mathworks.com/matlabcentral/fileexchange/42040-find-network-components).
 * [MIT-SE Network toolbox](http://strategic.mit.edu/downloads.php?page=matlab_networks), by Buonova G., and de Weck, O.L @MIT Strategic Engineering Research Group (graph manipulation)
+* [Networkx](http://networkx.github.io/), by Aric Hagberg, Dan Schult
+  and Pieter Swart (REMARK: used in python scripts. TEST!)
 
 # Instructions
 

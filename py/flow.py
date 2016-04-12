@@ -1,3 +1,4 @@
+""" Solution of maximum flow problem. TEST! """
 import networkx as nx
 import numpy as np
 
