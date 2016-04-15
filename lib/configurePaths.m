@@ -2,15 +2,20 @@
 % This script adds dependent folders to your Matlab path.
 % However, you can also use the GUI 'Set Path'.
 
-bdir = '/Users/gustavo/Programs/';                  % specify your base dir 
+resdir = '/Users/gustavo/reservoir';                % reservoir dir
+bdir = '/Users/gustavo/Programs/';                  % third-party base dir 
+
 gibbon_path = fullfile(bdir,'gibbon');              % Gibbon dir
 matlab_tools_path = fullfile(bdir,'matlab-tools');  % Matlab tools
 snap_path = fullfile(bdir,'snap');                  % SNAP dir
 
+script_dir = fullfile(resdir,'script');             % script dir
+lib_dir = fullfile(resdir,'lib');                   % lib dir
 
 % set paths
 % addDependencies(path1,path2,...,pathn)    
-depaths = addDependencies(gibbon_path,matlab_tools_path,snap_path);
+depaths = addDependencies(gibbon_path,matlab_tools_path,snap_path,...
+                          script_dir,lib_dir);
 for i = 1:length(depaths)
     
     if ~exist(depaths{i},'dir')
@@ -20,10 +25,6 @@ for i = 1:length(depaths)
     end
 end
 
-% lib + script
-addpath(pwd); addpath('../script/');
-
-
 % clear variables
-clear('i','bdir','depaths');
+clear('i','bdir','resdir','depaths');
 clear -regexp \W*path
