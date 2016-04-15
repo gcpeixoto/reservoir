@@ -1,8 +1,20 @@
+# Makefile for SNAP compilation
+# Author: Gustavo Peixoto de Oliveira
 
-# compiler
-#CXX = clang++
-CXX = clang-omp++
-#CXX = g++
+# compiler selection according to OS
+
+UNAME = $(shell uname -s)
+
+# Linux
+ifeq ($(findstring Linux,${UNAME})),Linux)
+ CXX = g++
+endif
+
+# Mac OS
+ifeq ($(findstring Darwin,${UNAME})),Darwin)
+ #CXX = clang++
+ CXX = clang-omp++
+endif
 
 # flags
 CXXFLAGS = -g -std=c++98 -Wall
@@ -11,29 +23,16 @@ LFLAGS =
 # directories
 BASE_DIR = .
 
+# check SNAP_DIR 
+: "$SNAP_DIR:?Environmental variable SNAP_DIR is not set! Set it!"
+
 # inclusions
 INCLUDES += -I${BASE_DIR} 
-#INCLUDES += -I${MATLAB_DIR}/extern/include
 INCLUDES += -I${SNAP_DIR}/snap-core
 INCLUDES += -I${SNAP_DIR}/snap-exp
 INCLUDES += -I${SNAP_DIR}/snap-adv
 INCLUDES += -I${SNAP_DIR}/glib-core
 INCLUDES += -I${SNAP_DIR}/glib-adv
-
-# Matlab .mex files
-#UNAME = $(shell uname -s)
-# Linux
-#ifeq ($(findstring Linux,${UNAME})),Linux)
-# CINCLUDE = -I$(MATLAB_DIR)/extern/include -I. -shared
-# EXT = mexa64
-#endif
-
-# Mac OS
-#ifeq ($(findstring Darwin,${UNAME})),Darwin)
-# CINCLUDE = -L$(MATLAB_DIR)/bin/maci64 -I. -shared -lmx -lmex -lmat
-# EXT = mexmaci64
-# CXXFLAGS += -std=c++11
-#endif
 
 # get list of all .cpp files in the current dir
 SRC = $(wildcard ${BASE_DIR}/*.cpp) 
