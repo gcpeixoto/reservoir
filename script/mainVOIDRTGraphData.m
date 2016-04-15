@@ -152,7 +152,7 @@ for k = 1:numfiles
         figure
         hname = strcat('CompHistogram_DRT_',num2str(val));                    
         %[icc,ncc,mncc,isol,nisol] = plotCompHist(st.VOISt.value,st.VOISt.compVoxelCoords,lim,0.5,[0.5,100]);
-        %print(gcf,'-dpdf',strcat('../figs/graphPath/',hname));        
+        %print(gcf,'-dpdf',strcat('../figs/',hname));        
         
         % --- plots the component 
         for q = 1:lim;            

@@ -19,7 +19,7 @@ xlabel('J');
 ylabel('I');
 zlabel('K');
 
-print('-depsc2','-r0',fullfile( '../figs/graphPath', ...
+print('-depsc2','-r0',fullfile( '../figs/', ...
         strcat('Voxel_Regions_DRT_',num2str( val ) ) ) );  
 
 end

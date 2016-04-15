@@ -77,18 +77,26 @@ A Matlab-based tool to study petroleum reservoir characterization based on the [
 
 # Instructions
 
-- Download the dependencies, arrange your directory layout and compile SNAP;
-- Then, run the script `lib/configurePaths.m` or use the Matlab GUI `Set Path` 
-  to set the paths.
-
-### Suggestion of layout: 
-
+- Download the third-party dependencies; 
+- Arrange your own directory layout or follow the example below: 
 ``` bash
-$USER/Programs/gibbon/
-$USER/Programs/matlab-tools/
-$USER/Programs/snap/
+$USER/Programs/gibbon/       # installation directory of Gibbon
+$USER/Programs/matlab-tools/ # ditto Matlab tools
+$USER/Programs/snap/         # ditto SNAP
+$USER/Programs/networkx/     # ditto Networkx (test; not mandatory)
 ```
-
+- Define the environment variable `SNAP_DIR` pointing to SNAP
+installation directory, then compile SNAP:_
+``` bash 
+echo 'export SNAP_DIR=$USER/Programs/snap' > ~/.bashrc
+cd $SNAP_DIR; make all
+```
+- Run the script `configurePaths.m` from inside `/lib` or use the 
+Matlab GUI `Set Path` to set the paths to the dependencies.
+- Compile `.cpp` files to interface with SNAP:
+``` bash
+cd cpp; make
+```
 # Remarks
 
 - This toolbox is operational on Mac OSX and it is supposed to work on

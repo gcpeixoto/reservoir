@@ -19,6 +19,7 @@ clear all; close all; clc;
 
 % classes
 dm = SPEDirManager;
+dm.createDirStructure;
 dm.activateLog(mfilename);
 
 d = SPEDisplay;

@@ -110,6 +110,11 @@ classdef SPEDisplay < handle
         end
         
         
+        function VOIConnectionsDependency
+            warning('this method requires .mat files from mainVOIConnections.m');
+        end
+        
+        
         function dispTest
             warning('THIS METHOD IS UNDER TESTING!');
         end    

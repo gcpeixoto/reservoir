@@ -35,7 +35,7 @@ ic = 45; jc = 68; kc = 1; % seed voxel (surface)
 P = [14,14,84]; % VOI rings (size) 
 
 % creates output mat dir 
-[dirp,~] = dm.createWellDir(ic,jc,'mat');
+[dirp,wname] = dm.createWellDir(ic,jc,'mat');
 
 % voxel connectivity
 % REMARK: 26-neigh is invalid for CMG (no flow; finite volume approach)

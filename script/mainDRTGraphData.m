@@ -27,6 +27,7 @@ d.printSplScreen(mfilename);
 d.printings(d.author1,d.author2,d.inst,d.progStat{1});
 d.setOptions;                
 d.extractorSPEDependency; 
+d.VOIConnectionsDependency;
 
 % voxel connectivity
 % REMARK: 26-neigh is invalid for CMG (no flow; finite volume approach)
@@ -221,7 +222,7 @@ for m = 1:length(drt)
        log(  RQI( indz ) ) ];
         
     % preparing csv file
-    fname1 = strcat('../csv/graphpath/GraphDataAll','_DRT_',num2str( drt(m) ),'.csv');    
+    fname1 = strcat('../csv/GraphDataAll','_DRT_',num2str( drt(m) ),'.csv');    
     dlmwrite(fname1,txt,'');        
     
     % append matrix
@@ -267,7 +268,7 @@ for m = 1:length(drt)
         if idcomp == 1 
             disp('----> csv file saved - component.');
             % preparing csv file
-            fname2 = strcat('../csv/graphpath/GraphDataComp_',num2str(idcomp),'_DRT_',num2str( drt(m) ),'.csv');        
+            fname2 = strcat('../csv/GraphDataComp_',num2str(idcomp),'_DRT_',num2str( drt(m) ),'.csv');        
             dlmwrite(fname2,txt,'');        
          
             % append matrix 
