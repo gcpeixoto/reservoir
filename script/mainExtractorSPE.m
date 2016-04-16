@@ -214,12 +214,6 @@ wsati = 0.0; % irreducible water saturation distribution
 % end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% DIR 
-
-if (hist == true || csv == true || bland == true)
-    if exist('../csv','dir') ~= 7; mkdir('../csv'); end    
-end
-
 disp('Options saved. Running extractor...');            
 %% WELL STRUCTURE
 
@@ -392,10 +386,7 @@ end
 
 %% VTK EXPORT
 
-if pltflag_vtk == true 
-    
-    if exist('../vtk','dir') ~= 7; mkdir('../vtk'); end    
-    
+if pltflag_vtk == true     
     disp('Exporting to VTK...');        
     savevtk_structured_spe(I,J,K,PHI,KX,KY,KZ,'../vtk/spe-phi-k-reservoir');                                
 end
@@ -454,10 +445,7 @@ end
 
 %% Saving PHI,KX=KY,KZ to file for posterior use
 
-if svmat == true
-    
-    if exist('../mat','dir') ~= 7; mkdir('../mat'); end    
-    
+if svmat == true    
     disp('Saving .mat files...');
     save('../mat/PHI.mat','PHI');
     save('../mat/KX.mat','KX');
@@ -629,8 +617,7 @@ if hist
             end
 
             % plot the best HFU locations per well
-            %drt2color = 13;
-            %plotHFULoc( drtgood,depths,ia(i),ja(i),drt2color ); 
+            plotHFULoc( drtgood,depths,ia(i),ja(i) ); 
         end
                 
 

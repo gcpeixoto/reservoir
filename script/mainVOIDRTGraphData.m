@@ -112,10 +112,10 @@ for k = 1:numfiles
         izcp = find( cpCoords(:,3) == Z(i) );                        
         lateralCompVoxels{i,2} = cpCoords(izcp,:);
         
-        C1 = st.VOISt.compVoxelCoords{1};
-        C2 = st.VOISt.compVoxelCoords{2};
-        C3 = st.VOISt.compVoxelCoords{3};
-        C4 = st.VOISt.compVoxelCoords{4};
+        %C1 = st.VOISt.compVoxelCoords{1};
+        %C2 = st.VOISt.compVoxelCoords{2};
+        %C3 = st.VOISt.compVoxelCoords{3};
+        %C4 = st.VOISt.compVoxelCoords{4};
                    
         end
         
@@ -142,9 +142,12 @@ for k = 1:numfiles
         hdr = {'idComp,';'nComp,';'nCompi/nComp,';'nCompi/nRes'};
         hdr = hdr';            
         fname = strcat('idCompTable_DRT_',num2str(val));            
-        dlmwrite(strcat('../dat/subdomain/',fname,'.dat'),hdr,'delimiter','');
-        dlmwrite(strcat('../dat/subdomain/',fname,'.dat'),A,'-append','delimiter','\t');            
-        dlmwrite(strcat('../dat/subdomain/',fname,'.dat'),B,'-append','roffset',1,'delimiter','\t');            
+        
+        cld = '../dat/clusterData/';
+        if exist(cld,'dir') ~= 7; mkdir(cld); end   % create            
+        dlmwrite(strcat(cld,fname,'.dat'),hdr,'delimiter','');
+        dlmwrite(strcat(cld,fname,'.dat'),A,'-append','delimiter','\t');            
+        dlmwrite(strcat(cld,fname,'.dat'),B,'-append','roffset',1,'delimiter','\t');            
                         
         % --- plots histogram of components                
         cplot = 1:4; % components to plot        

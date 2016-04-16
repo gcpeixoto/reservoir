@@ -1,10 +1,10 @@
 # SPEReservoir
 
-A Matlab-based tool to study petroleum reservoir characterization based on the [SPE 2 Model](http://www.spe.org/web/csp/datasets/set02.htm) synthetic field.
+A Matlab-based toolbox to study petroleum reservoir characterization based on the [SPE 2 Model](http://www.spe.org/web/csp/datasets/set02.htm) synthetic field.
 
 ### Metadata
 
-- Authors and Team: 
+- Authors: 
  - Gustavo PEIXOTO DE OLIVEIRA, D.Sc.
  - Waldir Leite ROQUE, Ph.D.
 
@@ -39,24 +39,24 @@ A Matlab-based tool to study petroleum reservoir characterization based on the [
 
 ## Script main files
 
-### Family 1
+### Family 1 (reconstruction of the SPE model and volume extraction)
 
 * [mainExtractorSPE](md/mainExtractorSPE.md)
 * [mainExtractorSPESubdomain](md/mainExtractorSPESubdomain.md)
 
-### Family 2
+### Family 2 (operations over the entire field)
 
 * [mainDRTGraphData](md/mainDRTGraphData.md)
 * [mainDRTGraphMetrics](md/mainDRTGraphMetrics.md)
 
-### Family 3
+### Family 3 (operations over a _Volume Of Interest_-VOI within the field)
 
 * [mainVOIConnections](md/mainVOIConnections.md)
 * [mainVOIDRTGraphData](md/mainVOIDRTGraphData.md)
 * [mainVOIDRTGraphMetrics](md/mainVOIDRTGraphMetrics.md)
 * [mainVOIMetricsAnalyzer](md/mainVOIMetricsAnalyzer.md)
 
-### Family 4
+### Family 4 (conversion of volumes to images)
 
 * [mainVolume2Image](md/mainVolume2Image.md)
 * [mainSubVolume2Image](md/mainSubVolume2Image.md)
@@ -73,31 +73,47 @@ A Matlab-based tool to study petroleum reservoir characterization based on the [
 * [Network components](http://danlarremore.com/), by Daniel Larremore @Harvard (clustering decomposition). Function is also available on Matlab File Exchange [here](http://www.mathworks.com/matlabcentral/fileexchange/42040-find-network-components).
 * [MIT-SE Network toolbox](http://strategic.mit.edu/downloads.php?page=matlab_networks), by Buonova G., and de Weck, O.L @MIT Strategic Engineering Research Group (graph manipulation)
 * [Networkx](http://networkx.github.io/), by Aric Hagberg, Dan Schult
-  and Pieter Swart (REMARK: used in python scripts. TEST!)
+  and Pieter Swart (REMARK: used in python scripts. THIS IS UNDER
+  TESTING!)
 
-# Instructions
+# Instructions for compilation and build
 
 - Download the third-party dependencies; 
-- Arrange your own directory layout or follow the example below: 
-``` bash
+- Arrange your own directory layout or follow the example below:
+
+	```bash
 $USER/Programs/gibbon/       # installation directory of Gibbon
 $USER/Programs/matlab-tools/ # ditto Matlab tools
 $USER/Programs/snap/         # ditto SNAP
 $USER/Programs/networkx/     # ditto Networkx (test; not mandatory)
-```
+	```
+
 - Define the environment variable `SNAP_DIR` pointing to SNAP
 installation directory, then compile SNAP:_
-``` bash 
-echo 'export SNAP_DIR=$USER/Programs/snap' > ~/.bashrc
-cd $SNAP_DIR; make all
-```
+
+	```bash 
+	echo 'export SNAP_DIR=$USER/Programs/snap' > ~/.bashrc
+	cd $SNAP_DIR; make all
+	```
+
 - Run the script `configurePaths.m` from inside `/lib` or use the 
 Matlab GUI `Set Path` to set the paths to the dependencies.
 - Compile `.cpp` files to interface with SNAP:
-``` bash
-cd cpp; make
-```
-# Remarks
+
+	```bash
+	cd /cpp; make
+	```
+
+# Some definitions  
+
+- **voxel:**: elementary structure; also called **cell** or **block** 
+- **field:** the entire SPE 2 Model, i.e. a grid of 60 x 220 x 85 voxels
+- **reservoir:** a subset of the field (VOI) based on
+a 3D Moore's neighborhood
+- **well:** a subset of a reservoir formed by a column of 85 voxels
+- **cluster:** an irregular set of voxels connected by a criterion of neighbourhood selection
+
+# Troubleshooting remarks
 
 - This toolbox is operational on Mac OSX and it is supposed to work on
   UNIX-based platforms. For Windows, some adaptions are still required

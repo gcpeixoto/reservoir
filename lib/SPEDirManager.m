@@ -67,20 +67,39 @@ classdef SPEDirManager < handle
         end
         
         function createDirStructure
+            
             if exist('../csv/','dir') ~= 7; 
                 mkdir('../csv/');                 
             end    
-            if exist('../figs/','dir') ~= 7; 
-                mkdir('../figs/');                 
+            
+            if exist('../vtk/','dir') ~= 7; 
+                mkdir('../vtk/');                 
             end    
             
             if exist('../txt/','dir') ~= 7; 
                 mkdir('../txt/');                 
             end    
             
+            if exist('../mat/','dir') ~= 7; 
+                mkdir('../mat/');                 
+            end    
+            
+            if exist('../img/','dir') ~= 7; 
+                mkdir('../img/');                 
+            end    
+            
+            if exist('../figs/','dir') ~= 7; 
+                mkdir('../figs/');                 
+            end    
+            
             if exist('../tmp/','dir') ~= 7; 
                 mkdir('../tmp/');                 
             end    
+            
+            if exist('../log/','dir') ~= 7; 
+                mkdir('../log/');                 
+            end    
+            
         end
         
     end
