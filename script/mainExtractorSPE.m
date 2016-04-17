@@ -1,4 +1,4 @@
-%% mainExtractorSPE.m - Data extractor for oil wells
+%% mainExtractorSPE.m - SPE 2 Model builder
 %      
 %     authors: Dr. Gustavo Peixoto de Oliveira
 %              Dr. Waldir Leite Roque
@@ -25,14 +25,14 @@ dm.activateLog(mfilename);
 d = SPEDisplay;
 d.printSplScreen(mfilename); 
 d.printings(d.author1,d.author2,d.inst,d.progStat{1});
-d.setOptions;                
-d.extractorSPEwarning;       
+d.setOptions;                       
 
 %% ADVICE ABOUT CALLING PRINT/PLOT FUNCTIONS 
 %
 % 'print' and 'plot' functions are time-consuming and were 
 % switched off by default. In case of print/plot something to file
-% or only for visualization purposes, switch on the required flags
+% or only for visualization purposes, switch on the required flags.
+% Note that 'print' depends on 'plot'.
 
 % print flags 
 pflag_dispersion = false;      % well's dispersion plots
@@ -48,55 +48,13 @@ pltflag_HFULoc      = false;   % DRT map overview (HFU locations)
 pltflag_regression  = false;   % regression fit-line plots
 pltflag_histDRT     = false;   % histogram of DRT distribution
 
-%% DIR SETTING
-pflags = [pflag_dispersion,pflag_dispersion,pflag_regression,pflag_histDRT];
-if any(pflags)
-    if exist('../figs','dir') ~= 7; mkdir('../figs'); end    
-end
-
-%% PATHS TO REQUIRED INPUT FILES (POROSITY AND PERMEABILITY)
-
-% .mat files
-
-phiname = '../mat/PHI.mat';
-kxname  = '../mat/KX.mat';
-kyname  = '../mat/KY.mat';
-kzname  = '../mat/KZ.mat';
-
-%. dat files
-phidat = '../dat/spe_phi.dat';
-perdat = '../dat/spe_perm.dat';    
-
 %% GRID BOUNDS
 [I,J,K] = setGridBounds(60,220,85);  % SPE 2 model default. DO NOT CHANGE!
     
+% reload/build arrays
+[PHI,KX,KY,KZ] = buildModel(d,I,J,K);
+
 %% RUN OPTIONS
-
-% rerun / reload
-inrr = input(d.extSPERerun);
-
-if inrr == 1             % rerun       
-                     
-    d.dispMsg(d.extSPERebuild);        
-    phi = load(phidat,'-ascii');
-    per = load(perdat,'-ascii');
-    [ PHI, KX, KY, KZ ] = assemble3DArrays( phi, per, I, J, K );
-    
-    svmat = true; % enables .mat saving
-         
-elseif inrr == 0         % reload    
-             
-    d.dispMsg(d.extSPEReload);                            
-    load(phiname,'PHI');    
-    load(kxname,'KX');
-    load(kyname,'KY');
-    load(kzname,'KZ');    
-    
-    svmat = false; % disables .mat saving
-                      
-else
-    d.dispNotValid;
-end
 
 % method for well extraction: random / specific 
 opt = input(d.extSPEWExt);
@@ -234,8 +192,6 @@ disp('Options saved. Running extractor...');
     
 %}
 
-
-disp('Creating cell arrays for wells...');
 % storing cells 
 wphi  = cell(1,N);
 wkx   = cell(1,N);
@@ -256,7 +212,7 @@ wMat  = cell(N,17);
 disp('Sweeping wells...');
 % sweeping wells
 for i = 1:N    
-
+        
     aux = reshape( PHI(ia(i),ja(i),:), [ K 1 ] );
     wphi{i} = aux; 
             
@@ -281,14 +237,14 @@ for i = 1:N
     
     % IG method (water saturation)
     wMFZI{i} = wRQI{i}./( wphiz{i}.*(1.0 - wsati).^(3.0/2.0) );    
-    wMDRT{i} = round( 2*log( wMFZI{i} ) + 10.6 );
+    wMDRT{i} = round( 2*log( wMFZI{i} ) + 10.6 );   % <=== basis e!!!
     
     % PJP method ( Energy Tech 2015 (3), 726-733 )
     wFZIStar{i} = wRQI{i};    
 
     % Logarithms (added to ease fit data plot)
-    wLogPhiz{i} = log( wphiz{i} );
-    wLogRQI{i} = log( wRQI{i} );
+    wLogPhiz{i} = log10( wphiz{i} );    % <=== basis 10!!!
+    wLogRQI{i} = log10( wRQI{i} );
     
     % indices ( i = ia, j = ja, k )    
     wia = ia(i)*ones( length( wphi{i} ),1 );
@@ -307,8 +263,7 @@ for i = 1:N
     % find
     wid = find( wphi{i} ~= 0 );     
     wid0 = find( wphi{i} == 0 );   
-    saveExpurgatedIds( wid0, ia(i), ja(i) ); % export expurgated points
-    
+        
     % shorten
     wia = wia(wid);
     wja = wja(wid);
@@ -347,6 +302,12 @@ for i = 1:N
     wMat{i,16} = wLogPhiz{i};
     wMat{i,17} = wLogRQI{i};
     
+    % create well dir
+    [fout,wname] = dm.createWellDir(ia(i),ja(i),'csv');
+    
+    % export expurgated points
+    saveExpurgatedIds(wid0,ia(i),ja(i),fout);         
+    
     fprintf('Well %d: (%d,%d) done.\n',i,ia(i),ja(i) );
 end
 
@@ -377,7 +338,9 @@ if pltflag_wellDisp == true
                  
         % print to file
         if pflag_dispersion == true
-            print('-dpdf','-r0',fullfile( '../figs/', strcat('Dispersion_I',num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
+            % create well dir
+            [fout,wname] = dm.createWellDir(ia(i),ja(i),'figs');
+            print('-dpdf','-r0',fullfile(fout,strcat('Dispersion_',wname)));
         end
         
         i = i+1; 
@@ -388,7 +351,7 @@ end
 
 if pltflag_vtk == true     
     disp('Exporting to VTK...');        
-    savevtk_structured_spe(I,J,K,PHI,KX,KY,KZ,'../vtk/spe-phi-k-reservoir');                                
+    savevtk_structured_spe(I,J,K,PHI,KX,KY,KZ,'../vtk/Field-Phi-K');                                
 end
 
 %% CSV EXPORT
@@ -434,7 +397,9 @@ if csv
                 wMat{i,13} wMat{i,14} wMat{i,15} wMat{i,16} wMat{i,17} ];
         
         fprintf('Exporting CSV file for well %d... \n',i);  
-        fname = fullfile( '../csv/', strcat('Well_I',num2str( ia(i) ),'_J', num2str( ja(i) ),'.csv' ) );        
+        
+        [fout,wname] = dm.createWellDir(ia(i),ja(i),'csv');        
+        fname = fullfile( fout,strcat('Table_',wname,'.csv') );        
         dlmwrite(fname,txt,'');
         dlmwrite(fname,aux,'-append');
                 
@@ -443,15 +408,6 @@ if csv
 end
 
 
-%% Saving PHI,KX=KY,KZ to file for posterior use
-
-if svmat == true    
-    disp('Saving .mat files...');
-    save('../mat/PHI.mat','PHI');
-    save('../mat/KX.mat','KX');
-    save('../mat/KY.mat','KY');
-    save('../mat/KZ.mat','KZ');
-end
 
 
 %% Bland-Altman 
@@ -489,8 +445,9 @@ if bland && ~isempty(wsati) % if wsat is empty, there's nothing to compare
         ylabel(' $ FZI_{AM-IG} $','interpreter','latex');  
 
         % print to file
-        if pflag_baltman == true            
-            print('-dpdf','-r0',fullfile( '../figs/', strcat('Bland-Altman_I',num2str( ia(i) ),'_J', num2str( ja(i) ) ) ) );
+        if pflag_baltman == true     
+            [fout,wname] = dm.createWellDir(ia(i),ja(i),'figs');  
+            print('-dpdf','-r0',fullfile(fout,strcat('Bland-Altman_',wname)));
         end
     end
     
@@ -499,9 +456,7 @@ end
 %% Histogram, Regression Analysis and related CSV files
 
 if hist
-        
-    hname = 'HistogramDRTs';
-    regname = 'Regression_I';
+                
     nfreq = 3; % number of DRT frequencies to analyze in regression 
     seps = 0.05; % slope tolerance for regression fit line (1.0-seps,1.0+seps)
 
@@ -524,9 +479,8 @@ if hist
         end
         
         if pflag_histDRT == true
-            print('-dpdf','-r0',fullfile( '../figs/', ...
-                       strcat(hname,num2str( ia(i) ),'_J', ...
-                                      num2str( ja(i) ) ) ) ); 
+            [fout,wname] = dm.createWellDir(ia(i),ja(i),'figs');  
+            print('-dpdf','-r0',fullfile(fout,strcat('HistogramDRT_',wname)));                                   
         end
         
         % create cell for best DRTs found                         
@@ -537,8 +491,8 @@ if hist
         drtgood = [];  % best DRTs
         for j = 1:length(drt)
             idk = find( wMat{i,12} == drt(j) );
-            dataDRT{j,1} = log( wMat{i,9}(idk) );  % phiz
-            dataDRT{j,2} = log( wMat{i,10}(idk) ); % RQI
+            dataDRT{j,1} = log10( wMat{i,9}(idk) );  % phiz
+            dataDRT{j,2} = log10( wMat{i,10}(idk) ); % RQI
             dataDRT{j,3} = wMat{i,3}(idk);         % z coordinates        
 
             [rj, mj, bj ] = regression( dataDRT{j,1}, dataDRT{j,2},'one' );
@@ -565,7 +519,8 @@ if hist
                 
                 % csv file [ logphiz, logRQI, depth ] per DRT                
                 fprintf('Exporting CSV file of logs/depth data for well(%d,%d); DRT %d... \n', ia(i), ja(i), drt(j) );  
-                fname = fullfile( '../csv/', strcat(regname,num2str( ia(i) ),'_J', num2str( ja(i) ),'_DRT_',num2str( drt(j) ),'_LogsDepth','.csv' ) );
+                [fout,wname] = dm.createWellDir(ia(i),ja(i),'csv');  
+                fname = fullfile(fout,strcat('Regression_',wname,'_DRT_',num2str( drt(j) ),'_LogsDepth','.csv' ) );
                 auxmat = [ dataDRT{j,1} dataDRT{j,2} dataDRT{j,3} ];
                                 
                 % header
@@ -578,7 +533,7 @@ if hist
 
                 % csv file: fit data
                 fprintf('Exporting CSV file of regression fit data for well(%d,%d); DRT %d... \n', ia(i), ja(i), drt(j) );  
-                fname = fullfile( '../csv/', strcat(regname,num2str( ia(i) ),'_J', num2str( ja(i) ),'_DRT_',num2str( drt(j) ),'_FitData','.csv' ) );
+                fname = fullfile(fout,strcat('Regression_',wname,'_DRT_',num2str( drt(j) ),'_FitData','.csv' ) );                
                 
                 % REMARK: rj value from regression() above is computed by Matlab 
                 %         as it is. To have R-squared (R^2) value 
@@ -597,9 +552,8 @@ if hist
                 
                 % print to file   
                 if pflag_regression == true
-                    print('-dpdf','-r0',fullfile( '../figs/', ...
-                       strcat(regname,num2str( ia(i) ),'_J', ...
-                                      num2str( ja(i) ), ...
+                    [fout,wname] = dm.createWellDir(ia(i),ja(i),'figs');  
+                    print('-dpdf','-r0',fullfile(fout,strcat('Regression_',wname,...
                                       '_DRT_',num2str( drt(j) ) ) ) );                
                 end
                 
@@ -617,7 +571,9 @@ if hist
             end
 
             % plot the best HFU locations per well
-            plotHFULoc( drtgood,depths,ia(i),ja(i) ); 
+            plotHFULoc(drtgood,depths,ia(i),ja(i)); 
+            [fout,wname] = dm.createWellDir(ia(i),ja(i),'figs');  
+            print('-dpdf','-r0',fullfile(fout,strcat('DRTDistribution_',wname)));
         end
                 
 
