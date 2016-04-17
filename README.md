@@ -42,7 +42,7 @@ A Matlab-based toolbox to study petroleum reservoir characterization based on th
 ### Family 1 (reconstruction of the SPE model and volume extraction)
 
 * [mainExtractorSPE](md/mainExtractorSPE.md)
-* [mainExtractorSPESubdomain](md/mainExtractorSPESubdomain.md)
+* [mainExtractorSPESubvolume](md/mainExtractorSPESubvolume.md)
 
 ### Family 2 (operations over the entire field)
 
