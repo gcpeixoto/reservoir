@@ -83,12 +83,6 @@ classdef SPEDisplay < handle
         end
                       
         %%  WARNINGS
-        
-        function extractorSPEwarning        
-            warning(['running mainExtractorSPE for the first time? ',...
-                     'Choose rerun (option [1]) below to load .mat files.']);            
-        end
-        
                 
         function extractorSPEDependency        
             warning('this method requires .mat files from mainExtractorSPE.m.');
