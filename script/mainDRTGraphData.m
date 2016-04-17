@@ -35,16 +35,7 @@ dv = setNeighDist('6');
 
 %% LOAD FILES
 
-% file paths
-phiname = '../mat/PHI.mat';
-kxname  = '../mat/KX.mat';
-kyname  = '../mat/KY.mat';
-kzname  = '../mat/KZ.mat';
-
-load(phiname,'PHI');
-load(kxname,'KX');
-load(kyname,'KY');
-load(kzname,'KZ');
+[PHI,KX,KY,KZ] = loadMatFiles;
 
 %% COMPUTATION OF PROPERTIES
 
@@ -61,7 +52,6 @@ if ~isempty( coords )
 end
 
 DRT = round( 2*log( FZI ) + 10.6 );
-
 % saving 3D arrays
 save('../mat/KN_Field.mat','KN'); 
 save('../mat/PHIZ_Field.mat','PHIZ'); 
@@ -122,7 +112,7 @@ for m = 1:length(drt)
         
     indIJ = [];
     for i = 1:size(coordsDRT,1)
-        fprintf('----> i = %d... \n',size(coordsDRT,1)-i); 
+        %fprintf('----> i = %d... \n',size(coordsDRT,1)-i); 
         for j = i:size(coordsDRT,1)
                                                             
               if i ~= j % skipping null distance 
@@ -140,6 +130,11 @@ for m = 1:length(drt)
     end   
     aux = [ indIJ(:,2) indIJ(:,1) ]; % reverse edges [ j i ]
     indIJ = [ indIJ; aux ]; % filling
+    
+    if isempty(indIJ)
+        fprintf('----> No connections found for DRT = %d... \n',drt(m));
+        continue;
+    end
     
     disp('----> Computing adjacency matrix...');            
     % creates adjacency matrix n x n by marking 1 for connected nodes
@@ -189,22 +184,22 @@ for m = 1:length(drt)
         
     disp('----> Setting up structure - global ...');
     % global  
-    drtSt.value = drt(m);                    % DRT value
-    drtSt.allAdjMatrix = MDadj;              % graph adjacency matrix
-    drtSt.allAdjEdgeList = edgeList;         % graph edge list
-    drtSt.allVoxelCoords = coordsDRT;        % voxel coordinates (i,j,k)     
-    drtSt.allVoxelInds = indz;               % voxel linear indices
-    drtSt.allPHI = PHI( indz );              % effective porosity
-    drtSt.allKX = KX( indz );                % permeability-x
-    drtSt.allKY = KY( indz );                % permeability-y
-    drtSt.allKZ = KZ( indz );                % permeability-z
-    drtSt.allKN = KN( indz );                % permeability-norm
-    drtSt.allPHIZ = PHIZ( indz );            % normalised porosity
-    drtSt.allRQI = RQI( indz );              % RQI
-    drtSt.allFZI = FZI( indz );              % FZI
-    drtSt.allLogPHIZ = log( PHIZ( indz ) );  % as is
-    drtSt.allLogRQI = log( RQI( indz ) );    % as is
-    drtSt.allNComps = ncomp;                 % number of components in the graph
+    drtSt.value = drt(m);                     % DRT value
+    drtSt.allAdjMatrix = MDadj;               % graph adjacency matrix
+    drtSt.allAdjEdgeList = edgeList;          % graph edge list
+    drtSt.allVoxelCoords = coordsDRT;         % voxel coordinates (i,j,k)     
+    drtSt.allVoxelInds = indz;                % voxel linear indices
+    drtSt.allPHI = PHI( indz );               % effective porosity
+    drtSt.allKX = KX( indz );                 % permeability-x
+    drtSt.allKY = KY( indz );                 % permeability-y
+    drtSt.allKZ = KZ( indz );                 % permeability-z
+    drtSt.allKN = KN( indz );                 % permeability-norm
+    drtSt.allPHIZ = PHIZ( indz );             % normalised porosity
+    drtSt.allRQI = RQI( indz );               % RQI
+    drtSt.allFZI = FZI( indz );               % FZI
+    drtSt.allLogPHIZ = log10( PHIZ( indz ) ); % as is
+    drtSt.allLogRQI = log10( RQI( indz ) );   % as is
+    drtSt.allNComps = ncomp;                  % number of components in the graph
 
     % mount matrix to export
     mat = [ coordsDRT(:,1) ... 
@@ -218,8 +213,8 @@ for m = 1:length(drt)
             PHIZ( indz )   ...
             RQI( indz )    ...
             FZI( indz )    ...
-       log( PHIZ( indz ) ) ...
-       log(  RQI( indz ) ) ];
+       log10( PHIZ( indz ) ) ...
+       log10(  RQI( indz ) ) ];
         
     % preparing csv file
     fname1 = strcat('../csv/GraphDataAll','_DRT_',num2str( drt(m) ),'.csv');    
@@ -246,8 +241,8 @@ for m = 1:length(drt)
         drtSt.compPHIZ{idcomp} = PHIZ( indz( members{idcomp} ) );
         drtSt.compRQI{idcomp} = RQI( indz( members{idcomp} ) );
         drtSt.compFZI{idcomp} = FZI( indz( members{idcomp} ) );
-        drtSt.compLogPHIZ{idcomp} = log( PHIZ( indz( members{idcomp} ) ) );
-        drtSt.compLogRQI{idcomp} = log( RQI( indz( members{idcomp} ) ) ); 
+        drtSt.compLogPHIZ{idcomp} = log10( PHIZ( indz( members{idcomp} ) ) );
+        drtSt.compLogRQI{idcomp} = log10( RQI( indz( members{idcomp} ) ) ); 
                   
         % matrix to export
         mat = [ aux(:,1)                         ... 
@@ -261,8 +256,8 @@ for m = 1:length(drt)
                PHIZ( indz( members{idcomp} ) )   ...
                 RQI( indz( members{idcomp} ) )   ...
                 FZI( indz( members{idcomp} ) )   ...
-          log( PHIZ( indz( members{idcomp} ) ) ) ...
-          log(  RQI( indz( members{idcomp} ) ) ) ];
+        log10( PHIZ( indz( members{idcomp} ) ) ) ...
+        log10(  RQI( indz( members{idcomp} ) ) ) ];
                       
         % getting only the most connected component (first one in the list)
         if idcomp == 1 
