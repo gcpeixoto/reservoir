@@ -46,12 +46,12 @@ A Matlab-based toolbox to study petroleum reservoir characterization based on th
 
 ### Family 2 (operations over the entire field)
 
-* [mainDRTGraphData](md/mainDRTGraphData.md)
-* [mainDRTGraphMetrics](md/mainDRTGraphMetrics.md)
+* [mainFieldDRTConnections](md/mainFieldDRTConnections.md)
+* [mainFieldDRTGraphMetrics](md/mainFieldDRTGraphMetrics.md)
 
 ### Family 3 (operations over a _Volume Of Interest_-VOI within the field)
 
-* [mainVOIConnections](md/mainVOIConnections.md)
+* [mainVOIDRTConnections](md/mainVOIDRTConnections.md)
 * [mainVOIDRTGraphData](md/mainVOIDRTGraphData.md)
 * [mainVOIDRTGraphMetrics](md/mainVOIDRTGraphMetrics.md)
 * [mainVOIMetricsAnalyzer](md/mainVOIMetricsAnalyzer.md)

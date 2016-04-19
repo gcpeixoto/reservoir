@@ -85,7 +85,7 @@ classdef SPEDisplay < handle
         %%  WARNINGS
                 
         function extractorSPEDependency        
-            warning('this method requires .mat files from mainExtractorSPE.m.');
+            warning('this method requires .mat files from buildModel > In mainExtractorSPE.m.');
         end
               
         

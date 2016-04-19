@@ -1,4 +1,4 @@
-%% mainDRTGraphMetrics
+%% mainFieldDRTGraphMetrics
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -25,9 +25,13 @@ d.printSplScreen(mfilename);
 d.printings(d.author1,d.author2,d.inst,d.progStat{1});
 d.setOptions;                
 d.extractorSPEDependency; 
-d.graphDataDependency;
 
-DRT = load('../mat/DRT_Field.mat','DRT');
+nofn = 10;   % minimum number of voxels to consider per component 
+seps = 0.05; % linear regression epsilon for slope [1-seps,1+seps]
+R2min = 0.9; % minimum R2 coefficient acceptable
+
+% load DRT
+[~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
 
 matFiles = dir('../mat/DRT_*.mat'); 
 numfiles = length(matFiles);
@@ -35,14 +39,14 @@ numfiles = length(matFiles);
 % sweeping DRTs
 for k = 1:numfiles 
     
-    st = load( strcat('../mat/',matFiles(k).name) ); 
-    val = st.drtSt.value; 
+    load( strcat('../mat/',matFiles(k).name),'drtSt'); 
+    val = drtSt.value; 
     
     fprintf('----> Sweeping DRT: %d... \n',val);
     
-    avc = st.drtSt.allVoxelCoords;
-    ncomps = st.drtSt.allNComps;    
-    Madj = st.drtSt.allAdjMatrix;    
+    avc = drtSt.allVoxelCoords;
+    ncomps = drtSt.allNComps;    
+    Madj = drtSt.allAdjMatrix;    
     
     metrics.drtValue = val;
     linregr.drtValue = val;
@@ -50,21 +54,21 @@ for k = 1:numfiles
     count = 0;
     for idComp = 1:ncomps        
         
-        cnn = st.drtSt.compNNodes{idComp};        
+        cnn = drtSt.compNNodes{idComp};        
                         
-        if cnn > 10 % components with more than 10 nodes
+        if cnn >= nofn % significative components 
             
-            cvc = st.drtSt.compVoxelCoords{idComp};
-            cvi = st.drtSt.compVoxelInds{idComp};            
+            cvc = drtSt.compVoxelCoords{idComp};
+            cvi = drtSt.compVoxelInds{idComp};            
   
             % performs linear regression
-            logPHIZ = st.drtSt.compLogPHIZ{idComp};
-            logRQI  = st.drtSt.compLogRQI{idComp};
+            logPHIZ = drtSt.compLogPHIZ{idComp};
+            logRQI  = drtSt.compLogRQI{idComp};
             [ R, m, b ] = regression( logPHIZ, logRQI, 'one' );
                         
             
-            % linear regression criteria            
-            if ( m >= 0.95 && m <= 1.05 ) && ( R*R >= 0.9 && R*R <= 1.0 )
+            % linear regression criteria                 
+            %if ( m >= 1-seps && m <= 1+seps ) && (R*R >= R2min)
                           
                 fprintf('----> Good component found: %d. Computing subgraph... \n',idComp);
                 count = count + 1; % component counter
@@ -99,7 +103,7 @@ for k = 1:numfiles
                 metrics.degreeCentrality{count} = deg;
                 metrics.closenessCentrality{count} = clns;
                 metrics.betweenessCentrality{count} = betw;                
-                metrics.centerVoxelCoords{count} = ivC;
+                metrics.maxClosenessVoxelCoords{count} = ivC;
                 metrics.adjMatrix{count} = MadjComp;
                                 
                 linregr.idComp{count} = idComp;
@@ -109,23 +113,23 @@ for k = 1:numfiles
                 linregr.logPHIZ{count} = logPHIZ;
                 linregr.logRQI{count} = logRQI;
                                                 
-            end % regression loop
+            %end % regression loop
             
-        end % components with > 10 loop
+        end % components with > nofn loop
         
     end % components loop
     
     if count ~= 0 % saving structure to .mat, if any 
-        save( strcat('../mat/DRT_',num2str( val ),'_MetricsData_','.mat'),'metrics');
+        save( strcat('../mat/DRT_',num2str( val ),'_MetricsData','.mat'),'metrics');
         disp('----> metrics .mat file saved.')
 
-        save( strcat('../mat/DRT_',num2str( val ),'_LinRegrData_','.mat'),'linregr'); 
+        save( strcat('../mat/DRT_',num2str( val ),'_LinRegrData','.mat'),'linregr'); 
         disp('----> regression .mat file saved.')
     else
         disp('----> No components found.');
     end
     
-    clear metrics linregr
+    %clear metrics linregr
     
 end % DRT loop
 

@@ -20,8 +20,8 @@ d.dispTest;
 
 %% Load properties 
 
-% load DRT matrix
-DRT = replaceInfDRT('../mat/DRT_Field.mat');
+% load DRT
+[~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
 
 % directory
 [I,J,K] = setGridBounds(60,220,85); % default

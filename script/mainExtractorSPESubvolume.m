@@ -31,15 +31,7 @@ d.extractorSPEDependency;
 %% LOAD FILES
 
 % file paths
-phiname = '../mat/PHI.mat';
-kxname  = '../mat/KX.mat';
-kyname  = '../mat/KY.mat';
-kzname  = '../mat/KZ.mat';
-
-load(phiname,'PHI');
-load(kxname,'KX');
-load(kyname,'KY');
-load(kzname,'KZ');
+[PHI,KX,KY,KZ,~,~,~,~,~] = loadMatFiles;
 
 %% INPUT DATA 
 

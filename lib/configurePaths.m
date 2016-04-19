@@ -2,8 +2,11 @@
 % This script adds dependent folders to your Matlab path.
 % However, you can also use the GUI 'Set Path'.
 
-resdir = '/Users/gustavo/reservoir';                % reservoir dir
+resdir = '/Users/gustavo/reservoir/';                % reservoir dir
+%resdir = '/home/tatiana/reservoir/';
+
 bdir = '/Users/gustavo/Programs/';                  % third-party base dir 
+%bdir = '/home/tatiana/Programs/';
 
 gibbon_path = fullfile(bdir,'gibbon');              % Gibbon dir
 matlab_tools_path = fullfile(bdir,'matlab-tools');  % Matlab tools

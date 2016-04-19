@@ -23,8 +23,8 @@ d.extractorSPEDependency;
 d.graphDataDependency;
 
 %% 
-% load DRT matrix
-DRT = replaceInfDRT('../mat/DRT_Field.mat');
+% load DRT
+[~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
 
 % well
 ic = 45; jc = 68;

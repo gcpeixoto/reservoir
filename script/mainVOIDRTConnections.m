@@ -1,4 +1,4 @@
-%% mainVOIConnections
+%% mainVOIDRTConnections
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -24,12 +24,11 @@ d.printSplScreen(mfilename);
 d.printings(d.author1,d.author2,d.inst,d.progStat{1});
 d.setOptions;                
 d.extractorSPEDependency;    
-d.graphDataDependency; 
 
 %%
 
-% load DRT matrix
-DRT = replaceInfDRT('../mat/DRT_Field.mat');
+% load DRT
+[~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
 
 ic = 45; jc = 68; kc = 1; % seed voxel (surface)
 P = [14,14,84]; % VOI rings (size) 
@@ -40,23 +39,46 @@ P = [14,14,84]; % VOI rings (size)
 % voxel connectivity
 % REMARK: 26-neigh is invalid for CMG (no flow; finite volume approach)
 dv = setNeighDist('6'); 
- 
-% DRT values over the well
-drtWell = DRT(ic,jc,:); 
-drtWell = unique ( reshape(drtWell, [size(DRT,3), 1]) );
 
 % get VOI
 [drt,VN,IND] = getVoxelRegion(ic,jc,kc,P,DRT);
+
+%{ 
+    Approaches to compute the clusters:
+
+    The flag 'DRT_strategy' can have two values:
+ 
+    i) 'reservoir': the code will compute all the connected 
+                    components belonging to the DRT values found
+                    only over the central well of the reservoir.
+
+   ii) 'well':      ditto, except that the computation will consider
+                    the DRT values over all the reservoir.
+
+%}
+DRT_strategy = 'reservoir';
+%DRT_strategy = 'well';
+
+switch DRT_strategy
+    
+    case 'well'                 
+        drtVec = DRT(ic,jc,:); 
+        drtVec = unique ( reshape(drtVec, [size(DRT,3), 1]) );
+        
+    case 'reservoir';           
+        drtVec = unique(drt(drt>0)); % bypass DRT = 0
+        %drtVec = unique ( reshape(drtVec, [size(DRT,3), 1]) );
+end
 
 % defining structure fields
 drtVOI.seed = [ic,jc,kc];
 drtVOI.rings = P;
 
 % sweeping DRT values of the well
-for i = 1:length(drtWell)
+for i = 1:length(drtVec)
     
-    drtval = drtWell(i); % DRT
-    
+    drtval = drtVec(i); % DRT
+        
     I = find( drt == drtval ); % getting local indices
     v = [];
     ind = [];

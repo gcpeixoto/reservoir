@@ -43,11 +43,8 @@ load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_LinRegrData.mat'),'linregr' );
 % DRT data structure
 load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_',wellfile,'.mat'),'VOISt' );
 
-% KN 
-load('../mat/KN_Field.mat','KN');
-
-% load DRT matrix
-DRT = replaceInfDRT('../mat/DRT_Field.mat');
+% load 
+[~,~,~,~,KN,~,~,~,DRT] = loadMatFiles;
 
 ncomp = numel(metrics.idComp);      % number of components
 

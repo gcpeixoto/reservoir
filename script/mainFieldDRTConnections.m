@@ -1,4 +1,4 @@
-%% mainDRTGraphData
+%% mainFieldDRTConnections - find DRT connected components for the whole field
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -27,40 +27,22 @@ d.printSplScreen(mfilename);
 d.printings(d.author1,d.author2,d.inst,d.progStat{1});
 d.setOptions;                
 d.extractorSPEDependency; 
-d.VOIConnectionsDependency;
 
 % voxel connectivity
 % REMARK: 26-neigh is invalid for CMG (no flow; finite volume approach)
 dv = setNeighDist('6'); 
 
-%% LOAD FILES
+csv_flag = false; % to save .csv for whole field 
+vtk_flag = false; % to export .vtk of DRT field 
 
-[PHI,KX,KY,KZ] = loadMatFiles;
+% minimum number of voxels desired per component to save .csv table
+nofsv = 1000; 
 
-%% COMPUTATION OF PROPERTIES
+%% LOAD .MAT FILES
 
-KN = sqrt( KX.^2 + KY.^2 + KZ.^2 );
-PHIZ = PHI./(1.0 - PHI);
-RQI = 0.0314*sqrt( KN./PHI );
-FZI = RQI./PHIZ;
-
-[ VB, coords, inds ] = maskVoxels( FZI,Inf );
-if ~isempty( coords ) 
-    for e = 1:size(coords,1)
-        FZI( coords(e,1), coords(e,2), coords(e,3) ) = 0.0;
-    end
-end
-
-DRT = round( 2*log( FZI ) + 10.6 );
-% saving 3D arrays
-save('../mat/KN_Field.mat','KN'); 
-save('../mat/PHIZ_Field.mat','PHIZ'); 
-save('../mat/RQI_Field.mat','RQI'); 
-save('../mat/FZI_Field.mat','FZI'); 
-save('../mat/DRT_Field.mat','DRT'); 
+[PHI,KX,KY,KZ,KN,PHIZ,RQI,FZI,DRT] = loadMatFiles;
 
 %% REAPING DRTs  
-
 drt = sort( unique( DRT(:) ) );
  
 %{
@@ -75,20 +57,20 @@ Ig = find( countDRT(:) < 100 );
 drtIgnored = drt(Ig);
 C = find( countDRT(:) > 100 );
 drt = drt(C); 
-drt = drt(2:end); % removes -Inf (due to phi = 0 values)
-
+drt = drt(drt>0); % removes 0
 
 % file header used in the loop
-head = {'i,'; 'j,'; 'k,'; 'phi_e,'; 'kx,'; 'ky,'; 'kz,'; 'kn,'; 'phiz,'; 'RQI,'; 'FZI,'; 'LogPhiz,'; 'LogRQI'}; 
-head = head';
-txt=sprintf('%s\t',head{:});
+head = {'i,'; 'j,'; 'k,'; 'phi_e,'; ...
+        'kx,'; 'ky,'; 'kz,'; 'kn,'; ...
+        'phiz,'; 'RQI,'; 'FZI,'; 'LogPhiz,'; 'LogRQI'}'; % transposed!
+txt = sprintf('%s\t',head{:});
 txt(end)='';
 
 %%% --------------------- Sweeping DRTs
 
 for m = 1:length(drt)
                
-    fprintf('----> Computing DRT = %d... \n',drt(m));
+    fprintf('----> Sweeping field: DRT = %d... \n',drt(m));
     
     % filtering grid to capture voxels with a specific DRT
     [ VBDRT, coordsDRT, indz ] = maskVoxels( DRT,drt(m) ); 
@@ -108,8 +90,7 @@ for m = 1:length(drt)
             - Store graph edge list matrix
               
     %}
-    disp('----> Computing distances...');
-        
+            
     indIJ = [];
     for i = 1:size(coordsDRT,1)
         %fprintf('----> i = %d... \n',size(coordsDRT,1)-i); 
@@ -181,8 +162,7 @@ for m = 1:length(drt)
     %}      
     disp('----> Finding network components...');
     [ncomp,compSizes,members] = networkComponents(MDadj);
-        
-    disp('----> Setting up structure - global ...');
+            
     % global  
     drtSt.value = drt(m);                     % DRT value
     drtSt.allAdjMatrix = MDadj;               % graph adjacency matrix
@@ -213,17 +193,22 @@ for m = 1:length(drt)
             PHIZ( indz )   ...
             RQI( indz )    ...
             FZI( indz )    ...
-       log10( PHIZ( indz ) ) ...
-       log10(  RQI( indz ) ) ];
+     log10( PHIZ( indz ) ) ...
+     log10(  RQI( indz ) ) ];
+            
+    if csv_flag == true
         
-    % preparing csv file
-    fname1 = strcat('../csv/GraphDataAll','_DRT_',num2str( drt(m) ),'.csv');    
-    dlmwrite(fname1,txt,'');        
+        % preparing csv file
+        fname = strcat('../csv/Table-Field','_DRT_',num2str( drt(m) ),'.csv');    
+        dlmwrite(fname,txt,'');        
     
-    % append matrix
-    dlmwrite(fname1,mat,'-append'); 
-    disp('----> csv file saved - global.');
-          
+        % append matrix
+        dlmwrite(fname,mat,'-append');
+        fprintf('----> Table-Field_DRT_%s.csv file saved. \n',...
+                num2str(drt(m)));
+        disp('----> .csv file saved - global.');
+    end
+    
     % cluster (each component)
     for idcomp = 1:ncomp
         
@@ -258,33 +243,31 @@ for m = 1:length(drt)
                 FZI( indz( members{idcomp} ) )   ...
         log10( PHIZ( indz( members{idcomp} ) ) ) ...
         log10(  RQI( indz( members{idcomp} ) ) ) ];
-                      
-        % getting only the most connected component (first one in the list)
-        if idcomp == 1 
-            disp('----> csv file saved - component.');
-            % preparing csv file
-            fname2 = strcat('../csv/GraphDataComp_',num2str(idcomp),'_DRT_',num2str( drt(m) ),'.csv');        
-            dlmwrite(fname2,txt,'');        
-         
-            % append matrix 
-            dlmwrite(fname2,mat,'-append'); 
-        end
         
-                
+        if (csv_flag == true) && (compSizes(idcomp) >= nofsv)              
+            % preparing csv file
+            fname = strcat('../csv/Table-Cluster_',num2str(idcomp),'_DRT_',num2str( drt(m) ),'.csv');        
+            dlmwrite(fname,txt,'');       
+            
+            % append matrix 
+            dlmwrite(fname,mat,'-append'); 
+            fprintf('----> Table-Cluster_%s_DRT_%s.csv file saved. \n',...
+                num2str(idcomp),num2str(drt(m)));            
+        end                        
     end              
-
-    %plotVoxelGraphComp( DRT,drtSt.compVoxelInds{1},drtSt.value,1,0.8);        
 
     % saving structure to .mat     
     save( strcat('../mat/DRT_',num2str( drt(m) ),'.mat'),'drtSt'); % saving
-    disp('----> .mat file saved.')
+    fprintf('----> DRT_%s.mat file saved. \n',num2str(drt(m)));
+    
+    clear drtSt;    % frees to recompute
     
 end
 
 % export to VTK
-id = find(DRT(:) == -Inf); % eliminating -Inf
-DRT(id) = 0.0;
-saveVtkCellCentered(DRT,'DRT_3D','DRT_Voxel','DRT_Point');
+if vtk_flag == true
+    saveVtkCellCentered(DRT,'DRT_Field','DRT_Voxel','DRT_Point');
+end
 
 %% ENDING
 d.printings(d.progStat{2});

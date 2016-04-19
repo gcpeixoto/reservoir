@@ -29,11 +29,7 @@ d.VOIgraphDataDependency;
 
 %% LOAD FILES
 
-load('../mat/DRT_Field.mat','DRT');
-load('../mat/PHIZ_Field.mat', 'PHIZ');
-load('../mat/RQI_Field.mat', 'RQI');
-load('../mat/FZI_Field.mat', 'FZI');
-
+[~,~,~,~,~,PHIZ,RQI,FZI,DRT] = loadMatFiles;
 
 % well 
 ic = 45; jc = 68;
@@ -68,8 +64,8 @@ for k = 1:numfiles
             cvi = st.VOISt.compVoxelInds{idComp};            
   
             % performs linear regression
-            logPHIZ = log( PHIZ(cvi) );
-            logRQI  = log( RQI(cvi) );
+            logPHIZ = log10( PHIZ(cvi) );
+            logRQI  = log10( RQI(cvi) );
             [ R, m, b ] = regression( logPHIZ, logRQI, 'one' );
                         
             

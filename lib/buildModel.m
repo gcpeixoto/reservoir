@@ -42,12 +42,35 @@ else
     phi = load(phidat,'-ascii');
     per = load(perdat,'-ascii');
     [PHI,KX,KY,KZ] = assemble3DArrays(phi,per,I,J,K);    
-        
+    
+    KN = sqrt( KX.^2 + KY.^2 + KZ.^2 );
+    PHIZ = PHI./(1.0 - PHI);
+    RQI = 0.0314*sqrt( KN./PHI );
+    FZI = RQI./PHIZ;
+
+    [~,coords,~] = maskVoxels( FZI,Inf );
+    if ~isempty( coords ) 
+        for e = 1:size(coords,1)
+            FZI( coords(e,1), coords(e,2), coords(e,3) ) = 0.0;
+        end
+    end
+
+    DRT = round( 2*log( FZI ) + 10.6 );        
+    DRT = replaceInfDRT(DRT); % replaces DRT = Inf with DRT = 0
+
+    % saving 3D arrays                
     disp('Saving .mat files...');    
+    
     save('../mat/PHI.mat','PHI');
     save('../mat/KX.mat','KX');
     save('../mat/KY.mat','KY');
-    save('../mat/KZ.mat','KZ');
+    save('../mat/KZ.mat','KZ');    
+    save('../mat/KN.mat','KN'); 
+    save('../mat/PHIZ.mat','PHIZ'); 
+    save('../mat/RQI.mat','RQI'); 
+    save('../mat/FZI.mat','FZI'); 
+    save('../mat/DRT.mat','DRT'); 
+    
 end
     
 fclose('all'); 

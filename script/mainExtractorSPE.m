@@ -42,9 +42,9 @@ pflag_histDRT    = false;      % DRT histogram plots
 
 % plot flags 
 pltflag_reservoir3D = false;   % 3D view of reservoir
-pltflag_wellDisp    = false;   % well's dispersion plots (by depth)
+pltflag_wellDisp    = true;   % well's dispersion plots (by depth)
 pltflag_vtk         = false;   % export data to VTK
-pltflag_HFULoc      = false;   % DRT map overview (HFU locations)
+pltflag_HFULoc      = true;   % DRT map overview (HFU locations)
 pltflag_regression  = false;   % regression fit-line plots
 pltflag_histDRT     = false;   % histogram of DRT distribution
 
