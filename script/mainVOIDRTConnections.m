@@ -33,15 +33,13 @@ d.extractorSPEDependency;
 ic = 45; jc = 68; kc = 1; % seed voxel (surface)
 P = [14,14,84]; % VOI rings (size) 
 
-% creates output mat dir 
-[dirp,wname] = dm.createWellDir(ic,jc,'mat');
-
 % voxel connectivity
 % REMARK: 26-neigh is invalid for CMG (no flow; finite volume approach)
 dv = setNeighDist('6'); 
 
 % get VOI
 [drt,VN,IND] = getVoxelRegion(ic,jc,kc,P,DRT);
+nvres = length(drt); % total number of voxels in the VOI
 
 %{ 
     Approaches to compute the clusters:
@@ -56,18 +54,25 @@ dv = setNeighDist('6');
                     the DRT values over all the reservoir.
 
 %}
-DRT_strategy = 'reservoir';
-%DRT_strategy = 'well';
+%DRT_strategy = 'reservoir';
+DRT_strategy = 'well';
 
 switch DRT_strategy
     
-    case 'well'                 
+    case 'well'    
+        
         drtVec = DRT(ic,jc,:); 
         drtVec = unique ( reshape(drtVec, [size(DRT,3), 1]) );
         
-    case 'reservoir';           
-        drtVec = unique(drt(drt>0)); % bypass DRT = 0
-        %drtVec = unique ( reshape(drtVec, [size(DRT,3), 1]) );
+        % creates output mat dir 
+        [dirp,wname] = dm.createWellDir(ic,jc,'mat','w');
+        
+    case 'reservoir'
+        
+        drtVec = unique(drt(drt>0)); % bypass DRT = 0        
+        
+        % creates output mat dir 
+        [dirp,wname] = dm.createWellDir(ic,jc,'mat','r');
 end
 
 % defining structure fields
@@ -96,7 +101,8 @@ end
 
 % loop to get VOI graph data 
 for m = 1:length( drtVOI.value )       
-    fprintf('----> m = %d... \n',m); 
+        
+    fprintf('----> Computing DRT = %d... \n',drtVOI.value{m});
     
     coordsDRT = drtVOI.voxels{m};
     indz = drtVOI.voxelNodes{m};  
@@ -118,6 +124,12 @@ for m = 1:length( drtVOI.value )
               end
          end
     end   
+    
+    if isempty(indIJ)
+        fprintf('----> No connections found for DRT = %d... \n',drtVOI.value{m});
+        continue;
+    end
+    
     aux = [ indIJ(:,2) indIJ(:,1) ]; % reverse edges [ j i ]
     indIJ = [ indIJ; aux ];          % filling
  
@@ -135,6 +147,7 @@ for m = 1:length( drtVOI.value )
     VOISt.allVoxelCoords = coordsDRT;        % voxel coordinates (i,j,k)     
     VOISt.allVoxelInds = indz;               % voxel linear indices
     VOISt.allNComps = ncomp;                 % number of components in the graph
+    VOISt.allNVoxels = nvres;                % total number of voxels in the reservoir
     
     for idcomp = 1:ncomp
         
@@ -148,9 +161,10 @@ for m = 1:length( drtVOI.value )
     end
     
     % save .mat file
-    save( strcat(dirp,'VOI_DRT_',num2str( drtVOI.value{m} ),'_',...
-                          wname,'.mat'),'VOISt');
-    disp('----> .mat file saved.')
+    fname = strcat(dirp,'VOI_DRT_',num2str( drtVOI.value{m} ),'_',...
+                          wname,'.mat');
+    save(fname,'VOISt');
+    fprintf('----> %s saved. \n',fname);
     
     clear VOISt
 end
