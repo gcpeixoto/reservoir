@@ -109,13 +109,14 @@ for m = 1:length(drt)
               end
          end
     end   
-    aux = [ indIJ(:,2) indIJ(:,1) ]; % reverse edges [ j i ]
-    indIJ = [ indIJ; aux ]; % filling
     
     if isempty(indIJ)
         fprintf('----> No connections found for DRT = %d... \n',drt(m));
         continue;
     end
+    
+    aux = [ indIJ(:,2) indIJ(:,1) ]; % reverse edges [ j i ]
+    indIJ = [ indIJ; aux ]; % filling        
     
     disp('----> Computing adjacency matrix...');            
     % creates adjacency matrix n x n by marking 1 for connected nodes
