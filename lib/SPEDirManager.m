@@ -20,16 +20,25 @@ classdef SPEDirManager < handle
             diary off
         end
         
-        function [fout,wname] = createWellDir(ic,jc,basedir)
+        function [fout,wname] = createWellDir(ic,jc,basedir,dname,varargin)
             % CREATEWELLDIR creates dir for specified well
             %   input: 
             %           ic,jc: well's surface coordinates
             %         basedir: dir where to create ('mat','txt',etc.)
+            %           dname: directory name ('w':well; 'r':reservoir
             %  output:
             %            fout: local path to output dir
             %           wname: well name
-            %
-            wname = strcat('Well_I',num2str(ic),'_J',num2str(jc));                        
+            
+            if nargin == 3 
+                dname = 'w';
+            end
+            
+            if strcmp(dname,'w')
+                wname = strcat('Well_I',num2str(ic),'_J',num2str(jc));                        
+            elseif strcmp(dname,'r')
+                wname = strcat('Reservoir_I',num2str(ic),'_J',num2str(jc));                        
+            end
             frel = strcat('../',basedir);
             fout = strcat(frel,'/',wname);            
             if exist(frel,'dir') ~= 7; mkdir(frel); end    
