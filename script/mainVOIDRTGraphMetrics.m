@@ -1,4 +1,4 @@
-%% mainVOIDRTGraphMetrics
+%% mainVOIDRTGraphMetrics - compute metrics for clusters
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -27,28 +27,45 @@ d.setOptions;
 d.extractorSPEDependency;    
 d.VOIgraphDataDependency;
 
-%% LOAD FILES
-
-[~,~,~,~,~,PHIZ,RQI,FZI,DRT] = loadMatFiles;
+%% INPUT
 
 % well 
 ic = 45; jc = 68;
 
-dbase = strcat( '../mat/Well_I',num2str(ic),'_J',num2str(jc),'/' );
+nofn = 10;   % minimum number of voxels to consider per component 
+seps = 0.05; % linear regression epsilon for slope [1-seps,1+seps]
+R2min = 0.9; % minimum R2 coefficient acceptable
+
+%DRT_strategy = 'reservoir';
+DRT_strategy = 'well';
+
+%% LOAD FILES
+
+[~,~,~,~,~,PHIZ,RQI,FZI,DRT] = loadMatFiles;
+
+switch DRT_strategy    
+    
+    case 'well'            
+        dbase = strcat( '../mat/Well_I',num2str(ic),'_J',num2str(jc),'/' );
+    
+    case 'reservoir'
+        dbase = strcat( '../mat/Reservoir_I',num2str(ic),'_J',num2str(jc),'/' );
+end
+
 matFiles = dir( strcat(dbase,'VOI_DRT*.mat') ); 
 numfiles = length(matFiles);
     
 % sweeping DRTs
 for k = 1:numfiles 
     
-    st = load( strcat(dbase,matFiles(k).name) ); 
-    val = st.VOISt.value; 
+    load( strcat(dbase,matFiles(k).name),'VOISt'); 
+    val = VOISt.value; 
     
     fprintf('----> Sweeping DRT: %d... \n',val);
     
-    avc = st.VOISt.allVoxelCoords;
-    ncomps = st.VOISt.allNComps;    
-    Madj = st.VOISt.allAdjMatrix;    
+    avc = VOISt.allVoxelCoords;
+    ncomps = VOISt.allNComps;    
+    Madj = VOISt.allAdjMatrix;    
     
     metrics.drtValue = val;
     linregr.drtValue = val;
@@ -56,12 +73,12 @@ for k = 1:numfiles
     count = 0;
     for idComp = 1:ncomps        
         
-        cnn = st.VOISt.compNNodes{idComp};        
+        cnn = VOISt.compNNodes{idComp};        
                         
-        if cnn > 10 % components with more than 10 nodes
+        if cnn > nofn % significative components 
             
-            cvc = st.VOISt.compVoxelCoords{idComp};
-            cvi = st.VOISt.compVoxelInds{idComp};            
+            cvc = VOISt.compVoxelCoords{idComp};
+            cvi = VOISt.compVoxelInds{idComp};            
   
             % performs linear regression
             logPHIZ = log10( PHIZ(cvi) );
@@ -69,10 +86,10 @@ for k = 1:numfiles
             [ R, m, b ] = regression( logPHIZ, logRQI, 'one' );
                         
             
-            % linear regression criteria            
-%            if ( m >= 0.95 && m <= 1.05 ) && ( R*R >= 0.9 && R*R <= 1.0 )
-                          
-                fprintf('----> Good component found: %d. Computing subgraph... \n',idComp);
+            % linear regression criteria                 
+            %if ( m >= 1-seps && m <= 1+seps ) && (R*R >= R2min)                          
+                %fprintf('----> Good component found: %d. Computing subgraph... \n',idComp);
+                
                 count = count + 1; % component counter
                                                 
                 %------------------ subgraph (connected component network)
@@ -128,7 +145,7 @@ for k = 1:numfiles
                 
 %            end % regression loop
             
-        end % components with > 10 loop
+        end % nofn loop
         
     end % components loop
     

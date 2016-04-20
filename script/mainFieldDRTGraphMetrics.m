@@ -26,9 +26,13 @@ d.printings(d.author1,d.author2,d.inst,d.progStat{1});
 d.setOptions;                
 d.extractorSPEDependency; 
 
+%% INPUTS 
+
 nofn = 10;   % minimum number of voxels to consider per component 
 seps = 0.05; % linear regression epsilon for slope [1-seps,1+seps]
 R2min = 0.9; % minimum R2 coefficient acceptable
+
+%% LOAD FILES 
 
 % load DRT
 [~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
@@ -69,8 +73,8 @@ for k = 1:numfiles
             
             % linear regression criteria                 
             %if ( m >= 1-seps && m <= 1+seps ) && (R*R >= R2min)
-                          
-                fprintf('----> Good component found: %d. Computing subgraph... \n',idComp);
+                %fprintf('----> Good component found: %d. Computing subgraph... \n',idComp);
+                
                 count = count + 1; % component counter
                                                 
                 %------------------ subgraph (connected component network)
@@ -115,7 +119,7 @@ for k = 1:numfiles
                                                 
             %end % regression loop
             
-        end % components with > nofn loop
+        end % nofn loop
         
     end % components loop
     

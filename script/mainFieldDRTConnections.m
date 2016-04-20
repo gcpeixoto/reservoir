@@ -81,7 +81,7 @@ for m = 1:length(drt)
                     
         Strategy:        
                     
-            - Find the entries whose distance is less than sqrt(3), which
+            - Find the entries whose distance is less than 1 (sqrt(3)), which
               stands for the 6-voxel (or 26-voxel) neighbourhood
     
             - Set up sparse adjacency matrix from the entries found to be
