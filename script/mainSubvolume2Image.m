@@ -1,4 +1,4 @@
-%% mainSubvolume2Image.m
+%% mainSubvolume2Image.m - converts subvolume layers to image stack
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba

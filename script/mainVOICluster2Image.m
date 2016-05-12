@@ -1,4 +1,4 @@
-%% mainVOICluster2Image.m
+%% mainVOICluster2Image.m - converts cluster layers to image stack
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba

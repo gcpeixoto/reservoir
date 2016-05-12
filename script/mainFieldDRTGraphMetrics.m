@@ -1,4 +1,4 @@
-%% mainFieldDRTGraphMetrics
+%% mainFieldDRTGraphMetrics - cluster metrics for the whole field
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
