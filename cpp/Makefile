@@ -44,7 +44,8 @@ OBJ2 = $(SNAP_DIR)/snap-core/Snap.o
 
 #=== rules 
 
-all: graphMetrics graphFlow
+all: graphMetrics 
+	#graphFlow
 	@echo \
 	 Executables compiled.
 
