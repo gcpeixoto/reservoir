@@ -1,4 +1,4 @@
-%% mainVOIDRTGraphMetrics - compute metrics for clusters
+%% mainVOIDRTGraphMetrics - computes metrics for clusters in the VOI
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -52,7 +52,8 @@ switch DRT_strategy
         dbase = strcat( '../mat/Reservoir_I',num2str(ic),'_J',num2str(jc),'/' );
 end
 
-matFiles = dir( strcat(dbase,'VOI_DRT*.mat') ); 
+matFiles = dir(dbase); 
+matFiles = checkMetricsFiles(matFiles,dbase); % required because 'VOISt'
 numfiles = length(matFiles);
     
 % sweeping DRTs

@@ -1,4 +1,4 @@
-    %% mainVOIMetricsAnalyzer
+    %% mainVOIMetricsAnalyzer - analyzes cluster metrics in the VOI
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -10,7 +10,7 @@
 
 
   
-%% Default
+%% DEFAULTS
 
 clear all; close all; clc;
 
@@ -26,11 +26,15 @@ d.extractorSPEDependency;
 d.VOIgraphDataDependency;
 d.VOIgraphMetricsDependency;
 
-%% 
+%% INPUT  
 
 ic = 45; jc = 68; % well coordinates
 P = 14;           % reservoir radius
 drtVal = 14;      % DRT to get
+
+nc = 4; % number of components to go through
+
+%% LOAD FILES
 
 % file name
 wellfile = strcat( 'Well_I',num2str(ic),'_J',num2str(jc) );
@@ -46,9 +50,12 @@ load( strcat(dbase,'VOI_DRT_',num2str(drtVal),'_',wellfile,'.mat'),'VOISt' );
 % load 
 [~,~,~,~,KN,~,~,~,DRT] = loadMatFiles;
 
-ncomp = numel(metrics.idComp);      % number of components
+% dir  
+cld = '../csv/clusterData/';
+if exist(cld,'dir') ~= 7; mkdir(cld); end   
 
-nc = 4;
+ncomp = numel(metrics.idComp);      % number of components
+    
 % nc = ncomp; % check error above comp 17 for (45,68), (26,120)!
 %sumcomp = 0; % total number of voxels for the current DRT (nc components)
 for n = 1:nc
@@ -120,7 +127,7 @@ for n = 1:nc
     delete(fout); % not necessary to store
     
     % writing to file
-    fname = strcat('DRT_',num2str(drtVal),'_Info_Cluster_',num2str(n));                
+    fname = strcat('DRT_',num2str(drtVal),'_Cluster_Metrics_',num2str(n));                
         
     % centralities
     hdr = {'x,';'y,';'z,';'betweeness,';'closeness,';'degree,';'kn'}; 
@@ -131,9 +138,10 @@ for n = 1:nc
           betweeness{n},...
           closeness{n},...
           degree{n},...
-          KN(compVoxelInds{n}) ];                        
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),hdr,'delimiter','');
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),A,'-append','delimiter',',','precision','%g');                            
+          KN(compVoxelInds{n}) ]; 
+        
+    dlmwrite(strcat(cld,fname,'.csv'),hdr,'delimiter','');
+    dlmwrite(strcat(cld,fname,'.csv'),A,'-append','delimiter',',','precision','%g');                            
     
     % max closeness point
     
@@ -142,10 +150,10 @@ for n = 1:nc
                                        cvcmaxclo{n}(1,2),...
                                        cvcmaxclo{n}(1,3),...
                                        ilims(1),jlims(1),klims(1));    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'P','-append','roffset',1,'delimiter',',');                    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),cvcmaxclo{n}(1,:),'-append','delimiter',','); % global coords                     
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),cvcmaxcloloc,'-append','delimiter',',');      % local coords
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),maxclo{n}(1),'-append','precision','%g');                    
+    dlmwrite(strcat(cld,fname,'.csv'),'P','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat(cld,fname,'.csv'),cvcmaxclo{n}(1,:),'-append','delimiter',','); % global coords                     
+    dlmwrite(strcat(cld,fname,'.csv'),cvcmaxcloloc,'-append','delimiter',',');      % local coords
+    dlmwrite(strcat(cld,fname,'.csv'),maxclo{n}(1),'-append','precision','%g');                    
     
     % min closeness point
     
@@ -155,10 +163,10 @@ for n = 1:nc
                                        cvcminclo{n}(1,3),...
                                        ilims(1),jlims(1),klims(1));    
     
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'Q','-append','roffset',1,'delimiter',',');                    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),cvcminclo{n}(1,:),'-append','delimiter',','); % global coords                     
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),cvcmincloloc,'-append','delimiter',',');      % local coords
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),minclo{n}(1),'-append','precision','%g');     
+    dlmwrite(strcat(cld,fname,'.csv'),'Q','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat(cld,fname,'.csv'),cvcminclo{n}(1,:),'-append','delimiter',','); % global coords                     
+    dlmwrite(strcat(cld,fname,'.csv'),cvcmincloloc,'-append','delimiter',',');      % local coords
+    dlmwrite(strcat(cld,fname,'.csv'),minclo{n}(1),'-append','precision','%g');     
     
     % farthest points
     
@@ -167,34 +175,34 @@ for n = 1:nc
                                     CVCFar(:,3),...
                                     ilims(1),jlims(1),klims(1));    
     
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'X','-append','roffset',1,'delimiter',',');                    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),CVCFar,'-append','delimiter',',','precision','%d');
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),CVCFarLoc,'-append','roffset',1,'delimiter',',','precision','%d');  
+    dlmwrite(strcat(cld,fname,'.csv'),'X','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat(cld,fname,'.csv'),CVCFar,'-append','delimiter',',','precision','%d');
+    dlmwrite(strcat(cld,fname,'.csv'),CVCFarLoc,'-append','roffset',1,'delimiter',',','precision','%d');  
           
     % distances
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'D','-append','roffset',1,'delimiter',',');                    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),D2CFar,'-append','delimiter',',','precision','%d');                    
+    dlmwrite(strcat(cld,fname,'.csv'),'D','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat(cld,fname,'.csv'),D2CFar,'-append','delimiter',',','precision','%d');                    
     
     % limits
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'I','-append','roffset',1,'delimiter',',');                    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),ilims,'-append','delimiter',',','precision','%d');                    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'J','-append','roffset',1,'delimiter',',');                    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),jlims,'-append','delimiter',',','precision','%d');                    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),'K','-append','roffset',1,'delimiter',',');                    
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),klims,'-append','delimiter',',','precision','%d');                    
+    dlmwrite(strcat(cld,fname,'.csv'),'I','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat(cld,fname,'.csv'),ilims,'-append','delimiter',',','precision','%d');                    
+    dlmwrite(strcat(cld,fname,'.csv'),'J','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat(cld,fname,'.csv'),jlims,'-append','delimiter',',','precision','%d');                    
+    dlmwrite(strcat(cld,fname,'.csv'),'K','-append','roffset',1,'delimiter',',');                    
+    dlmwrite(strcat(cld,fname,'.csv'),klims,'-append','delimiter',',','precision','%d');                    
     
     % Pearson, slope
     hdr = {'s','R'};
     a = [ linregr.slope{n},linregr.Pearson{n} ];
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),hdr,'-append','roffset',1,'delimiter',',');
-    dlmwrite(strcat('../csv/subdomain/',fname,'.csv'),a,'-append','delimiter',',','precision','%g');                        
+    dlmwrite(strcat(cld,fname,'.csv'),hdr,'-append','roffset',1,'delimiter',',');
+    dlmwrite(strcat(cld,fname,'.csv'),a,'-append','delimiter',',','precision','%g');                        
             
     % header
     hdr = {'LogPhiz,';'LogRQI'}; 
     hdr = hdr';    
     a = [ linregr.logPHIZ{n}, linregr.logRQI{n} ];
-    dlmwrite(strcat('../csv/subdomain/',fname,'LogData.csv'),hdr,'');                                
-    dlmwrite(strcat('../csv/subdomain/',fname,'LogData.csv'),a,'-append','delimiter',',','precision','%g');                
+    dlmwrite(strcat(cld,fname,'LogData.csv'),hdr,'');                                
+    dlmwrite(strcat(cld,fname,'LogData.csv'),a,'-append','delimiter',',','precision','%g');                
     
     % export cluster image sequence
     cluster2image(DRT,drtVal,ilims,jlims,klims,fname);
