@@ -50,6 +50,7 @@ switch DRT_strategy
 end
 
 matFiles = dir( strcat(dbase,'VOI_DRT*.mat') ); 
+matFiles = checkMetricsFiles(matFiles,dbase); % required because 'VOISt'
 numfiles = length(matFiles);
 
 % statistics
