@@ -1,4 +1,4 @@
-%% mainVolume2Image.m
+%% mainVolume2Image.m - converts field layers to image stack
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
