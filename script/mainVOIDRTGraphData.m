@@ -1,4 +1,4 @@
-%% mainVOIDRTGraphData
+%% mainVOIDRTGraphData - compute statistics of volumetrics for clusters in the VOI
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -9,6 +9,7 @@
 %                network based on the DRT field value and stores
 %                data structures.
 
+%% DEFAULTS
 clear all; close all; clc;      
 
 % classes
@@ -20,18 +21,35 @@ d.printSplScreen(mfilename);
 d.printings(d.author1,d.author2,d.inst,d.progStat{1});
 d.setOptions;                
 d.extractorSPEDependency;
-d.graphDataDependency;
+d.VOIConnectionsDependency;
 
-%% 
-% load DRT
-[~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
+%% INPUTS
 
 % well
 ic = 45; jc = 68;
+
+%DRT_strategy = 'reservoir';
+DRT_strategy = 'well';
+
+% DRT to choose 
+drtValue = 14;
+
+%% LOAD FILES
+
+[~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
  
 % directory
-dbase = strcat( '../mat/Well_I',num2str(ic),'_J',num2str(jc),'/' );
-matFiles = dir( strcat(dbase,'VOI_DRT_*_Well*','.mat') ); 
+switch DRT_strategy    
+    
+    case 'well'            
+        dbase = strcat( '../mat/Well_I',num2str(ic),'_J',num2str(jc),'/' );
+    
+    case 'reservoir'
+        % TODO
+        dbase = strcat( '../mat/Reservoir_I',num2str(ic),'_J',num2str(jc),'/' );
+end
+
+matFiles = dir( strcat(dbase,'VOI_DRT*.mat') ); 
 numfiles = length(matFiles);
 
 % statistics
@@ -42,13 +60,6 @@ qntGreaterComps = zeros(numfiles,1);
 % voxelCoords
 bigNetworkCoords = cell(numfiles,1);
 
-% number of voxels at reservoir 
-% TODO automatize
-nvres = 29*29*85;
-
-% DRT to choose 
-drtValue = 14;
-
 % DRT values over the well
 drtWell = DRT( ic, jc,:); 
 drtWell = reshape(drtWell, [size(DRT,3) 1]);
@@ -58,15 +69,19 @@ Z = find(drtWell == drtValue);
 associatedComps = cell( length(Z),2);
 lateralCompVoxels = cell(length(Z),2);
 
+% dir
+cld = '../csv/clusterData/';
+if exist(cld,'dir') ~= 7; mkdir(cld); end   
+
 for k = 1:numfiles
-    st = load( strcat(dbase,matFiles(k).name) ); 
-    val = st.VOISt.value;     
+    load( strcat(dbase,matFiles(k).name), 'VOISt' ); 
+    val = VOISt.value;     
     drtval(k) = val;
             
-    ncomp = length(st.VOISt.compVoxelCoords);
+    ncomp = length(VOISt.compVoxelCoords);
     qntComps(k) = ncomp;
-    qntGreaterComps(k) = st.VOISt.compNNodes{1};     
-    bigNetworkCoords{k} = st.VOISt.compVoxelCoords{1};    
+    qntGreaterComps(k) = VOISt.compNNodes{1};     
+    bigNetworkCoords{k} = VOISt.compVoxelCoords{1};    
     
     if val == drtValue 
         
@@ -83,7 +98,7 @@ for k = 1:numfiles
             % component loop
             for idcomp = 1:ncomp
                 
-                compCoords = st.VOISt.compVoxelCoords{idcomp};                        
+                compCoords = VOISt.compVoxelCoords{idcomp};                        
                 for e = 1:size(compCoords,1)
                     
                     id = strmatch( compCoords(e,:), vxBase );       %#ok<*MATCH2>
@@ -99,7 +114,7 @@ for k = 1:numfiles
                 % plotVoxelGraphComp( DRT,cvi,val,idcomp,0.8);                
                
                 itc(idcomp) = idcomp;
-                ntc(idcomp) = size(st.VOISt.compVoxelCoords{idcomp},1);                
+                ntc(idcomp) = size(VOISt.compVoxelCoords{idcomp},1);                
             end
             
         associatedComps{i,1} =  Z(i); % z-depth
@@ -108,18 +123,19 @@ for k = 1:numfiles
         % lateral components per z + well voxel
         cp = associatedComps{i,2};        
         lateralCompVoxels{i,1} = Z(i);                  
-        cpCoords = st.VOISt.compVoxelCoords{cp};
+        cpCoords = VOISt.compVoxelCoords{cp};
         izcp = find( cpCoords(:,3) == Z(i) );                        
         lateralCompVoxels{i,2} = cpCoords(izcp,:);
         
-        %C1 = st.VOISt.compVoxelCoords{1};
-        %C2 = st.VOISt.compVoxelCoords{2};
-        %C3 = st.VOISt.compVoxelCoords{3};
-        %C4 = st.VOISt.compVoxelCoords{4};
+        %C1 = VOISt.compVoxelCoords{1};
+        %C2 = VOISt.compVoxelCoords{2};
+        %C3 = VOISt.compVoxelCoords{3};
+        %C4 = VOISt.compVoxelCoords{4};
                    
         end
         
         %--- save .dat
+        nvres = VOISt.allNVoxels; % number of voxels in the reservoir
         nf = cumsum(ntc);              
         vcf = ntc/nf(end);  % volume fraction: cluster-to-DRT family
         vcr = ntc/nvres;    % volume fraction: cluster-to-reservoir
@@ -141,25 +157,28 @@ for k = 1:numfiles
                     
         hdr = {'idComp,';'nComp,';'nCompi/nComp,';'nCompi/nRes'};
         hdr = hdr';            
-        fname = strcat('idCompTable_DRT_',num2str(val));            
+        fname = strcat('ClusterTable_DRT_',num2str(val));            
+                       
+        dlmwrite(strcat(cld,fname,'.csv'),hdr,'delimiter','');
+        dlmwrite(strcat(cld,fname,'.csv'),A,'-append','delimiter',',');            
         
-        cld = '../dat/clusterData/';
-        if exist(cld,'dir') ~= 7; mkdir(cld); end   % create            
-        dlmwrite(strcat(cld,fname,'.dat'),hdr,'delimiter','');
-        dlmwrite(strcat(cld,fname,'.dat'),A,'-append','delimiter','\t');            
-        dlmwrite(strcat(cld,fname,'.dat'),B,'-append','roffset',1,'delimiter','\t');            
+        hdr = {'idComp,';'nComp,';'nCompi/nComp,';'nCompi/nRes,';'intersec_z'};
+        hdr = hdr';            
+        fname = strcat('IntersectionCompTable_DRT_',num2str(val));            
+        dlmwrite(strcat(cld,fname,'.csv'),hdr,'delimiter','');
+        dlmwrite(strcat(cld,fname,'.csv'),B,'-append','delimiter',',');       
                         
         % --- plots histogram of components                
         cplot = 1:4; % components to plot        
         lim = length(cplot);
         figure
         hname = strcat('CompHistogram_DRT_',num2str(val));                    
-        %[icc,ncc,mncc,isol,nisol] = plotCompHist(st.VOISt.value,st.VOISt.compVoxelCoords,lim,0.5,[0.5,100]);
+        %[icc,ncc,mncc,isol,nisol] = plotCompHist(VOISt.value,VOISt.compVoxelCoords,lim,0.5,[0.5,100]);
         %print(gcf,'-dpdf',strcat('../figs/',hname));        
         
         % --- plots the component 
         for q = 1:lim;            
-            cvi = st.VOISt.compVoxelInds{ cplot(q) };         
+            cvi = VOISt.compVoxelInds{ cplot(q) };         
             plotVoxelGraphComp( DRT,cvi,val,cplot(q),0.6,bone,'p', [-37.5,30],'pdf');                        
         end
         
