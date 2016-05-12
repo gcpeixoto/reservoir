@@ -20,8 +20,7 @@ if nargin == 5 %
     vw = [ - 37.5 30 ]; % default    
     fmt = 'pdf'; 
 end
-
-figure 
+ 
 [F,V,C]=ind2patch(inds,DRTMat,'v');
         
 hold on;

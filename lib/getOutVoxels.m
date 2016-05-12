@@ -64,15 +64,14 @@ if exist(dn,'dir') ~= 7
     mkdir(dn);
 end
 
-dn = strcat('../csv/subdomain/');
-if exist(dn,'dir') ~= 7
-    mkdir('../csv/subdomain/');
+if exist('../csv/clusterData/','dir') ~= 7
+    mkdir('../csv/clusterData/');
 end
 
 fout = strcat( dn,'/','OutCoords_DRT_',num2str(drtVal),... 
                    '_Cluster_',num2str(comp),'_',wellname,ext );    
 
-fin = strcat( '../csv/subdomain/','InCoords_DRT_',num2str(drtVal),... 
+fin = strcat( '../csv/clusterData/','InCoords_DRT_',num2str(drtVal),... 
                    '_Cluster_',num2str(comp),'_',wellname,'.csv' );    
                
                
