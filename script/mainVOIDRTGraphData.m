@@ -25,11 +25,12 @@ d.VOIConnectionsDependency;
 
 %% INPUTS
 
-% well
+% center well coordinates
 ic = 45; jc = 68;
 
-%DRT_strategy = 'reservoir';
+% strategy
 DRT_strategy = 'well';
+%DRT_strategy = 'reservoir'; % TODO statistics
 
 % DRT to choose 
 drtValue = 14;
@@ -53,18 +54,17 @@ matFiles = dir( strcat(dbase,'VOI_DRT*.mat') );
 matFiles = checkMetricsFiles(matFiles,dbase); % required because 'VOISt'
 numfiles = length(matFiles);
 
-% statistics
-drtval = zeros(numfiles,1);
-qntComps = zeros(numfiles,1); 
-qntGreaterComps = zeros(numfiles,1);
-
-% voxelCoords
-bigNetworkCoords = cell(numfiles,1);
+drtVec = getDRTFromFileName(matFiles);
 
 % DRT values over the well
-drtWell = DRT( ic, jc,:); 
-drtWell = reshape(drtWell, [size(DRT,3) 1]);
-Z = find(drtWell == drtValue);
+if strcmp(DRT_strategy,'well')    
+    drtWell = DRT(ic,jc,:); 
+    drtWell = reshape(drtWell, [size(DRT,3) 1]);
+    Z = find(drtWell == drtVec);
+else
+    warning('Cluster statistics not available for reservoir');
+    Z = [];
+end
 
 % well coordinate; component id
 associatedComps = cell( length(Z),2);
@@ -75,14 +75,10 @@ cld = '../csv/clusterData/';
 if exist(cld,'dir') ~= 7; mkdir(cld); end   
 
 for k = 1:numfiles
+    
     load( strcat(dbase,matFiles(k).name), 'VOISt' ); 
-    val = VOISt.value;     
-    drtval(k) = val;
-            
-    ncomp = length(VOISt.compVoxelCoords);
-    qntComps(k) = ncomp;
-    qntGreaterComps(k) = VOISt.compNNodes{1};     
-    bigNetworkCoords{k} = VOISt.compVoxelCoords{1};    
+    val = VOISt.value;               
+    ncomp = length(VOISt.compVoxelCoords);    
     
     if val == drtValue 
         
@@ -187,9 +183,6 @@ for k = 1:numfiles
            
     clear VOISt;
 end
-
-% gross VOI statistics
-M = [ drtval, qntComps, qntGreaterComps ];
 
 % Max col
 %[ilims1,jlims1,klims1,leni1,lenj1,lenk1,Ws1,nvcol1,cvcol1] = getClusterMaxCol(C1,DRT,drtValue);

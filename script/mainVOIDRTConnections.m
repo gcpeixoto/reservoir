@@ -1,4 +1,4 @@
-%% mainVOIDRTConnections - finds DRT connected components for the VOI
+%% mainVOIDRTConnections - finds clusters for the VOI based on DRT values
 %   authors: Dr. Gustavo Peixoto de Oliveira
 %            Dr. Waldir Leite Roque
 %            @Federal University of Paraiba
@@ -7,7 +7,6 @@
 %
 %   Description: gets the network and connected components
 %                for a VOI and stores data structure
-%
 %
 % REMARK: encouraged to use non-interactive execution to not 'block' GUI.
 
@@ -25,10 +24,7 @@ d.printings(d.author1,d.author2,d.inst,d.progStat{1});
 d.setOptions;                
 d.extractorSPEDependency;    
 
-%%
-
-% load DRT
-[~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
+%% INPUTS
 
 ic = 45; jc = 68; kc = 1; % seed voxel (surface)
 P = [14,14,84]; % VOI rings (size) 
@@ -37,25 +33,27 @@ P = [14,14,84]; % VOI rings (size)
 % REMARK: 26-neigh is invalid for CMG (no flow; finite volume approach)
 dv = setNeighDist('6'); 
 
-% get VOI
-[drt,VN,IND] = getVoxelRegion(ic,jc,kc,P,DRT);
-nvres = length(drt); % total number of voxels in the VOI
-
 %{ 
     Approaches to compute the clusters:
-
     The flag 'DRT_strategy' can have two values:
- 
     i) 'reservoir': the code will compute all the connected 
                     components belonging to the DRT values found
                     only over the central well of the reservoir.
-
    ii) 'well':      ditto, except that the computation will consider
                     the DRT values over all the reservoir.
 
 %}
-%DRT_strategy = 'reservoir';
-DRT_strategy = 'well';
+DRT_strategy = 'reservoir';
+%DRT_strategy = 'well';
+
+%% LOAD
+
+% load DRT
+[~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
+
+% get VOI
+[drt,VN,IND] = getVoxelRegion(ic,jc,kc,P,DRT);
+nvres = length(drt); % total number of voxels in the VOI
 
 switch DRT_strategy
     
