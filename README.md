@@ -15,8 +15,7 @@ A Matlab-based toolbox to study petroleum reservoir characterization based on th
 * _script_: .m script files liable for the main operations.
 * _lib_: .m functions and classes that support the script files.
 * _dat_: .dat files provided by the SPE dataset (mandatory). 
-* _py_: python files used to interface some operations (under
-  development)
+* _py_: python files used to interface some operations.
 * _cpp_: C++ files used to make an interface with SNAP.  
 
 ### Post-processing dirs
@@ -52,7 +51,7 @@ A Matlab-based toolbox to study petroleum reservoir characterization based on th
 ### Family 3 (operations over a _Volume Of Interest_-VOI within the field)
 
 * [mainVOIDRTConnections](md/mainVOIDRTConnections.md)
-* [mainVOIDRTGraphData](md/mainVOIDRTGraphData.md)
+* [mainVOIDRTGraphDataWell](md/mainVOIDRTGraphDataWell.md)
 * [mainVOIDRTGraphMetrics](md/mainVOIDRTGraphMetrics.md)
 * [mainVOIMetricsAnalyzer](md/mainVOIMetricsAnalyzer.md)
 
@@ -106,7 +105,7 @@ Matlab GUI `Set Path` to set the paths to the dependencies.
 
 # Some definitions  
 
-- **voxel:**: elementary structure; also called **cell** or **block** 
+- **voxel:** elementary structure; also called **cell** or **block** 
 - **field:** the entire SPE 2 Model, i.e. a grid of 60 x 220 x 85 voxels
 - **reservoir:** a subset of the field (VOI) based on
 a 3D Moore's neighborhood
