@@ -45,18 +45,15 @@ OBJ2 = $(SNAP_DIR)/snap-core/Snap.o
 #=== rules 
 
 all: graphMetrics 
-	#graphFlow
 	@echo \
-	 Executables compiled.
+	 Executable compiled.
 
 # === right
 %.o: %.cpp ${SRCH}
 	${CXX} ${CXXFLAGS} ${INCLUDES} -c $< -o $@ 
 
-# executables
+# executable
 graphMetrics: ./main/mainGraphMetrics.o ${OBJ} ${OBJ2}
-	${CXX} ${OBJ} ${OBJ2} ${CXXFLAGS} ${LFLAGS} $< -o $@
-graphFlow: ./main/mainGraphFlow.o ${OBJ} ${OBJ2}
 	${CXX} ${OBJ} ${OBJ2} ${CXXFLAGS} ${LFLAGS} $< -o $@
 
 #=== phony variables
