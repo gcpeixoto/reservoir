@@ -36,15 +36,16 @@ dv = setNeighDist('6');
 %{ 
     Approaches to compute the clusters:
     The flag 'DRT_strategy' can have two values:
-    i) 'reservoir': the code will compute all the connected 
-                    components belonging to the DRT values found
-                    only over the central well of the reservoir.
-   ii) 'well':      ditto, except that the computation will consider
-                    the DRT values over all the reservoir.
+    i) 'well':       the code will compute all the connected 
+                     components belonging to the DRT values found
+                     only over the central well of the reservoir.
+    ii) 'reservoir': ditto, except that the computation will consider
+                     the DRT values over all the reservoir.
 
 %}
-DRT_strategy = 'reservoir';
+
 %DRT_strategy = 'well';
+DRT_strategy = 'reservoir';
 
 %% LOAD
 
