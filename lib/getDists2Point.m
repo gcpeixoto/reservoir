@@ -16,7 +16,7 @@ function [ D2CFar, CVCFar, ilims, jlims, klims ] = getDists2Point( cvc, p, N )
 %              
 
 if iscell(p)    
-    p = p{1};
+    p = p{1}(1,:); % gets the first point in the list
 end
 
 % cluster bounding box limits
