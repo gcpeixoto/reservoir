@@ -69,55 +69,56 @@ for k = 1:numfiles
             logPHIZ = drtSt.compLogPHIZ{idComp};
             logRQI  = drtSt.compLogRQI{idComp};
             [ R, m, b ] = regression( logPHIZ, logRQI, 'one' );
-                        
+                                                                            
+            count = count + 1; % component counter
+
+            %------------------ subgraph (connected component network)
+            % finding vertices in the big adjacency matrix to set up the 
+            % adjacency matrix for the connected component and, then, 
+            % set the subgraph of the network                
+            v = [];
+            for e = 1:size(cvc,1)
+                id = strmatch( cvc(e,:), avc );       %#ok<*MATCH2>
+                v = [ v; id ];                        % global indices
+            end                    
+            MadjComp = subgraph( Madj, v );           % component's adjacency matrix                
+
+            %------------------ centrality metrics 
+            fprintf('----> Computing metrics for %d nodes... \n', size(v,1) );
+
+            % SNAP interface
+            edfile = saveAdjEdges(MadjComp);  
+            ! ./../cpp/graphMetrics
+            [nodeID,deg,clns,betw] = getMetricsData(edfile);                
+
+            maxC = max(clns);                         % max closeness = min farness
+            iC = find( clns == maxC );                % network closer nodes
+            iCnode = nodeID(iC);                      % getting node id (not always == iC)
+            ivC = avc( v(iCnode),: );                 % global voxel coordinates
+
+            disp('----> Storing structures...');
+            % store good components         
+            metrics.idComp{count} = idComp;                
+            metrics.degreeCentrality{count} = deg;
+            metrics.closenessCentrality{count} = clns;
+            metrics.betweenessCentrality{count} = betw;                
+            metrics.maxClosenessVoxelCoords{count} = ivC;
+            metrics.adjMatrix{count} = MadjComp;
+
+            linregr.idComp{count} = idComp;
+            linregr.Pearson{count} = R*R;
+            linregr.slope{count} = m;
+            linregr.offset{count} = b;
+            linregr.logPHIZ{count} = logPHIZ;
+            linregr.logRQI{count} = logRQI;
             
-            % linear regression criteria                 
-            %if ( m >= 1-seps && m <= 1+seps ) && (R*R >= R2min)
-                %fprintf('----> Good component found: %d. Computing subgraph... \n',idComp);
-                
-                count = count + 1; % component counter
-                                                
-                %------------------ subgraph (connected component network)
-                % finding vertices in the big adjacency matrix to set up the 
-                % adjacency matrix for the connected component and, then, 
-                % set the subgraph of the network                
-                v = [];
-                for e = 1:size(cvc,1)
-                    id = strmatch( cvc(e,:), avc );       %#ok<*MATCH2>
-                    v = [ v; id ];                        % global indices
-                end                    
-                MadjComp = subgraph( Madj, v );           % component's adjacency matrix                
-                                                
-                %------------------ centrality metrics 
-                fprintf('----> Computing metrics for %d nodes... \n', size(v,1) );
-                
-                % SNAP interface
-                edfile = saveAdjEdges(MadjComp);  
-                ! ./../cpp/graphMetrics
-                [nodeID,deg,clns,betw] = getMetricsData(edfile);                
-                                
-                maxC = max(clns);                         % max closeness = min farness
-                iC = find( clns == maxC );                % network closer nodes
-                iCnode = nodeID(iC);                      % getting node id (not always == iC)
-                ivC = avc( v(iCnode),: );                 % global voxel coordinates
-                                
-                disp('----> Storing structures...');
-                % store good components         
-                metrics.idComp{count} = idComp;                
-                metrics.degreeCentrality{count} = deg;
-                metrics.closenessCentrality{count} = clns;
-                metrics.betweenessCentrality{count} = betw;                
-                metrics.maxClosenessVoxelCoords{count} = ivC;
-                metrics.adjMatrix{count} = MadjComp;
-                                
-                linregr.idComp{count} = idComp;
-                linregr.Pearson{count} = R*R;
-                linregr.slope{count} = m;
-                linregr.offset{count} = b;
-                linregr.logPHIZ{count} = logPHIZ;
-                linregr.logRQI{count} = logRQI;
-                                                
-            %end % regression loop
+            % linear regression criteria (performance)                 
+            if ( m >= 1-seps && m <= 1+seps ) && (R*R >= R2min)
+                linregr.performance{count} = 1; % high-performance 
+            else
+                linregr.performance{count} = 0; % low-performance
+            end 
+                                                            
             
         end % nofn loop
         
