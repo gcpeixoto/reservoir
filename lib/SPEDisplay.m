@@ -102,7 +102,10 @@ classdef SPEDisplay < handle
         function VOIgraphMetricsDependency
             warning('this method requires .mat files from mainVOIDRTGraphMetrics.m');
         end
-        
+      
+        function fieldGraphMetricsDependency
+            warning('this method requires .mat files from mainFieldDRTGraphMetrics.m');
+        end        
         
         function VOIConnectionsDependency
             warning('this method requires .mat files from mainVOIConnections.m');
