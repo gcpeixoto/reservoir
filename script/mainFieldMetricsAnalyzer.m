@@ -48,7 +48,7 @@ d.fieldGraphMetricsDependency;
                         
 %}
 
-drtVal = 10:11;
+drtVal = 13:19;
 nc = []; 
 
 %% LOAD FILES
@@ -143,7 +143,7 @@ for dv = 1:length(drtVal)
               KN(compVoxelInds{n}) ]; 
 
         % writing to file
-        fname = strcat('DRT_',num2str(drtVal(dv)),'Field_Cluster_',num2str(n),'_Metrics');                
+        fname = strcat('DRT_',num2str(drtVal(dv)),'_Field_Cluster_',num2str(n),'_Metrics');                
         dlmwrite(strcat(cld,fname,'.csv'),hdr,'delimiter','');
         dlmwrite(strcat(cld,fname,'.csv'),A,'-append','delimiter',',','precision','%g');                            
 
@@ -178,7 +178,7 @@ for dv = 1:length(drtVal)
              linregr.Pearson{n}   ,...
              linregr.performance{n}];
 
-        fname = strcat('DRT_',num2str(drtVal(dv)),'Field_Cluster_',num2str(n),'_Metrics_MinMax');                                               
+        fname = strcat('DRT_',num2str(drtVal(dv)),'_Field_Cluster_',num2str(n),'_Metrics_MinMax');                                               
         dlmwrite(strcat(cld,fname,'.csv'),hdr,'delimiter','');
         dlmwrite(strcat(cld,fname,'.csv'),A,'-append','delimiter',',','precision','%g');
 
@@ -194,7 +194,7 @@ for dv = 1:length(drtVal)
              CVCFarLoc];                            
 
         % writing to file
-        fname = strcat('DRT_',num2str(drtVal(dv)),'Field_Cluster_',num2str(n),'_FarthestPoints');                                                           
+        fname = strcat('DRT_',num2str(drtVal(dv)),'_Field_Cluster_',num2str(n),'_FarthestPoints');                                                           
         dlmwrite(strcat(cld,fname,'.csv'),hdr,'delimiter','');    
         dlmwrite(strcat(cld,fname,'.csv'),A,'-append','delimiter',',','precision','%g');
 
@@ -205,7 +205,7 @@ for dv = 1:length(drtVal)
               linregr.logRQI{n} ];
 
         % writing to file
-        fname = strcat('DRT_',num2str(drtVal(dv)),'Field_Cluster_',num2str(n),'_LogData');                                                           
+        fname = strcat('DRT_',num2str(drtVal(dv)),'_Field_Cluster_',num2str(n),'_LogData');                                                           
         dlmwrite(strcat(cld,fname,'.csv'),hdr,'');                                
         dlmwrite(strcat(cld,fname,'.csv'),A,'-append','delimiter',',','precision','%g');                
         
@@ -230,7 +230,7 @@ for dv = 1:length(drtVal)
                linregr.performance'];
         
         % writing to file
-        fname = strcat('DRT_',num2str(drtVal(dv)),'Performance_Table');                                                           
+        fname = strcat('DRT_',num2str(drtVal(dv)),'_Performance_Table');                                                           
         dlmwrite(strcat(cld,fname,'.csv'),hdr,'');                                
         dlmwrite(strcat(cld,fname,'.csv'),aux,'-append','delimiter',',','precision','%g');                
         
