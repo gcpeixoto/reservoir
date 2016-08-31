@@ -134,7 +134,7 @@ for k = 1:numfiles
         disp('----> No components found.');
     end
     
-    %clear metrics linregr
+    clear drtSt metrics linregr % free up memory
     
 end % DRT loop
 
