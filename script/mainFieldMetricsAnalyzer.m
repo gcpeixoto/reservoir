@@ -49,7 +49,7 @@ d.fieldGraphMetricsDependency;
 %}
 
 drtVal = 10:11;
-nc = 10; 
+nc = []; 
 
 %% LOAD FILES
 
@@ -63,9 +63,7 @@ if exist(cld,'dir') ~= 7; mkdir(cld); end
 %% LOOP OVER DRT VALUES
 
 for dv = 1:length(drtVal)
-    
-    fprintf('Sweeping DRT = %d...\n',drtVal(dv));
-    
+            
     % metrics data structure
     load( strcat('../mat/DRT_',num2str(drtVal(dv)),'_MetricsData.mat'),'metrics' );
     load( strcat('../mat/DRT_',num2str(drtVal(dv)),'_LinRegrData.mat'),'linregr' );
@@ -77,9 +75,7 @@ for dv = 1:length(drtVal)
     
     if ~isempty(nc) && nc <= ncomp, ncomp = nc; end        
     
-    for n = 1:ncomp % cluster loop   
-        
-        fprintf('----> Sweeping cluster #%d...\n',n);
+    for n = 1:ncomp % cluster loop                   
 
         compVoxelInds{n} = drtSt.compVoxelInds{ metrics.idComp{n} };        
         compVoxelCoords{n} = drtSt.compVoxelCoords{ metrics.idComp{n} };    
@@ -167,7 +163,7 @@ for dv = 1:length(drtVal)
         % writing to file    
         hdr = {'Mclo,';'Mx,';'My,';'Mz,';'MxL,';'MyL,';'MzL,';...
                'mclo,';'mx,';'my,';'mz,';'mxL,';'myL,';'mzL,';...
-               'im,';'iM,';'jm,';'jM,';'km,';'kM,';'s,';'R2'}; 
+               'im,';'iM,';'jm,';'jM,';'km,';'kM,';'s,';'R2,';'performance'}; 
         hdr = hdr';                                               
         A = [maxclo{n}(1)         ,...
              cvcmaxclo{n}(1,:)    ,...
