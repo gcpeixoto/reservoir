@@ -48,7 +48,7 @@ d.fieldGraphMetricsDependency;
                         
 %}
 
-drtVal = 13:19;
+drtVal = 5:9;
 nc = []; 
 
 %% LOAD FILES
@@ -65,11 +65,11 @@ if exist(cld,'dir') ~= 7; mkdir(cld); end
 for dv = 1:length(drtVal)
             
     % metrics data structure
-    load( strcat('../mat/DRT_',num2str(drtVal(dv)),'_MetricsData.mat'),'metrics' );
-    load( strcat('../mat/DRT_',num2str(drtVal(dv)),'_LinRegrData.mat'),'linregr' );
+    load( strcat('../mat/Field/DRT_',num2str(drtVal(dv)),'_MetricsData.mat'),'metrics' );
+    load( strcat('../mat/Field/DRT_',num2str(drtVal(dv)),'_LinRegrData.mat'),'linregr' );
 
     % DRT data structure
-    load( strcat('../mat/DRT_',num2str(drtVal(dv)),'.mat'),'drtSt' );
+    load( strcat('../mat/Field/DRT_',num2str(drtVal(dv)),'.mat'),'drtSt' );
 
     ncomp = numel(metrics.idComp); % number of components
     
