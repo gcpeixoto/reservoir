@@ -98,7 +98,7 @@ for k =3% 1:numfiles
             MadjComp = subgraph( Madj, v );           % component's adjacency matrix                
 
             %------------------ centrality metrics 
-            fprintf('----> Computing metrics for %d nodes... \n', size(v,1) );
+            fprintf('----> Computing metrics for %d nodes... \n', size(v,2) );
 
             % SNAP interface
             edfile = saveAdjEdges(MadjComp);  
