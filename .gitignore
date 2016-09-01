@@ -13,7 +13,7 @@
 *.tif
 *.o
 *.txt
-graphFlow
+*.Rhistory
 graphMetrics
 tmp/
 dat/subdomain/

@@ -92,12 +92,20 @@ for k = 1:numfiles
             %------------------ subgraph (connected component network)
             % finding vertices in the big adjacency matrix to set up the 
             % adjacency matrix for the connected component and, then, 
-            % set the subgraph of the network                
-            v = [];
-            for e = 1:size(cvc,1)
-                id = strmatch( cvc(e,:), avc );       %#ok<*MATCH2>
-                v = [ v; id ];                        % global indices
-            end                    
+            % set the subgraph of the network
+            %
+            % Performance techniques introduced here: 
+            % - direct dynamic allocation v(e)
+            % - logical search + find for vector 'id'. A faster variant 
+            %   of 'strmatch' or 'ismember'.
+            v = []; 
+            for e = 1:size(cvc,1) 
+                id = (avc(:,1)==cvc(e,1) & ...        
+                      avc(:,2)==cvc(e,2) & ...
+                      avc(:,3)==cvc(e,3)); 
+                id = find(id ==1); 
+                v(e)=id;                              % global indices
+            end
             MadjComp = subgraph( Madj, v );           % component's adjacency matrix                
 
             %------------------ centrality metrics 
