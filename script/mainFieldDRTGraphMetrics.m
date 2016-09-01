@@ -37,13 +37,18 @@ R2min = 0.9; % minimum R2 coefficient acceptable
 % load DRT
 [~,~,~,~,~,~,~,~,DRT] = loadMatFiles;
 
-matFiles = dir('../mat/DRT_*.mat'); 
+% dir  checking
+dbase = '../mat/Field/';
+if exist(dbase,'dir') ~= 7; mkdir(dbase); end   
+
+matFiles = dir(dbase);  
+matFiles = checkMetricsFiles(matFiles,dbase); % required because 'drtSt'
 numfiles = length(matFiles);
     
 % sweeping DRTs
 for k = 1:numfiles 
     
-    load( strcat('../mat/',matFiles(k).name),'drtSt'); 
+    load( strcat(dbase,matFiles(k).name),'drtSt'); 
     val = drtSt.value; 
     
     fprintf('----> Sweeping DRT: %d... \n',val);
@@ -125,10 +130,10 @@ for k = 1:numfiles
     end % components loop
     
     if count ~= 0 % saving structure to .mat, if any 
-        save( strcat('../mat/DRT_',num2str( val ),'_MetricsData','.mat'),'metrics');
+        save( strcat(dbase,'DRT_',num2str( val ),'_MetricsData','.mat'),'metrics');
         disp('----> metrics .mat file saved.')
 
-        save( strcat('../mat/DRT_',num2str( val ),'_LinRegrData','.mat'),'linregr'); 
+        save( strcat(dbase,'DRT_',num2str( val ),'_LinRegrData','.mat'),'linregr'); 
         disp('----> regression .mat file saved.')
     else
         disp('----> No components found.');
