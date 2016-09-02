@@ -16,41 +16,6 @@ function [maxcloVoxelCoordsOrd,origID,clID,maxclo] = assembleClosenessNetwork(dr
 %         clID: HP cluster IDs in the originial order of search (nc x 1)
 %         maxclo: array with max closeness per HP cluster (nc x 1)
 % 
-%     - REMARK
-%     
-%     This strategy is, at first glance, ONLY applicable to 
-%     .dat (.txt) files that follow the output format of CMG software. 
-%     The current version is tested for the SPE Project 2 
-%     data arrangement. It will might be useful for other 
-%     files as well, but further investigation is required. 
-% 
-%     What is done here: the original files are 'unrolled' 
-%     and rearranged into 3D arrays (I,J,K), thus allowing a 
-%     better accessibility of the information. In the end, the reservoir
-%     is a 3D structure with P(I,J,K) evaluated 
-%     in the fourth dimension. 
-% 
-%     RESERVOIR SCHEME
-%     ================
-% 
-%           K
-%          /
-%         /____________
-%        /|            |
-%       /_|__________  |
-%      /|            | |
-%     /_|__________  |_|      <------ (i,j,k = K): bottom layer
-%     |            | |
-%     |            |_|        <------ (i,j,k = 2): depth layer
-%     |            | 
-%     |____________|___ J     <------ (i,j,k = 1): reservoir's surface
-%     |    
-%     |
-%      I
-%
-% -----------------------
-% Dr. Gustavo Peixoto
-
 
 if isempty(dirpath), dirpath = '../mat/Field/'; end
 
@@ -78,7 +43,7 @@ assert(~isempty(clID),sprintf(['No HP cluster found for DRT = %d. '...
 maxclo = cell(1,length(clID));
 for cid = 1:length(clID)
     maxclo{cid} = metrics.closenessCentrality{clID(cid)}; % separating output
-    maxcloVoxelCoords{cid} = metrics.maxClosenessVoxelCoords{clID(cid)}(1,:); % coords
+    maxcloVoxelCoords{cid} = metrics.maxClosenessVoxelCoords{clID(cid)}(1,:); % coords    
 end
 maxclo=cellfun(@max,maxclo); % max closeness 
 
@@ -91,23 +56,52 @@ maxclo=cellfun(@max,maxclo); % max closeness
 maxcloVoxelCoords = reshape(cell2mat(maxcloVoxelCoords)',[3,numel(maxcloVoxelCoords)])';
 [maxcloVoxelCoordsOrd,origID] = sortrows(maxcloVoxelCoords,3);
 
-%{
 
-scatter3(maxcloVoxelCoordsOrd(:,2),maxcloVoxelCoordsOrd(:,1),maxcloVoxelCoordsOrd(:,3),100,maxcloVoxelCoordsOrd(:,3),'fill'); 
-for i = 1:size(maxcloVoxelCoordsOrd,1)
-    for j = i:size(maxcloVoxelCoordsOrd,1)
-        if (i~=j)
-            hold on
-            line([maxcloVoxelCoordsOrd(i,2),maxcloVoxelCoordsOrd(j,2)],...
-                 [maxcloVoxelCoordsOrd(i,1),maxcloVoxelCoordsOrd(j,1)],...
-                 [maxcloVoxelCoordsOrd(i,3),maxcloVoxelCoordsOrd(j,3)],...
-                 'LineWidth',0.1,'color','k');
+% plotting consecutive network
+scatter3(maxcloVoxelCoordsOrd(:,1),maxcloVoxelCoordsOrd(:,2),maxcloVoxelCoordsOrd(:,3),100,1:length(clID),'fill'); 
+for i = 1:length(clID)-1    
+        if (maxcloVoxelCoordsOrd(i,3) == maxcloVoxelCoordsOrd(i+1,3))
+            cf = 'r';
+        else
+            cf = 'b';
         end
-    end
+            hold on
+            line([maxcloVoxelCoordsOrd(i,1),maxcloVoxelCoordsOrd(i+1,1)],...
+                 [maxcloVoxelCoordsOrd(i,2),maxcloVoxelCoordsOrd(i+1,2)],...
+                 [maxcloVoxelCoordsOrd(i,3),maxcloVoxelCoordsOrd(i+1,3)],...
+                 'LineWidth',1.0,'color',cf);
+        %end
+    %end
 end
-set(gca,'ZDir','reverse'); view([10,13])
-print('-dpdf','-r0',fullfile( '../figs/network-all'))
 
-%}
+% field's outline
+
+% views
+vws = {'xy','xz','yz','3d'};
+
+
+for i = 1:length(vws)
+    % vertices and faces 
+    V = [1 1 1;1 220 1; 60 220 1; 60 1 1; 1 1 85; 1 220 85; 60 220 85; 60 1 85];
+    F = [1 2 3 4; 5 6 7 8; 1 2 6 5; 4 3 7 8; 2 3 7 6; 1 4 8 5];
+    patch('Faces',F,'Vertices',V,'FaceColor',[0.5,0.5,0.5],'FaceAlpha',0.0);
+
+    set(gca,'XDir','reverse','ZDir','reverse','color','none');     
+    title(strcat('Max closeness network; DRT = ',num2str(drtVal)))
+    xlabel('I'), ylabel('J'), zlabel('K')    
+    grid off, axis equal
+    colorbar
+    switch vws{i}
+        case 'xy'
+            view([90,90]);
+        case 'xz'
+            view([0,0]);
+        case 'yz'
+            view([90,0]);
+        case '3d'
+            view([40,20]);
+    end
+    
+    print('-dpdf','-r0',strcat('../figs/','Network_DRT_',num2str(drtVal),'_View_',vws{i}));
 
 end
