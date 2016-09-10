@@ -36,24 +36,13 @@ if nargin == 4
 end
 
 % cluster bounding box limits
-im=min(cvc(:,1)); iM=max(cvc(:,1)); 
-jm=min(cvc(:,2)); jM=max(cvc(:,2)); 
-km=min(cvc(:,3)); kM=max(cvc(:,3));
-
-% cuboid grid formed by all voxels in the cluster's bounding box
-I = im:iM;
-J = jm:jM;
-K = km:kM;
+m = min(cvc,[],1); 
+M = max(cvc,[],1);
+[im,jm,km,iM,jM,kM] = deal(m(1),m(2),m(3),M(1),M(2),M(3));
 
 % [x y z] of all voxels
-allcvc = [];
-for i = 1:length(I)
-    for j = 1:length(J)
-        for k = 1:length(K)                
-            allcvc = [ allcvc; [I(i),J(j),K(k)] ];  
-        end
-    end
-end
+[I,J,K] = ndgrid(im:iM, jm:jM, km:kM);
+allcvc = [I(:),J(:),K(:)];
 
 % operation of exclusion: out = all - in
 [outcvc,outcvi] = setdiff(allcvc,cvc,'rows');
