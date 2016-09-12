@@ -47,8 +47,10 @@ d.fieldGraphMetricsDependency;
                         
 %}
 
-drtVal = 6;
-comps = [1,4,10];
+drtVal = 16;
+comps = [1,2];
+
+load('../mat/DRT.mat','DRT');
 
 for dv = 1:length(drtVal)
 
@@ -61,18 +63,25 @@ for dv = 1:length(drtVal)
 
     for dn = 1:length(comps)% cluster loop    
         
-        compVoxelCoords{dn} = drtSt.compVoxelCoords{ metrics.idComp{comps(dn)} };    
-
+        %{
+        % plotting
+        cvi{dn} = drtSt.compVoxelInds{ metrics.idComp{comps(dn)} };         
+        plotVoxelGraphComp(DRT,cvi{dn},drtVal(dv),comps(dn),1.0,'default','p',[-37.5,30],'pdf');
+        clf;
+        %}
+                
+        compVoxelCoords{dn} = drtSt.compVoxelCoords{ metrics.idComp{comps(dn)} };        
+        
         % finding complementary portion of cluster for using with CMG modeling
         [outcvc,outcvi,fout,fin] = getOutVoxels(compVoxelCoords{dn},...
                                                 comps(dn),drtVal(dv),'Field');
-
+                                            
         % parsing file with Python
         pyi = setPyInterpreter('/usr/local/bin/python');    
         pycmd = sprintf('%s %s %s',pyi,'../py/conv_table_to_CMG.py',fout(1:end-4)); 
         [~,~] = system(pycmd);
-        delete(fout); % not necessary to store
-
+        delete(fout); % not necessary to store        
+        
     end
 
 end
