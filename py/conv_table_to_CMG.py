@@ -11,10 +11,7 @@ with open(infile, 'r') as f:
     next(f)
     for line in f:
         x, y, z = line.split()
-        sx = str(x)+':'+str(x)
-        sy = str(y)+':'+str(y)
-        sz = str(z)+':'+str(z)
-        out = sx+' '+sy+' '+sz+' = 0\n'
+        out = str(x)+' '+str(y)+' '+str(z)+' = 0\n'
         g.write(out)
 
 g.close()
