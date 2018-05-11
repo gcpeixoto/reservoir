@@ -28,7 +28,7 @@ d.extractorSPEDependency;
 
 %% INPUTS 
 
-nofn = 10;   % minimum number of voxels to consider per component 
+nofn = 100;   % minimum number of voxels to consider per component 
 seps = 0.05; % linear regression epsilon for slope [1-seps,1+seps]
 R2min = 0.9; % minimum R2 coefficient acceptable
 
@@ -46,7 +46,7 @@ matFiles = checkMetricsFiles(matFiles,dbase); % required because 'drtSt'
 numfiles = length(matFiles);
     
 % sweeping DRTs
-for k =3% 1:numfiles 
+for k = 1:numfiles 
     
     load( strcat(dbase,matFiles(k).name),'drtSt'); 
     val = drtSt.value; 

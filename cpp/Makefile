@@ -12,8 +12,8 @@ endif
 
 # Mac OS
 ifeq ($(findstring Darwin,${UNAME})),Darwin)
- #CXX = clang++
- CXX = clang-omp++
+ CXX = clang++
+ #CXX = clang-omp++
 endif
 
 # flags

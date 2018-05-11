@@ -25,7 +25,7 @@ end
         
 hold on;
 patch('Faces',F,'Vertices',V,'FaceColor','flat','CData',C,'EdgeColor','k','FaceAlpha',alpha);
-axis equal; view( [ vw(1) vw(2) ] ); axis tight; axis vis3d; grid off;         
+axis equal; view( [ vw(1) vw(2) ] ); axis equal; axis vis3d; grid off;         
 title( strcat( 'Cluster: ',num2str(idComp),'- DRT ', num2str( val ) ) );
 xlabel('J');
 ylabel('I');

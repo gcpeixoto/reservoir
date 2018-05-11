@@ -47,8 +47,8 @@ d.fieldGraphMetricsDependency;
                         
 %}
 
-drtVal = 16;
-comps = [1,2];
+drtVal = 13;
+comps = 2;
 
 load('../mat/DRT.mat','DRT');
 

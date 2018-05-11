@@ -48,7 +48,7 @@ d.fieldGraphMetricsDependency;
                         
 %}
 
-drtVal = 5:9;
+drtVal = 14;
 nc = []; 
 
 %% LOAD FILES
@@ -127,7 +127,7 @@ for dv = 1:length(drtVal)
         compKLims{n} = klims;
 
         % plots    
-        %plotMetricField(compVoxelCoords{n},closeness{n},'clo',n,drtVal(d),CVCFar);        
+        %plotMetricField(compVoxelCoords{n},closeness{n},'clo',n,drtVal(d));        
         %plotMetricField(compVoxelCoords{n},betweeness{n},'bet',n,drtVal(d));
         %plotMetricField(compVoxelCoords{n},degree{n},'deg',n,drtVal(d));              
 
@@ -235,6 +235,7 @@ for dv = 1:length(drtVal)
         dlmwrite(strcat(cld,fname,'.csv'),aux,'-append','delimiter',',','precision','%g');                
         
         clear n metrics linregr drtSt;
+        
         
 end
 %% ENDING
