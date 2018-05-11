@@ -47,8 +47,8 @@ d.fieldGraphMetricsDependency;
                         
 %}
 
-drtVal = 13;
-comps = 2;
+drtVal = 14;
+comps = [2,3,8];
 
 load('../mat/DRT.mat','DRT');
 
@@ -77,11 +77,23 @@ for dv = 1:length(drtVal)
                                                 comps(dn),drtVal(dv),'Field');
                                             
         % parsing file with Python
+        fprintf('--> Parsing file %s with Python...\n',fout)
         pyi = setPyInterpreter('/usr/bin/python');    
         pycmd = sprintf('%s %s %s',pyi,'../py/conv_table_to_CMG.py',fout(1:end-4)); 
-        [status,msg] = system(pycmd);
+        [status,~] = system(pycmd);
         assert(status == 0,'Problem found while calling the Python interpreter. Check the path.');
-        delete(fout); % not necessary to store        
+        
+        % converting .txt -> .inc
+        fprintf('--> Converting to .inc to be included into IMEX .dat file.\n')
+        [path,name,ext] = fileparts(fout);
+        fparsed = strcat(path,filesep,name,'_Parsed',ext);
+        
+        if ~exist(strcat(path,filesep,'inc'),'dir'), mkdir(path,'inc'), end;        
+        fnew = strcat(path,filesep,name,'_Parsed','.inc');
+        shcmd = strcat(['mv ',fparsed,' ',fnew,'; mv ',fnew,' ',path,filesep,'inc']); 
+        [~,~] = system(shcmd);
+                       
+        delete(fout); % not necessary to store
         
     end
 
