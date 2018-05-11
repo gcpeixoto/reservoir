@@ -77,9 +77,10 @@ for dv = 1:length(drtVal)
                                                 comps(dn),drtVal(dv),'Field');
                                             
         % parsing file with Python
-        pyi = setPyInterpreter('/usr/local/bin/python');    
+        pyi = setPyInterpreter('/usr/bin/python');    
         pycmd = sprintf('%s %s %s',pyi,'../py/conv_table_to_CMG.py',fout(1:end-4)); 
-        [~,~] = system(pycmd);
+        [status,msg] = system(pycmd);
+        assert(status == 0,'Problem found while calling the Python interpreter. Check the path.');
         delete(fout); % not necessary to store        
         
     end
