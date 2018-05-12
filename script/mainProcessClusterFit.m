@@ -1,6 +1,50 @@
-%% processClusterFit
-% Process cluster domain to find nonuniform 5-spot well pattern
-
+%% mainProcessClusterFit
+% Determines locations to setup nonuniform 5-spot well patterns based 
+% on the best-fit ellipsoid obtained from the convex hull points 
+% of the selected cluster
+%
+% METHODOLOGY
+% ===========
+%
+% - Consider G a cluster with arbitrary shape and c the 
+%   voxels (vertices) that belong to the convex hull H of G 
+%
+% - The best-fit ellipsoid based on c points returns 
+%   the 3 main direction vectors, the 3 radii a,b,c of each axis 
+%   and the center point 
+%
+%      o X1                      X1: fit-point (+x)                
+%                                X2: fit-point (-x)
+%        P1-c                    Y1: fit-point (+y)                
+%        |  |       o Y1         Y2: fit-point (-y)
+%        c  c--c-P2              Z1: fit-point (+z) (not used for vertical)
+%        |    C   |              Z2: fit-point (-z) (not used for vertical)
+%  o Y2  P4-c  c--c
+%           |  |                  C: center
+%           c-P3
+%                                Pk are such that min {d(Xk,H)} in L2-norm
+%                 o X2
+%  RELATIONS
+%  ========
+%
+%  X1 = C + a*E1        X2 = C - a*E1
+%  Y1 = C + b*E2        Y2 = C - b*E2
+%  Z1 = C + c*E3        Z2 = C - c*E3, for orthonormal basis {E1,E2,E3}
+%
+%  NONUNIFORM 5-SPOT PATTERNS
+%  ==========================
+% 
+%  - Formed by the PRODUCER column placed at the max closeness 
+%    vertex M = (Mx,My,Mz) z-span, i.e. (Mx,My,k), k \in klims.
+%    + 4 INJECTOR columns placed at 
+%    Pj = (Pj_x,Pj_y,k), k \in klims, j = 1,2,3,4. 
+%  
+%  ROTATED CONFIGURATIONS
+%  ======================
+%
+%  - This script also computes this 5-spot pattern rotatated 
+%    by an angle theta in relation to the reference frame 
+%    {C,X1<->X2,Y1<->Y2}
 %% Load cluster info
 
 clear, close all;  
@@ -8,11 +52,19 @@ load('../mat/Field/DRT_13.mat','drtSt');
 load('../mat/Field/DRT_13_MetricsData.mat','metrics')
 load('../mat/Field/DRT_13_LinRegrData.mat','linregr')
 
-c = 9; % cluster ID
+c = 2; % cluster ID
+theta = pi/3; % angle (in radians)
+
+% voxels
 cvc = drtSt.compVoxelCoords{c}; 
 
 % cluster limits
 iG = cvc(:,1); jG = cvc(:,2); kG = cvc(:,3);
+
+% cluster bounding box limits
+im=min(cvc(:,1)); iM=max(cvc(:,1)); ilims = [im,iM];
+jm=min(cvc(:,2)); jM=max(cvc(:,2)); jlims = [jm,jM];
+km=min(cvc(:,3)); kM=max(cvc(:,3)); klims = [km,kM];
 
 % max closeness value, coords and index
 maxc = max(metrics.closenessCentrality{c}); 
@@ -54,6 +106,11 @@ clusterFitData.ellipsoidFitCenter = C;
 clusterFitData.ellipsoidFitRadii = R;
 clusterFitData.ellipsoidFitEvecs = E;
 clusterFitData.ellipsoidFitParams = P;
+clusterFitData.rotationAngleDeg = 180*theta/pi;
+
+% vcMaxc - local coords
+aux = global2LocalCluster(vcMaxc(1),vcMaxc(2),vcMaxc(3),im,jm,km);
+clusterFitData.vcMaxcLocalCoords = aux;
 
 %% Find 6 farthest points in the cluster from ellipsoid fit points
 
@@ -69,9 +126,6 @@ pos = {'+X','-X','+Y','-Y','+Z','-Z'};
 % - axis direction unit vector: 
 %     (ux,uy,uz)
 % ----------
-
-% angle
-theta = pi/3;
 
 ux = E(1,3); uy = E(2,3); uz = E(3,3); % direction vector
 
@@ -130,13 +184,48 @@ for p = 1:length(pos)
             col_neighbours = [ ones(lz,1)*vc(1) ones(lz,1)*vc(2) zz ]; 
             col_neighboursR = [ ones(lz,1)*vcr(1) ones(lz,1)*vcr(2) zz ]; 
             
+            %---- SAVE
+            
+            % save colNeighsX1
             clusterFitData.colNeighsX1 = col_neighbours;
-            clusterFitData.ipX1 = ip;
+            
+            % save local coords - colNeighsX1 
+            aux = global2LocalCluster(col_neighbours(:,1),...
+                                      col_neighbours(:,2),...
+                                      col_neighbours(:,3),...
+                                      im,jm,km);
+            clusterFitData.colNeighsX1LocalCoords = aux;
+            
+            % save index X1
+            clusterFitData.ipX1 = ip;                        
+            
+            % save voxel X1
             clusterFitData.vcX1 = vc;
             
+            % save local coords - vcX1 
+            aux = global2LocalCluster(vc(1),vc(2),vc(3),im,jm,km);
+            clusterFitData.vcX1LocalCoords = aux;
+            
+            % save colNeighsX1R
             clusterFitData.colNeighsX1R = col_neighboursR;
+            
+            % local coords - colNeighsX1R 
+            aux = global2LocalCluster(col_neighboursR(:,1),...
+                                      col_neighboursR(:,2),...
+                                      col_neighboursR(:,3),...
+                                      im,jm,km);
+            clusterFitData.colNeighsX1RLocalCoords = aux;
+            
+            % index X1R
             clusterFitData.ipX1R = ipr;
+            
+            % voxel X1R
             clusterFitData.vcX1R = vcr;
+            
+            % local coords - vcR
+            aux = global2LocalCluster(vcr(1),vcr(2),vcr(3),im,jm,km);
+            clusterFitData.vcX1RLocalCoords = aux;
+            
 
         case '-X'
             
@@ -162,13 +251,47 @@ for p = 1:length(pos)
             col_neighbours = [ ones(lz,1)*vc(1) ones(lz,1)*vc(2) zz ]; 
             col_neighboursR = [ ones(lz,1)*vcr(1) ones(lz,1)*vcr(2) zz ]; 
             
+            %---- SAVE
+            
+            % save colNeighsX2
             clusterFitData.colNeighsX2 = col_neighbours;
-            clusterFitData.ipX2 = ip;
+            
+            % save local coords - colNeighsX2
+            aux = global2LocalCluster(col_neighbours(:,1),...
+                                      col_neighbours(:,2),...
+                                      col_neighbours(:,3),...
+                                      im,jm,km);
+            clusterFitData.colNeighsX2LocalCoords = aux;
+            
+            % save index X2
+            clusterFitData.ipX2 = ip;                        
+            
+            % save voxel X2
             clusterFitData.vcX2 = vc;
             
+            % save local coords - vcX2
+            aux = global2LocalCluster(vc(1),vc(2),vc(3),im,jm,km);
+            clusterFitData.vcX2LocalCoords = aux;
+            
+            % save colNeighsX2R
             clusterFitData.colNeighsX2R = col_neighboursR;
+            
+            % local coords - colNeighsX2R 
+            aux = global2LocalCluster(col_neighboursR(:,1),...
+                                      col_neighboursR(:,2),...
+                                      col_neighboursR(:,3),...
+                                      im,jm,km);
+            clusterFitData.colNeighsX2RLocalCoords = aux;
+            
+            % index X2R
             clusterFitData.ipX2R = ipr;
+            
+            % voxel X2R
             clusterFitData.vcX2R = vcr;
+            
+            % local coords - vcR
+            aux = global2LocalCluster(vcr(1),vcr(2),vcr(3),im,jm,km);
+            clusterFitData.vcX2RLocalCoords = aux;
       
         case '+Y'
             
@@ -194,13 +317,47 @@ for p = 1:length(pos)
             col_neighbours = [ ones(lz,1)*vc(1) ones(lz,1)*vc(2) zz ]; 
             col_neighboursR = [ ones(lz,1)*vcr(1) ones(lz,1)*vcr(2) zz ]; 
             
+            %---- SAVE
+            
+            % save colNeighsY1
             clusterFitData.colNeighsY1 = col_neighbours;
-            clusterFitData.ipY1 = ip;
+            
+            % save local coords - colNeighsY1 
+            aux = global2LocalCluster(col_neighbours(:,1),...
+                                      col_neighbours(:,2),...
+                                      col_neighbours(:,3),...
+                                      im,jm,km);
+            clusterFitData.colNeighsY1LocalCoords = aux;
+            
+            % save index Y1
+            clusterFitData.ipY1 = ip;                        
+            
+            % save voxel Y1
             clusterFitData.vcY1 = vc;
             
+            % save local coords - vcY1 
+            aux = global2LocalCluster(vc(1),vc(2),vc(3),im,jm,km);
+            clusterFitData.vcY1LocalCoords = aux;
+            
+            % save colNeighsY1R
             clusterFitData.colNeighsY1R = col_neighboursR;
+            
+            % local coords - colNeighsY1R 
+            aux = global2LocalCluster(col_neighboursR(:,1),...
+                                      col_neighboursR(:,2),...
+                                      col_neighboursR(:,3),...
+                                      im,jm,km);
+            clusterFitData.colNeighsY1RLocalCoords = aux;
+            
+            % index Y1R
             clusterFitData.ipY1R = ipr;
+            
+            % voxel Y1R
             clusterFitData.vcY1R = vcr;
+            
+            % local coords - vcR
+            aux = global2LocalCluster(vcr(1),vcr(2),vcr(3),im,jm,km);
+            clusterFitData.vcY1RLocalCoords = aux;
     
         case '-Y'
             
@@ -226,13 +383,47 @@ for p = 1:length(pos)
             col_neighbours = [ ones(lz,1)*vc(1) ones(lz,1)*vc(2) zz ]; 
             col_neighboursR = [ ones(lz,1)*vcr(1) ones(lz,1)*vcr(2) zz ]; 
             
+            %---- SAVE
+            
+            % save colNeighsY2
             clusterFitData.colNeighsY2 = col_neighbours;
-            clusterFitData.ipY2 = ip;
+            
+            % save local coords - colNeighsY2
+            aux = global2LocalCluster(col_neighbours(:,1),...
+                                      col_neighbours(:,2),...
+                                      col_neighbours(:,3),...
+                                      im,jm,km);
+            clusterFitData.colNeighsY2LocalCoords = aux;
+            
+            % save index Y2
+            clusterFitData.ipY2 = ip;                        
+            
+            % save voxel Y2
             clusterFitData.vcY2 = vc;
             
+            % save local coords - vcY2
+            aux = global2LocalCluster(vc(1),vc(2),vc(3),im,jm,km);
+            clusterFitData.vcY2LocalCoords = aux;
+            
+            % save colNeighsY2R
             clusterFitData.colNeighsY2R = col_neighboursR;
+            
+            % local coords - colNeighsY2R 
+            aux = global2LocalCluster(col_neighboursR(:,1),...
+                                      col_neighboursR(:,2),...
+                                      col_neighboursR(:,3),...
+                                      im,jm,km);
+            clusterFitData.colNeighsY2RLocalCoords = aux;
+            
+            % index Y2R
             clusterFitData.ipY2R = ipr;
+            
+            % voxel Y2R
             clusterFitData.vcY2R = vcr;
+            
+            % local coords - vcR
+            aux = global2LocalCluster(vcr(1),vcr(2),vcr(3),im,jm,km);
+            clusterFitData.vcY2RLocalCoords = aux;
             
         case '+Z'
             
